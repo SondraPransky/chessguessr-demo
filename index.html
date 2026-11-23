@@ -1067,6 +1067,12 @@ html, body { overflow-x: clip; }
   .year-row .step { min-width: 44px; min-height: 44px; }
 }
 body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+/* game settings: difficulty in front, the three options folded under "More options" */
+.more-opts > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.more-opts > summary::-webkit-details-marker { display: none; }
+.more-opts > summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 200ms var(--ease-out); }
+.more-opts[open] > summary::after { transform: rotate(-135deg) translateY(-1px); }
+.more-opts[open] > .toggles { animation: cg-fade 200ms var(--ease-out); }
 
 /* Chessguessr online screens (online.js). "Bulletin de tournoi" look: hairline rules, no shadows on content,
    radius var(--r) at most, Archivo (--f-ui) for labels and figures. Only design tokens from style.css. */
@@ -1455,15 +1461,15 @@ tr.me .hpbar i { background: var(--accent); }
             </div>
             <small id="difficulty-note"></small>
           </div>
-          <div class="setting opts">
-            <span class="lbl" data-i="set.options"></span>
+          <details class="setting opts more-opts">
+            <summary class="lbl" data-i="set.more"></summary>
             <div class="toggles">
               <label class="toggle"><input type="checkbox" id="purist"><span><b data-i="set.purist"></b><small data-i="set.puristNote"></small></span></label>
               <label class="toggle"><input type="checkbox" id="mirror"><span><b data-i="set.mirror"></b><small data-i="set.mirrorNote"></small></span></label>
               <label class="toggle"><input type="checkbox" id="timed"><span><b data-i="set.timed"></b><small data-i="set.timedNote"></small></span></label>
             </div>
             <label class="sub-set"><span data-i="set.timedSec"></span> <select id="timed-sec"><option value="30">30 s</option><option value="60">1 min</option><option value="120">2 min</option></select></label>
-          </div>
+          </details>
         </div>
         <small class="setup-note" data-i="home.setupSub"></small>
       </div>
@@ -1760,7 +1766,7 @@ fr: {
   'daily.streak': 'Série en cours : {n} {days}.', 'daily.nostreak': 'Joue chaque jour pour lancer une série.',
   'daily.done': 'Déjà jouée aujourd\'hui : {s} points. Prochaine dans {h} h {m} min. {streak}', 'daily.sub': 'Les mêmes 5 positions pour tout le monde, une fois par jour. {streak}',
   'daily.already': 'Partie du jour déjà jouée : {s} points. Rendez-vous demain !', day: 'jour', days: 'jours',
-  'set.diff': 'Difficulté', 'set.options': 'Options', 'set.purist': 'Position figée', 'set.puristNote': 'ni indice ni retour en arrière, points ×1,15', 'set.mirror': 'Miroir', 'set.mirrorNote': 'couleurs des pièces inversées, points ×1,25 (plafond 5 000)', 'set.timed': 'Contre-la-montre', 'set.timedNote': 'temps limité par manche, bonus de rapidité', 'set.timedSec': 'Temps par manche',
+  'set.diff': 'Difficulté', 'set.more': 'Plus d\'options', 'set.options': 'Options', 'set.purist': 'Position figée', 'set.puristNote': 'ni indice ni retour en arrière, points ×1,15', 'set.mirror': 'Miroir', 'set.mirrorNote': 'couleurs des pièces inversées, points ×1,25 (plafond 5 000)', 'set.timed': 'Contre-la-montre', 'set.timedNote': 'temps limité par manche, bonus de rapidité', 'set.timedSec': 'Temps par manche',
   'home.choose': 'Choisis un mode', 'home.tutorial': 'Comment jouer ? Lancer le tutoriel',
   'how1.h': 'Nomme les joueurs', 'how1.p': '1&nbsp;500 points par joueur trouvé, 1&nbsp;000 si tu inverses les couleurs, 800 pour un rival régulier, 500 ou 250 pour un joueur de la même génération.',
   'how2.h': 'Date la partie', 'how2.p': 'Jusqu\'à 1&nbsp;400 points pour l\'année exacte, puis de moins en moins : plus rien au-delà de 5 ans d\'écart.',
@@ -1831,7 +1837,7 @@ en: {
   'daily.streak': 'Current streak: {n} {days}.', 'daily.nostreak': 'Play every day to start a streak.',
   'daily.done': 'Already played today: {s} points. Next one in {h} h {m} min. {streak}', 'daily.sub': 'The same 5 positions for everyone, once a day. {streak}',
   'daily.already': 'Daily game already played: {s} points. See you tomorrow!', day: 'day', days: 'days',
-  'set.diff': 'Difficulty', 'set.options': 'Options', 'set.purist': 'Frozen position', 'set.puristNote': 'no hints, no moving back, points ×1.15', 'set.mirror': 'Mirror', 'set.mirrorNote': 'piece colours swapped, points ×1.25 (capped at 5,000)', 'set.timed': 'Time attack', 'set.timedNote': 'time limit per round, speed bonus', 'set.timedSec': 'Time per round',
+  'set.diff': 'Difficulty', 'set.more': 'More options', 'set.options': 'Options', 'set.purist': 'Frozen position', 'set.puristNote': 'no hints, no moving back, points ×1.15', 'set.mirror': 'Mirror', 'set.mirrorNote': 'piece colours swapped, points ×1.25 (capped at 5,000)', 'set.timed': 'Time attack', 'set.timedNote': 'time limit per round, speed bonus', 'set.timedSec': 'Time per round',
   'home.choose': 'Pick a mode', 'home.tutorial': 'How to play? Start the tutorial',
   'how1.h': 'Name the players', 'how1.p': '1,500 points per player found, 1,000 if you swap the colours, 800 for a regular rival, 500 or 250 for a player of the same generation.',
   'how2.h': 'Date the game', 'how2.p': 'Up to 1,400 points for the exact year, then fewer and fewer: nothing beyond 5 years off.',
@@ -2053,7 +2059,7 @@ I18N.de = {
   'daily.streak': 'Aktuelle Serie: {n} {days}.', 'daily.nostreak': 'Spiele jeden Tag, um eine Serie zu starten.',
   'daily.done': 'Heute schon gespielt: {s} Punkte. Die nächste in {h} Std. {m} Min. {streak}', 'daily.sub': 'Dieselben 5 Stellungen für alle, einmal am Tag. {streak}',
   'daily.already': 'Partie des Tages schon gespielt: {s} Punkte. Bis morgen!', day: 'Tag', days: 'Tage',
-  'set.diff': 'Schwierigkeit', 'set.options': 'Optionen', 'set.purist': 'Feste Stellung', 'set.puristNote': 'keine Hinweise, kein Zurück, Punkte ×1,15', 'set.mirror': 'Spiegel', 'set.mirrorNote': 'Farben der Figuren vertauscht, Punkte ×1,25 (höchstens 5.000)', 'set.timed': 'Gegen die Uhr', 'set.timedNote': 'Zeitlimit pro Runde, Tempobonus', 'set.timedSec': 'Zeit pro Runde',
+  'set.diff': 'Schwierigkeit', 'set.more': 'Weitere Optionen', 'set.options': 'Optionen', 'set.purist': 'Feste Stellung', 'set.puristNote': 'keine Hinweise, kein Zurück, Punkte ×1,15', 'set.mirror': 'Spiegel', 'set.mirrorNote': 'Farben der Figuren vertauscht, Punkte ×1,25 (höchstens 5.000)', 'set.timed': 'Gegen die Uhr', 'set.timedNote': 'Zeitlimit pro Runde, Tempobonus', 'set.timedSec': 'Zeit pro Runde',
   'home.choose': 'Wähle einen Modus', 'home.tutorial': 'Wie spielt man? Tutorial starten',
   'how1.h': 'Nenne die Spieler', 'how1.p': '1.500 Punkte pro gefundenem Spieler, 1.000 bei vertauschten Farben, 800 für einen Stammgegner, 500 oder 250 für einen Spieler derselben Generation.',
   'how2.h': 'Datiere die Partie', 'how2.p': 'Bis zu 1.400 Punkte für das genaue Jahr, danach immer weniger: nichts mehr ab 6 Jahren Abweichung.',
@@ -2202,7 +2208,7 @@ I18N.es = {
   'daily.streak': 'Racha actual: {n} {days}.', 'daily.nostreak': 'Juega cada día para empezar una racha.',
   'daily.done': 'Ya jugada hoy: {s} puntos. La próxima en {h} h {m} min. {streak}', 'daily.sub': 'Las mismas 5 posiciones para todos, una vez al día. {streak}',
   'daily.already': 'Partida del día ya jugada: {s} puntos. ¡Hasta mañana!', day: 'día', days: 'días',
-  'set.diff': 'Dificultad', 'set.options': 'Opciones', 'set.purist': 'Posición fija', 'set.puristNote': 'sin pistas ni vuelta atrás, puntos ×1,15', 'set.mirror': 'Espejo', 'set.mirrorNote': 'colores de las piezas invertidos, puntos ×1,25 (máximo 5.000)', 'set.timed': 'Contrarreloj', 'set.timedNote': 'tiempo limitado por ronda, bonus de rapidez', 'set.timedSec': 'Tiempo por ronda',
+  'set.diff': 'Dificultad', 'set.more': 'Más opciones', 'set.options': 'Opciones', 'set.purist': 'Posición fija', 'set.puristNote': 'sin pistas ni vuelta atrás, puntos ×1,15', 'set.mirror': 'Espejo', 'set.mirrorNote': 'colores de las piezas invertidos, puntos ×1,25 (máximo 5.000)', 'set.timed': 'Contrarreloj', 'set.timedNote': 'tiempo limitado por ronda, bonus de rapidez', 'set.timedSec': 'Tiempo por ronda',
   'home.choose': 'Elige un modo', 'home.tutorial': '¿Cómo se juega? Iniciar el tutorial',
   'how1.h': 'Nombra a los jugadores', 'how1.p': '1.500 puntos por jugador acertado, 1.000 si inviertes los colores, 800 por un rival habitual, 500 o 250 por un jugador de la misma generación.',
   'how2.h': 'Fecha la partida', 'how2.p': 'Hasta 1.400 puntos por el año exacto, y cada vez menos: nada a partir de 6 años de diferencia.',
@@ -2351,7 +2357,7 @@ I18N.it = {
   'daily.streak': 'Serie in corso: {n} {days}.', 'daily.nostreak': 'Gioca ogni giorno per iniziare una serie.',
   'daily.done': 'Già giocata oggi: {s} punti. La prossima tra {h} h {m} min. {streak}', 'daily.sub': 'Le stesse 5 posizioni per tutti, una volta al giorno. {streak}',
   'daily.already': 'Partita del giorno già giocata: {s} punti. A domani!', day: 'giorno', days: 'giorni',
-  'set.diff': 'Difficoltà', 'set.options': 'Opzioni', 'set.purist': 'Posizione bloccata', 'set.puristNote': 'niente aiuti né ritorni indietro, punti ×1,15', 'set.mirror': 'Specchio', 'set.mirrorNote': 'colori dei pezzi invertiti, punti ×1,25 (massimo 5.000)', 'set.timed': 'A cronometro', 'set.timedNote': 'tempo limitato per turno, bonus velocità', 'set.timedSec': 'Tempo per turno',
+  'set.diff': 'Difficoltà', 'set.more': 'Altre opzioni', 'set.options': 'Opzioni', 'set.purist': 'Posizione bloccata', 'set.puristNote': 'niente aiuti né ritorni indietro, punti ×1,15', 'set.mirror': 'Specchio', 'set.mirrorNote': 'colori dei pezzi invertiti, punti ×1,25 (massimo 5.000)', 'set.timed': 'A cronometro', 'set.timedNote': 'tempo limitato per turno, bonus velocità', 'set.timedSec': 'Tempo per turno',
   'home.choose': 'Scegli una modalità', 'home.tutorial': 'Come si gioca? Avvia il tutorial',
   'how1.h': 'Nomina i giocatori', 'how1.p': '1.500 punti per ogni giocatore trovato, 1.000 se inverti i colori, 800 per un rivale abituale, 500 o 250 per un giocatore della stessa generazione.',
   'how2.h': 'Data la partita', 'how2.p': 'Fino a 1.400 punti per l\'anno esatto, poi sempre meno: niente oltre 5 anni di scarto.',
@@ -2500,7 +2506,7 @@ I18N.pt = {
   'daily.streak': 'Sequência atual: {n} {days}.', 'daily.nostreak': 'Jogue todos os dias para começar uma sequência.',
   'daily.done': 'Já jogada hoje: {s} pontos. A próxima em {h} h {m} min. {streak}', 'daily.sub': 'As mesmas 5 posições para todos, uma vez por dia. {streak}',
   'daily.already': 'Partida do dia já jogada: {s} pontos. Até amanhã!', day: 'dia', days: 'dias',
-  'set.diff': 'Dificuldade', 'set.options': 'Opções', 'set.purist': 'Posição fixa', 'set.puristNote': 'sem dicas nem voltar atrás, pontos ×1,15', 'set.mirror': 'Espelho', 'set.mirrorNote': 'cores das peças invertidas, pontos ×1,25 (máximo de 5.000)', 'set.timed': 'Contra o relógio', 'set.timedNote': 'tempo limitado por rodada, bônus de rapidez', 'set.timedSec': 'Tempo por rodada',
+  'set.diff': 'Dificuldade', 'set.more': 'Mais opções', 'set.options': 'Opções', 'set.purist': 'Posição fixa', 'set.puristNote': 'sem dicas nem voltar atrás, pontos ×1,15', 'set.mirror': 'Espelho', 'set.mirrorNote': 'cores das peças invertidas, pontos ×1,25 (máximo de 5.000)', 'set.timed': 'Contra o relógio', 'set.timedNote': 'tempo limitado por rodada, bônus de rapidez', 'set.timedSec': 'Tempo por rodada',
   'home.choose': 'Escolha um modo', 'home.tutorial': 'Como jogar? Iniciar o tutorial',
   'how1.h': 'Nomeie os jogadores', 'how1.p': '1.500 pontos por jogador encontrado, 1.000 se inverter as cores, 800 por um rival frequente, 500 ou 250 por um jogador da mesma geração.',
   'how2.h': 'Date a partida', 'how2.p': 'Até 1.400 pontos pelo ano exato, e cada vez menos: nada a partir de 6 anos de diferença.',
@@ -2649,7 +2655,7 @@ I18N.ru = {
   'daily.streak': 'Текущая серия: {n} {n:день|дня|дней}.', 'daily.nostreak': 'Играйте каждый день, чтобы начать серию.',
   'daily.done': 'Сегодня уже сыграно: {s} очков. Следующая через {h} ч {m} мин. {streak}', 'daily.sub': 'Одни и те же 5 позиций для всех, раз в день. {streak}',
   'daily.already': 'Партия дня уже сыграна: {s} очков. До завтра!', day: 'день', days: 'дней',
-  'set.diff': 'Сложность', 'set.options': 'Опции', 'set.purist': 'Застывшая позиция', 'set.puristNote': 'без подсказок и возврата назад, очки ×1,15', 'set.mirror': 'Зеркало', 'set.mirrorNote': 'цвета фигур поменяны, очки ×1,25 (максимум 5000)', 'set.timed': 'На время', 'set.timedNote': 'лимит времени на раунд, бонус за скорость', 'set.timedSec': 'Время на раунд',
+  'set.diff': 'Сложность', 'set.more': 'Другие настройки', 'set.options': 'Опции', 'set.purist': 'Застывшая позиция', 'set.puristNote': 'без подсказок и возврата назад, очки ×1,15', 'set.mirror': 'Зеркало', 'set.mirrorNote': 'цвета фигур поменяны, очки ×1,25 (максимум 5000)', 'set.timed': 'На время', 'set.timedNote': 'лимит времени на раунд, бонус за скорость', 'set.timedSec': 'Время на раунд',
   'home.choose': 'Выберите режим', 'home.tutorial': 'Как играть? Запустить обучение',
   'how1.h': 'Назовите игроков', 'how1.p': '1500 очков за каждого угаданного игрока, 1000, если перепутаны цвета, 800 за постоянного соперника, 500 или 250 за игрока того же поколения.',
   'how2.h': 'Датируйте партию', 'how2.p': 'До 1400 очков за точный год, дальше всё меньше: ничего при ошибке больше 5 лет.',
