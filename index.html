@@ -960,14 +960,76 @@ button, .btn, .mode, .choice, .season, [role="button"] { -webkit-tap-highlight-c
 @media (max-width: 680px) { input, select, textarea { font-size: 16px; } }
 html { overscroll-behavior-y: none; }
 
+/* ---------- 2026-11-23 polish pass: phone comfort and small fixes ---------- */
+/* top buttons never break on two lines ("En ligne") */
+.topnav .btn, .elo-chip { white-space: nowrap; }
+/* the answer sheet clips its corners without becoming a scroll box, so the button below can stick */
+.sheet { overflow: clip; }
+/* phone: the main button of the round stays in reach at the bottom of the screen */
+@media (max-width: 820px) {
+  #guess-sheet > #validate, #reveal-sheet > #next, #ap-buzz {
+    position: sticky; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 6;
+    box-shadow: 0 0 0 6px var(--surface), 0 10px 24px -6px rgba(0, 0, 0, .55);
+  }
+}
+/* phone: small copy of the position in the corner while typing the answer */
+.mini-dock {
+  position: fixed; z-index: 25; right: 12px; top: calc(var(--head-h) + 10px); width: 116px; padding: 0; border: 0;
+  border-radius: 10px; background: none; cursor: pointer; box-shadow: 0 0 0 2px var(--accent), 0 12px 28px -8px rgba(0, 0, 0, .7);
+  animation: cg-fade 160ms var(--ease-out);
+}
+.mini-dock[hidden] { display: none; }
+.mini-dock .board.mini { pointer-events: none; border-radius: 10px; box-shadow: none; }
+.mini-dock .board.mini .c { display: none; }
+@media (min-width: 821px) { .mini-dock { display: none; } }
+/* phone: the points table stacks instead of running off the screen */
+@media (max-width: 680px) {
+  .bareme table, .bareme tbody { display: block; }
+  .bareme tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 14px; border-bottom: 1px solid var(--line); padding: 10px 0; }
+  .bareme th { display: block; grid-column: 1 / -1; padding: 22px 0 10px; }
+  .bareme tr:has(th) { padding: 0; }
+  .bareme td { border: 0; padding: 0; width: auto !important; }
+  .bareme td:nth-child(2) { grid-column: 1 / -1; grid-row: 2; padding-top: 2px; }
+  .bareme td.pts { grid-column: 2; grid-row: 1; white-space: normal; max-width: 52vw; }
+}
+/* home: air between the main button and the "play online" line */
+#home-online:not(:empty) { margin-top: 22px; }
+/* guided tour: a solid, clearly lit bubble that cannot be missed */
+.tour-hole { box-shadow: 0 0 0 4px var(--accent), 0 0 0 9999px rgba(2, 12, 20, .72); }
+.tour-bubble {
+  background: #0c3a5c; color: var(--ink); border: 2px solid var(--accent); border-radius: 20px; padding: 18px 18px 14px;
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, .75);
+}
+.tour-bubble p { color: var(--ink); font-size: 16.5px; line-height: 1.45; font-weight: 500; }
+.tour-actions #tour-step { color: var(--accent); font-weight: 700; }
+.tour-actions .link-btn { color: rgba(255, 255, 255, .8); }
+/* move lists: figurines drawn as text, never as emoji */
+.moves, .bonus-help, .lines { font-variant-emoji: text; }
+/* arrow of the move really played, over the board */
+.board { position: relative; }
+.board > svg.arrow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.board > svg.arrow line { stroke: rgba(255, 170, 0, .85); stroke-width: .17; stroke-linecap: round; }
+.board > svg.arrow marker path { fill: rgba(255, 170, 0, .85); }
+/* name fields: the text sits inside the box, not against its edge */
+.picker input { padding: 12px 40px 12px 16px; font: 600 18px var(--f-ui); border-radius: 14px; }
+.picker input::placeholder { font-weight: 400; }
+.picker .clear { right: 10px; }
+/* replay and look-back controls: drawn icons, centred */
+.peek button, .replay button { display: inline-grid; place-items: center; }
+.peek button svg, .replay button svg { display: block; }
+/* browser surfaces in the site's colours */
+::selection { background: var(--accent); color: var(--accent-ink); }
+.score-big, .total, #rv-score, .recap .num, .elo-chip { font-variant-numeric: tabular-nums; }
+.nw { white-space: nowrap; }
+
 /* Chessguessr online screens (online.js). "Bulletin de tournoi" look: hairline rules, no shadows on content,
    radius var(--r) at most, Archivo (--f-ui) for labels and figures. Only design tokens from style.css. */
-.on { max-width: 980px; margin: 0 auto; padding: 28px 16px 120px; }
-.on h1 { font-family: var(--f-display); font-weight: 600; margin: 0 0 6px; font-size: clamp(28px, 5vw, 42px); line-height: 1.05; }
-.on h2 { font-family: var(--f-display); font-weight: 600; margin: 18px 0 8px; font-size: 26px; }
-.on h3 { font: 700 13px var(--f-ui); text-transform: uppercase; letter-spacing: .08em; margin: 26px 0 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
-.on .small, .on small { font-size: 13px; }
-.on .muted { color: var(--muted); }
+:where(section).on { max-width: 980px; margin: 0 auto; padding: 28px 16px 120px; }
+:where(section).on h1 { font-family: var(--f-display); font-weight: 600; margin: 0 0 6px; font-size: clamp(28px, 5vw, 42px); line-height: 1.05; }
+:where(section).on h2 { font-family: var(--f-display); font-weight: 600; margin: 18px 0 8px; font-size: 26px; }
+:where(section).on h3 { font: 700 13px var(--f-ui); text-transform: uppercase; letter-spacing: .08em; margin: 26px 0 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
+:where(section).on .small, :where(section).on small { font-size: 13px; }
+:where(section).on .muted { color: var(--muted); }
 .on-head p { margin: 0 0 18px; font-size: 17px; }
 .on-tabs { display: flex; flex-wrap: wrap; border-top: 2px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
 .on-tabs button { background: none; border: 0; padding: 10px 14px; font: 600 14px var(--f-ui); color: var(--muted); cursor: pointer; }
@@ -1377,17 +1439,17 @@ tr.me .hpbar i { background: var(--accent); }
           <div class="board" id="board" data-ia="round.aria"></div>
           <div class="turn" id="turn"></div>
           <div class="peek" id="peek" hidden>
-            <button type="button" id="peek-back" data-ia="peek.backA">◀</button>
+            <button type="button" id="peek-back" data-ia="peek.backA"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6l-8 6 8 6z" fill="currentColor"/></svg></button>
             <span id="peek-txt"></span>
-            <button type="button" id="peek-fwd" data-ia="peek.fwdA">▶</button>
+            <button type="button" id="peek-fwd" data-ia="peek.fwdA"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l8 6-8 6z" fill="currentColor"/></svg></button>
           </div>
           <div id="replay-box" hidden>
             <div class="replay">
-              <button type="button" id="rp-first" data-ia="replay.first">⏮</button>
-              <button type="button" id="rp-prev" data-ia="replay.prev">◀</button>
-              <button type="button" id="rp-puz" data-ia="replay.puz">◎</button>
-              <button type="button" id="rp-next" data-ia="replay.next">▶</button>
-              <button type="button" id="rp-last" data-ia="replay.last">⏭</button>
+              <button type="button" id="rp-first" data-ia="replay.first"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14"/><path d="M18 6l-8 6 8 6z" fill="currentColor"/></svg></button>
+              <button type="button" id="rp-prev" data-ia="replay.prev"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6l-8 6 8 6z" fill="currentColor"/></svg></button>
+              <button type="button" id="rp-puz" data-ia="replay.puz"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg></button>
+              <button type="button" id="rp-next" data-ia="replay.next"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l8 6-8 6z" fill="currentColor"/></svg></button>
+              <button type="button" id="rp-last" data-ia="replay.last"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5v14"/><path d="M6 6l8 6-8 6z" fill="currentColor"/></svg></button>
               <button type="button" id="rp-play" class="wide" data-ia="replay.aria"></button>
             </div>
             <div class="moves" id="moves"></div>
@@ -1655,8 +1717,8 @@ fr: {
   'set.diff': 'Difficulté', 'set.options': 'Options', 'set.purist': 'Position figée', 'set.puristNote': 'ni indice ni retour en arrière, points ×1,15', 'set.mirror': 'Miroir', 'set.mirrorNote': 'couleurs des pièces inversées, points ×1,25 (plafond 5 000)', 'set.timed': 'Contre-la-montre', 'set.timedNote': 'temps limité par manche, bonus de rapidité', 'set.timedSec': 'Temps par manche',
   'home.choose': 'Choisis un mode', 'home.tutorial': 'Comment jouer ? Lancer le tutoriel',
   'how1.h': 'Nomme les joueurs', 'how1.p': '1&nbsp;500 points par joueur trouvé, 1&nbsp;000 si tu inverses les couleurs, 800 pour un rival régulier, 500 ou 250 pour un joueur de la même génération.',
-  'how2.h': 'Date la partie', 'how2.p': 'Jusqu\'à 1&nbsp;200 points pour l\'année exacte, puis de moins en moins : plus rien au-delà de 30 ans d\'écart.',
-  'how3.h': 'Les bonus', 'how3.p': '400 pour le vainqueur, jusqu\'à 400 pour le lieu sur la carte dans les parties légendaires (sinon ces points vont à l\'année et au vainqueur), et +300 si tu joues sur l\'échiquier le coup de la partie.',
+  'how2.h': 'Date la partie', 'how2.p': 'Jusqu\'à 1&nbsp;400 points pour l\'année exacte, puis de moins en moins : plus rien au-delà de 5 ans d\'écart.',
+  'how3.h': 'Les bonus', 'how3.p': '600 pour le vainqueur, et +300 si tu joues sur l\'échiquier le coup de la partie.',
   positions: '{n} positions', inDiff: 'en {d}', record: 'Record : {s}', recordSurv: 'Record : {n} manches', country: 'Pays', ncountry: 'Championnat national',
   'challenge.text': '<strong>{n}</strong> te défie : <strong>{s} points</strong> en mode {m}{p}. Mêmes 5 positions pour toi.', 'challenge.go': 'Relever le défi', friend: 'Un ami', puristSuffix: ' (position figée)',
   notEnough: 'Pas assez de positions pour ce mode.', 'srv.server': 'Le serveur du jeu ne répond pas. Vérifie ta connexion et réessaie.', 'srv.slow_down': 'Doucement ! Réessaie dans quelques minutes.', 'srv.finished': 'Cette partie est terminée.', 'srv.not_now': 'Attends la manche suivante.', 'srv.round_closed': 'Cette manche est déjà terminée.', 'srv.no_game': 'Partie expirée : relance-la depuis l\'accueil.', dailyLabel: 'Partie du jour n° {n}', tagPurist: ' · position figée', tagMirror: ' · miroir', tagTimed: ' · chrono', tagTimedLong: ' · contre-la-montre',
@@ -1667,7 +1729,7 @@ fr: {
   'rv.result': 'Résultat : {r}', 'rv.event': 'Compétition : {e}',
   'hints.label': 'Indices', 'purist.note': 'Position figée&nbsp;: ni indice ni retour en arrière, points ×1,15 (jusqu\'à 5&nbsp;000).', validate: 'Valider ma réponse',
   'hint.moves': '5 derniers coups', 'hint.opening': 'Ouverture', 'hint.natw': 'Pays des Blancs', 'hint.natb': 'Pays des Noirs', 'hint.event': 'Tournoi', 'hint.site': 'Lieu', 'hint.result': 'Résultat', unknown: 'Inconnu', 'res.w': 'Les Blancs gagnent', 'res.b': 'Les Noirs gagnent', 'res.d': 'Partie nulle',
-  'ap.title': 'Reconnais-tu cette partie ?', 'ap.help': 'La partie rembobine toute seule depuis le dernier coup. Buzze (ou barre d\'espace) dès que tu la reconnais, puis donne les deux joueurs. Les 2 derniers coups ne rapportent que ×1, et un nom faux est un faux départ.', 'ap.buzz': 'Je la reconnais !', 'ap.total': 'Score total', 'ap.final': 'Position finale · coup {n}', 'ap.move': 'Coup {n} · {l} {l:coup|coups} avant la fin', 'ap.multNow': 'jusqu\'à {p} points si tu buzzes maintenant', 'ap.start': 'Retour au premier coup : dernière chance, sans multiplicateur.', 'ap.false': 'Faux départ ! −500 points, buzzer bloqué 6 secondes.', 'ap.locked': 'Buzzer bloqué · {s} s', 'ap.detail': '{p} points pour les joueurs × {m}', 'ap.pen': '−{p} de faux départs',
+  'ap.title': 'Reconnais\u2011tu cette partie\u00a0?', 'ap.help': 'La partie rembobine toute seule depuis le dernier coup. Buzze (ou barre d\'espace) dès que tu la reconnais, puis donne les deux joueurs. Les 2 derniers coups ne rapportent que ×1, et un nom faux est un faux départ.', 'ap.buzz': 'Je la reconnais !', 'ap.total': 'Score total', 'ap.final': 'Position finale · coup {n}', 'ap.move': 'Coup {n} · {l} {l:coup|coups} avant la fin', 'ap.multNow': 'jusqu\'à {p} points si tu buzzes maintenant', 'ap.start': 'Retour au premier coup : dernière chance, sans multiplicateur.', 'ap.false': 'Faux départ ! −500 points, buzzer bloqué 6 secondes.', 'ap.locked': 'Buzzer bloqué · {s} s', 'ap.detail': '{p} points pour les joueurs × {m}', 'ap.pen': '−{p} de faux départs',
   'ix.help': 'Trois de ces positions viennent de ses parties. La quatrième vient d\'une partie jouée par d\'autres, à la même époque. Clique sur l\'intruse.', 'ix.title': 'Parties jouées par {p}', 'ix.odd': 'L\'intruse', 'ix.ok': 'Bien vu, +1 000 points !', 'ix.no': 'Raté : l\'intruse était ailleurs.',
   timeUp: 'Temps écoulé !', 'rv.round': 'Manche {i} sur {n}', 'rv.roundSurv': 'Manche {i}', points: 'points', perfect: 'Carton plein&nbsp;!',
   'rv.none': 'Pas de réponse · c\'était {p}', 'rv.half': '{p} jouait, mais avec l\'autre couleur', 'rv.wrong': '{p} · c\'était {r}', 'rv.nearR': '{p} · c\'était {r}, son rival', 'rv.nearG': '{p} · c\'était {r}, même génération', 'rv.place': 'Lieu : {s}', 'rv.placeKm': 'à {k} km', 'rv.placeHint': 'Indice utilisé', 'rv.mirror': 'Miroir', 'rv.cap': 'Plafond de 5 000 par manche', 'rv.floor': 'Une manche ne descend pas sous 0', 'rv.prestige': 'Score de prestige', 'rv.prestigeSub': '100 × manche {i}',
@@ -1684,7 +1746,7 @@ fr: {
   'res.share': 'Partage ton score', 'res.copy': 'Copier le résultat', 'res.challenge': 'Défie un ami sur les mêmes positions', 'res.name': 'Ton prénom', 'res.make': 'Créer le lien', 'res.link': 'Lien du défi', copyBtn: 'Copier', copied: 'Copié !', copyFail: 'Copie impossible : sélectionne le texte à la main.',
   again: 'Rejouer ce mode', againDaily: 'Jouer en mode Classique', changeMode: 'Changer de mode', 'th.game': 'Partie', 'th.year': 'Année', 'th.pts': 'Points', you: 'toi : {y}', perfectSmall: 'carton plein',
   'v.5': 'Grand maître de l’histoire !', 'v.4': 'Maître international', 'v.3': 'Joueur de club redoutable', 'v.2': 'Belle progression', 'v.1': 'Débutant curieux',
-  'best.daily': 'Série en cours : {n} {days}. Reviens demain pour la suivante !', 'best.new': 'Nouveau record ! L\'ancien était de {s}.', 'best.mode': 'Ton record dans ce mode : {s}.', 'best.none': 'Sur 21 000 points possibles, hors bonus (4 200 par manche).',
+  'best.daily': 'Série en cours : {n} {days}. Reviens demain pour la suivante !', 'best.new': 'Nouveau record ! L\'ancien était de {s}.', 'best.mode': 'Ton record dans ce mode : {s}.', 'best.none': 'Sur {max} points possibles (5 000 par manche, hors bonus).',
   'surv.total': '{n} manches réussies', 'surv.best': 'Ton record : {n} manches.', 'surv.new': 'Nouveau record de survie !', 'surv.share': 'Survie : {n} manches',
   'streak.total': 'Série de {n}', 'streak.best': 'Ta meilleure série : {n}.', 'streak.new': 'Nouveau record de série !', 'streak.share': 'Série : {n}', recordStreak: 'Record : série de {n}',
   'rv.streakOk': 'La série continue : {n} !', 'rv.shieldWon': 'Bouclier gagné : 5 manches de suite à 2 ans près. Il absorbera ta prochaine erreur.', 'rv.shieldUsed': 'Le bouclier a absorbé l\'erreur : la série continue !', 'hud.shield': 'Bouclier', 'rv.streakEnd': 'Fin de la série : il fallait trouver au moins un joueur, à la bonne couleur.',
@@ -1698,8 +1760,8 @@ fr: {
   'tour.next': 'Suivant', 'tour.done': 'C\'est parti !', 'tour.skip': 'Passer',
   'tour.1': 'Voici la position. Elle vient d\'une vraie partie de maîtres, et on ne la retrouve dans aucune autre partie de la base.',
   'tour.2': 'Qui avait les Blancs, qui avait les Noirs ? Tape au moins 2 lettres : la liste t\'aide à écrire le nom sans faute. 1 500 points par joueur, 1 000 si tu inverses les couleurs, 800 pour son rival, 500 ou 250 pour un joueur de la même génération.',
-  'tour.3': 'En quelle année ? Tape-la ou glisse sur la frise. 1 200 points pour l\'année exacte, de moins en moins ensuite.',
-  'tour.4': 'Devine le vainqueur (400) et place la ville sur la carte (jusqu\'à 400). Bonus : joue sur l\'échiquier le coup qui a vraiment été joué (+300).',
+  'tour.3': 'En quelle année ? Tape-la ou glisse sur la frise. 1 400 points pour l\'année exacte, de moins en moins ensuite.',
+  'tour.4': 'Devine le vainqueur (600). Bonus : joue sur l\'échiquier le coup qui a vraiment été joué (+300).',
   'tour.5h': 'Bloqué ? Les indices aident, mais coûtent 400 points chacun.', 'tour.5': 'Les flèches sous l\'échiquier font revoir jusqu\'à 5 coups en arrière. Regarder la suite de la partie fait perdre le bonus du coup.',
   'tour.6': 'Valide quand tu es prêt. Bonne partie !',
   'footer.data': 'Chessguessr · parties de 1834 à 2026 issues de collections PGN publiques. Carte : Natural Earth. Villes : GeoNames (CC BY 4.0).', 'footer.pieces': 'Pièces Cburnett',
@@ -1726,8 +1788,8 @@ en: {
   'set.diff': 'Difficulty', 'set.options': 'Options', 'set.purist': 'Frozen position', 'set.puristNote': 'no hints, no moving back, points ×1.15', 'set.mirror': 'Mirror', 'set.mirrorNote': 'piece colours swapped, points ×1.25 (capped at 5,000)', 'set.timed': 'Time attack', 'set.timedNote': 'time limit per round, speed bonus', 'set.timedSec': 'Time per round',
   'home.choose': 'Pick a mode', 'home.tutorial': 'How to play? Start the tutorial',
   'how1.h': 'Name the players', 'how1.p': '1,500 points per player found, 1,000 if you swap the colours, 800 for a regular rival, 500 or 250 for a player of the same generation.',
-  'how2.h': 'Date the game', 'how2.p': 'Up to 1,200 points for the exact year, then fewer and fewer: nothing beyond 30 years off.',
-  'how3.h': 'Bonuses', 'how3.p': '400 for the winner, up to 400 for the place on the map in legendary games (otherwise those points go to the year and the winner), and +300 if you play the game move on the board.',
+  'how2.h': 'Date the game', 'how2.p': 'Up to 1,400 points for the exact year, then fewer and fewer: nothing beyond 5 years off.',
+  'how3.h': 'Bonuses', 'how3.p': '600 for the winner, and +300 if you play the game move on the board.',
   positions: '{n} positions', inDiff: 'on {d}', record: 'Best: {s}', recordSurv: 'Best: {n} rounds', country: 'Country', ncountry: 'National championship',
   'challenge.text': '<strong>{n}</strong> challenges you: <strong>{s} points</strong> in {m} mode{p}. Same 5 positions for you.', 'challenge.go': 'Accept the challenge', friend: 'A friend', puristSuffix: ' (frozen position)',
   notEnough: 'Not enough positions for this mode.', 'srv.server': 'The game server is not answering. Check your connection and try again.', 'srv.slow_down': 'Easy! Try again in a few minutes.', 'srv.finished': 'This game is over.', 'srv.not_now': 'Wait for the next round.', 'srv.round_closed': 'This round is already over.', 'srv.no_game': 'Game expired: start it again from the home page.', dailyLabel: 'Daily game #{n}', tagPurist: ' · frozen', tagMirror: ' · mirror', tagTimed: ' · timed', tagTimedLong: ' · time attack',
@@ -1755,7 +1817,7 @@ en: {
   'res.share': 'Share your score', 'res.copy': 'Copy result', 'res.challenge': 'Challenge a friend on the same positions', 'res.name': 'Your first name', 'res.make': 'Create link', 'res.link': 'Challenge link', copyBtn: 'Copy', copied: 'Copied!', copyFail: 'Could not copy: select the text by hand.',
   again: 'Play this mode again', againDaily: 'Play Classic mode', changeMode: 'Change mode', 'th.game': 'Game', 'th.year': 'Year', 'th.pts': 'Points', you: 'you: {y}', perfectSmall: 'perfect',
   'v.5': 'Grandmaster of history!', 'v.4': 'International Master', 'v.3': 'Fearsome club player', 'v.2': 'Getting there', 'v.1': 'Curious beginner',
-  'best.daily': 'Current streak: {n} {days}. Come back tomorrow for the next one!', 'best.new': 'New record! The old one was {s}.', 'best.mode': 'Your best in this mode: {s}.', 'best.none': 'Out of 21,000 possible points, before bonuses (4,200 per round).',
+  'best.daily': 'Current streak: {n} {days}. Come back tomorrow for the next one!', 'best.new': 'New record! The old one was {s}.', 'best.mode': 'Your best in this mode: {s}.', 'best.none': 'Out of {max} possible points (5,000 per round, before bonuses).',
   'surv.total': '{n} rounds won', 'surv.best': 'Your best: {n} rounds.', 'surv.new': 'New survival record!', 'surv.share': 'Survival: {n} rounds',
   'streak.total': 'Streak of {n}', 'streak.best': 'Your best streak: {n}.', 'streak.new': 'New streak record!', 'streak.share': 'Streak: {n}', recordStreak: 'Best: streak of {n}',
   'rv.streakOk': 'The streak goes on: {n}!', 'rv.shieldWon': 'Shield earned: 5 rounds in a row within 2 years. It will absorb your next miss.', 'rv.shieldUsed': 'Your shield absorbed the miss: the streak goes on!', 'hud.shield': 'Shield', 'rv.streakEnd': 'Streak over: you needed at least one player, on the right colour.',
@@ -1769,8 +1831,8 @@ en: {
   'tour.next': 'Next', 'tour.done': 'Let\'s go!', 'tour.skip': 'Skip',
   'tour.1': 'Here is the position. It comes from a real master game, and no other game in the database reaches it.',
   'tour.2': 'Who had White, who had Black? Type at least 2 letters: the list helps you spell the name. 1,500 points per player, 1,000 with colours swapped, 800 for a rival, 500 or 250 for the same generation.',
-  'tour.3': 'Which year? Type it or slide on the timeline. 1,200 points for the exact year, fewer and fewer after that.',
-  'tour.4': 'Guess the winner (400) and place the city on the map (up to 400). Bonus: play the move that was really played on the board (+300).',
+  'tour.3': 'Which year? Type it or slide on the timeline. 1,400 points for the exact year, fewer and fewer after that.',
+  'tour.4': 'Guess the winner (600). Bonus: play the move that was really played on the board (+300).',
   'tour.5h': 'Stuck? Hints help, but cost 400 points each.', 'tour.5': 'The arrows under the board take you up to 5 moves back. Looking ahead costs you the move bonus.',
   'tour.6': 'Submit when you are ready. Enjoy!',
   'footer.data': 'Chessguessr · games from 1834 to 2026 from public PGN collections. Map: Natural Earth. Cities: GeoNames (CC BY 4.0).', 'footer.pieces': 'Cburnett pieces',
@@ -1905,8 +1967,8 @@ const I18N_BAREME = {
     ['Modes en 5 manches (Classique, Époques, Thèmes, Pays, Grands moments, Saison, Partie du jour)', [
       ['Joueur trouvé', 'par joueur, à la bonne couleur', '1 500'], ['Couleurs inversées', 'le bon joueur, mais avec l\'autre couleur', '1 000'],
       ['Joueur proche', 'rival régulier (6 parties ou plus ensemble) : 800 · même génération : 500 (5 ans) ou 250 (12 ans)', '800 · 500 · 250'],
-      ['Année', 'année exacte, puis −40 par an jusqu\'à 5 ans, −60 jusqu\'à 15, −25 jusqu\'à 30', 'jusqu\'à 1 200 (1 400 sans le lieu)'],
-      ['Résultat', 'qui a gagné', '400 (600 sans le lieu)'], ['Lieu', 'parties légendaires seulement : selon la distance sur la carte', 'jusqu\'à 400'],
+      ['Année', 'année exacte, puis de moins en moins jusqu\'à 5 ans d\'écart', 'jusqu\'à 1 400'],
+      ['Résultat', 'qui a gagné', '600'],
       ['Coup joué', 'jouer sur l\'échiquier le coup de la partie', '+300'], ['Indice', 'pays des joueurs ou tournoi : −400 · résultat ou lieu : −200', '−400 · −200'],
       ['Options', 'Position figée ×1,15 · Miroir ×1,25 · une manche plafonne à 5 000 (hors coup joué et rapidité) · Contre-la-montre : jusqu\'à +500 de rapidité', '×1,15 · ×1,25 · +500']]],
     ['Défis sans fin', [
@@ -1920,8 +1982,8 @@ const I18N_BAREME = {
     ['5-round modes (Classic, Eras, Themes, Countries, Great moments, Season, Daily game)', [
       ['Player found', 'per player, on the right colour', '1,500'], ['Colours swapped', 'right player, other colour', '1,000'],
       ['Close player', 'regular rival (6+ games together): 800 · same generation: 500 (5 years) or 250 (12 years)', '800 · 500 · 250'],
-      ['Year', 'exact year, then −40 a year up to 5 years, −60 up to 15, −25 up to 30', 'up to 1,200 (1,400 without the place)'],
-      ['Result', 'who won', '400 (600 without the place)'], ['Place', 'legendary games only: by distance on the map', 'up to 400'],
+      ['Year', 'exact year, then less and less up to 5 years off', 'up to 1,400'],
+      ['Result', 'who won', '600'],
       ['Move played', 'play the game move on the board', '+300'], ['Hint', 'players\' countries or event: −400 · result or place: −200', '−400 · −200'],
       ['Options', 'Frozen position ×1.15 · Mirror ×1.25 · a round is capped at 5,000 (move and speed bonuses aside) · Time attack: up to +500 for speed', '×1.15 · ×1.25 · +500']]],
     ['Endless challenges', [
@@ -1948,8 +2010,8 @@ I18N.de = {
   'set.diff': 'Schwierigkeit', 'set.options': 'Optionen', 'set.purist': 'Feste Stellung', 'set.puristNote': 'keine Hinweise, kein Zurück, Punkte ×1,15', 'set.mirror': 'Spiegel', 'set.mirrorNote': 'Farben der Figuren vertauscht, Punkte ×1,25 (höchstens 5.000)', 'set.timed': 'Gegen die Uhr', 'set.timedNote': 'Zeitlimit pro Runde, Tempobonus', 'set.timedSec': 'Zeit pro Runde',
   'home.choose': 'Wähle einen Modus', 'home.tutorial': 'Wie spielt man? Tutorial starten',
   'how1.h': 'Nenne die Spieler', 'how1.p': '1.500 Punkte pro gefundenem Spieler, 1.000 bei vertauschten Farben, 800 für einen Stammgegner, 500 oder 250 für einen Spieler derselben Generation.',
-  'how2.h': 'Datiere die Partie', 'how2.p': 'Bis zu 1.200 Punkte für das genaue Jahr, danach immer weniger: nichts mehr ab 30 Jahren Abweichung.',
-  'how3.h': 'Die Boni', 'how3.p': '400 für den Sieger, bis zu 400 für den Ort auf der Karte bei legendären Partien (sonst gehen diese Punkte an Jahr und Sieger) und +300, wenn du den Partiezug auf dem Brett spielst.',
+  'how2.h': 'Datiere die Partie', 'how2.p': 'Bis zu 1.400 Punkte für das genaue Jahr, danach immer weniger: nichts mehr ab 6 Jahren Abweichung.',
+  'how3.h': 'Die Boni', 'how3.p': '600 für den Sieger und +300, wenn du den Partiezug auf dem Brett spielst.',
   positions: '{n} Stellungen', inDiff: 'auf {d}', record: 'Rekord: {s}', recordSurv: 'Rekord: {n} Runden', country: 'Land', ncountry: 'Landesmeisterschaft',
   'challenge.text': '<strong>{n}</strong> fordert dich heraus: <strong>{s} Punkte</strong> im Modus {m}{p}. Dieselben 5 Stellungen für dich.', 'challenge.go': 'Herausforderung annehmen', friend: 'Ein Freund', puristSuffix: ' (feste Stellung)',
   notEnough: 'Nicht genug Stellungen für diesen Modus.', 'srv.server': 'Der Spielserver antwortet nicht. Prüfe deine Verbindung und versuche es erneut.', 'srv.slow_down': 'Langsam! Versuche es in ein paar Minuten noch einmal.', 'srv.finished': 'Diese Partie ist beendet.', 'srv.not_now': 'Warte auf die nächste Runde.', 'srv.round_closed': 'Diese Runde ist schon vorbei.', 'srv.no_game': 'Partie abgelaufen: starte sie auf der Startseite neu.', dailyLabel: 'Partie des Tages Nr. {n}', tagPurist: ' · feste Stellung', tagMirror: ' · Spiegel', tagTimed: ' · Uhr', tagTimedLong: ' · gegen die Uhr',
@@ -1979,7 +2041,7 @@ I18N.de = {
   'res.share': 'Teile dein Ergebnis', 'res.copy': 'Ergebnis kopieren', 'res.challenge': 'Fordere einen Freund mit denselben Stellungen heraus', 'res.name': 'Dein Vorname', 'res.make': 'Link erstellen', 'res.link': 'Link zur Herausforderung', copyBtn: 'Kopieren', copied: 'Kopiert!', copyFail: 'Kopieren nicht möglich: markiere den Text von Hand.',
   again: 'Diesen Modus noch einmal', againDaily: 'Klassischen Modus spielen', changeMode: 'Modus wechseln', 'th.game': 'Partie', 'th.year': 'Jahr', 'th.pts': 'Punkte', you: 'du: {y}', perfectSmall: 'Volltreffer',
   'v.5': 'Großmeister der Geschichte!', 'v.4': 'Internationaler Meister', 'v.3': 'Gefürchteter Vereinsspieler', 'v.2': 'Schöne Fortschritte', 'v.1': 'Neugieriger Anfänger',
-  'best.daily': 'Aktuelle Serie: {n} {days}. Komm morgen für die nächste wieder!', 'best.new': 'Neuer Rekord! Der alte lag bei {s}.', 'best.mode': 'Dein Rekord in diesem Modus: {s}.', 'best.none': 'Von 21.000 möglichen Punkten, ohne Boni (4.200 pro Runde).',
+  'best.daily': 'Aktuelle Serie: {n} {days}. Komm morgen für die nächste wieder!', 'best.new': 'Neuer Rekord! Der alte lag bei {s}.', 'best.mode': 'Dein Rekord in diesem Modus: {s}.', 'best.none': 'Von {max} möglichen Punkten (5.000 pro Runde, ohne Boni).',
   'surv.total': '{n} Runden geschafft', 'surv.best': 'Dein Rekord: {n} Runden.', 'surv.new': 'Neuer Überlebensrekord!', 'surv.share': 'Überleben: {n} Runden',
   'streak.total': 'Serie von {n}', 'streak.best': 'Deine beste Serie: {n}.', 'streak.new': 'Neuer Serienrekord!', 'streak.share': 'Serie: {n}', recordStreak: 'Rekord: Serie von {n}',
   'rv.streakOk': 'Die Serie geht weiter: {n}!', 'rv.shieldWon': 'Schild gewonnen: 5 Runden in Folge auf 2 Jahre genau. Er fängt deinen nächsten Fehler ab.', 'rv.shieldUsed': 'Der Schild hat den Fehler abgefangen: Die Serie geht weiter!', 'hud.shield': 'Schild', 'rv.streakEnd': 'Serie vorbei: Du musstest mindestens einen Spieler mit der richtigen Farbe finden.',
@@ -1993,8 +2055,8 @@ I18N.de = {
   'tour.next': 'Weiter', 'tour.done': 'Los geht\'s!', 'tour.skip': 'Überspringen',
   'tour.1': 'Hier ist die Stellung. Sie stammt aus einer echten Meisterpartie, und keine andere Partie der Datenbank erreicht sie.',
   'tour.2': 'Wer hatte Weiß, wer Schwarz? Tippe mindestens 2 Buchstaben: Die Liste hilft dir, den Namen richtig zu schreiben. 1.500 Punkte pro Spieler, 1.000 bei vertauschten Farben, 800 für seinen Rivalen, 500 oder 250 für einen Spieler derselben Generation.',
-  'tour.3': 'In welchem Jahr? Tippe es ein oder schiebe auf dem Zeitstrahl. 1.200 Punkte für das genaue Jahr, danach immer weniger.',
-  'tour.4': 'Errate den Sieger (400) und setze die Stadt auf die Karte (bis zu 400). Bonus: Spiele auf dem Brett den Zug, der wirklich gespielt wurde (+300).',
+  'tour.3': 'In welchem Jahr? Tippe es ein oder schiebe auf dem Zeitstrahl. 1.400 Punkte für das genaue Jahr, danach immer weniger.',
+  'tour.4': 'Errate den Sieger (600). Bonus: Spiele auf dem Brett den Zug, der wirklich gespielt wurde (+300).',
   'tour.5h': 'Festgefahren? Hinweise helfen, kosten aber Punkte.', 'tour.5': 'Mit den Pfeilen unter dem Brett kannst du bis zu 5 Züge zurückgehen. Wer die Fortsetzung ansieht, verliert den Zugbonus.',
   'tour.6': 'Gib ab, wenn du so weit bist. Viel Spaß!',
   'footer.data': 'Chessguessr · Partien von 1834 bis 2026 aus öffentlichen PGN-Sammlungen. Karte: Natural Earth. Städte: GeoNames (CC BY 4.0).', 'footer.pieces': 'Figuren von Cburnett',
@@ -2069,8 +2131,8 @@ I18N.de = {
     ['Modi mit 5 Runden (Klassisch, Epochen, Themen, Länder, Große Momente, Saison, Partie des Tages)', [
       ['Spieler gefunden', 'pro Spieler, mit der richtigen Farbe', '1.500'], ['Farben vertauscht', 'richtiger Spieler, andere Farbe', '1.000'],
       ['Naher Spieler', 'Stammgegner (6 oder mehr gemeinsame Partien): 800 · gleiche Generation: 500 (5 Jahre) oder 250 (12 Jahre)', '800 · 500 · 250'],
-      ['Jahr', 'genaues Jahr, dann −40 pro Jahr bis 5 Jahre, −60 bis 15, −25 bis 30', 'bis zu 1.200 (1.400 ohne Ort)'],
-      ['Ergebnis', 'wer gewonnen hat', '400 (600 ohne Ort)'], ['Ort', 'nur legendäre Partien: nach Entfernung auf der Karte', 'bis zu 400'],
+      ['Jahr', 'genaues Jahr, dann immer weniger bis 5 Jahre Abstand', 'bis zu 1.400'],
+      ['Ergebnis', 'wer gewonnen hat', '600'],
       ['Gespielter Zug', 'den Partiezug auf dem Brett spielen', '+300'], ['Hinweis', 'Land der Spieler oder Turnier: −400 · Ergebnis oder Ort: −200', '−400 · −200'],
       ['Optionen', 'Feste Stellung ×1,15 · Spiegel ×1,25 · eine Runde ist auf 5.000 begrenzt (ohne Zug- und Tempobonus) · Gegen die Uhr: bis zu +500 für Tempo', '×1,15 · ×1,25 · +500']]],
     ['Endlose Herausforderungen', [
@@ -2097,8 +2159,8 @@ I18N.es = {
   'set.diff': 'Dificultad', 'set.options': 'Opciones', 'set.purist': 'Posición fija', 'set.puristNote': 'sin pistas ni vuelta atrás, puntos ×1,15', 'set.mirror': 'Espejo', 'set.mirrorNote': 'colores de las piezas invertidos, puntos ×1,25 (máximo 5.000)', 'set.timed': 'Contrarreloj', 'set.timedNote': 'tiempo limitado por ronda, bonus de rapidez', 'set.timedSec': 'Tiempo por ronda',
   'home.choose': 'Elige un modo', 'home.tutorial': '¿Cómo se juega? Iniciar el tutorial',
   'how1.h': 'Nombra a los jugadores', 'how1.p': '1.500 puntos por jugador acertado, 1.000 si inviertes los colores, 800 por un rival habitual, 500 o 250 por un jugador de la misma generación.',
-  'how2.h': 'Fecha la partida', 'how2.p': 'Hasta 1.200 puntos por el año exacto, y cada vez menos: nada a partir de 30 años de diferencia.',
-  'how3.h': 'Los bonus', 'how3.p': '400 por el ganador, hasta 400 por el lugar en el mapa en las partidas legendarias (si no, esos puntos van al año y al ganador) y +300 si juegas en el tablero la jugada de la partida.',
+  'how2.h': 'Fecha la partida', 'how2.p': 'Hasta 1.400 puntos por el año exacto, y cada vez menos: nada a partir de 6 años de diferencia.',
+  'how3.h': 'Los bonus', 'how3.p': '600 por el ganador y +300 si juegas en el tablero la jugada de la partida.',
   positions: '{n} posiciones', inDiff: 'en {d}', record: 'Récord: {s}', recordSurv: 'Récord: {n} rondas', country: 'País', ncountry: 'Campeonato nacional',
   'challenge.text': '<strong>{n}</strong> te desafía: <strong>{s} puntos</strong> en modo {m}{p}. Las mismas 5 posiciones para ti.', 'challenge.go': 'Aceptar el desafío', friend: 'Un amigo', puristSuffix: ' (posición fija)',
   notEnough: 'No hay suficientes posiciones para este modo.', 'srv.server': 'El servidor del juego no responde. Comprueba tu conexión e inténtalo de nuevo.', 'srv.slow_down': '¡Despacio! Vuelve a intentarlo en unos minutos.', 'srv.finished': 'Esta partida ha terminado.', 'srv.not_now': 'Espera a la siguiente ronda.', 'srv.round_closed': 'Esta ronda ya ha terminado.', 'srv.no_game': 'Partida caducada: vuelve a empezarla desde el inicio.', dailyLabel: 'Partida del día n.º {n}', tagPurist: ' · posición fija', tagMirror: ' · espejo', tagTimed: ' · crono', tagTimedLong: ' · contrarreloj',
@@ -2128,7 +2190,7 @@ I18N.es = {
   'res.share': 'Comparte tu puntuación', 'res.copy': 'Copiar el resultado', 'res.challenge': 'Desafía a un amigo con las mismas posiciones', 'res.name': 'Tu nombre', 'res.make': 'Crear el enlace', 'res.link': 'Enlace del desafío', copyBtn: 'Copiar', copied: '¡Copiado!', copyFail: 'No se pudo copiar: selecciona el texto a mano.',
   again: 'Volver a jugar este modo', againDaily: 'Jugar en modo Clásico', changeMode: 'Cambiar de modo', 'th.game': 'Partida', 'th.year': 'Año', 'th.pts': 'Puntos', you: 'tú: {y}', perfectSmall: 'pleno',
   'v.5': '¡Gran maestro de la historia!', 'v.4': 'Maestro internacional', 'v.3': 'Temible jugador de club', 'v.2': 'Buen progreso', 'v.1': 'Principiante curioso',
-  'best.daily': 'Racha actual: {n} {days}. ¡Vuelve mañana para la siguiente!', 'best.new': '¡Nuevo récord! El anterior era {s}.', 'best.mode': 'Tu récord en este modo: {s}.', 'best.none': 'Sobre 21.000 puntos posibles, sin bonus (4.200 por ronda).',
+  'best.daily': 'Racha actual: {n} {days}. ¡Vuelve mañana para la siguiente!', 'best.new': '¡Nuevo récord! El anterior era {s}.', 'best.mode': 'Tu récord en este modo: {s}.', 'best.none': 'Sobre {max} puntos posibles (5.000 por ronda, sin bonus).',
   'surv.total': '{n} rondas superadas', 'surv.best': 'Tu récord: {n} rondas.', 'surv.new': '¡Nuevo récord de supervivencia!', 'surv.share': 'Supervivencia: {n} rondas',
   'streak.total': 'Racha de {n}', 'streak.best': 'Tu mejor racha: {n}.', 'streak.new': '¡Nuevo récord de racha!', 'streak.share': 'Racha: {n}', recordStreak: 'Récord: racha de {n}',
   'rv.streakOk': '¡La racha continúa: {n}!', 'rv.shieldWon': 'Escudo ganado: 5 rondas seguidas con menos de 2 años de error. Absorberá tu próximo fallo.', 'rv.shieldUsed': 'El escudo ha absorbido el fallo: ¡la racha continúa!', 'hud.shield': 'Escudo', 'rv.streakEnd': 'Fin de la racha: había que acertar al menos un jugador, con el color correcto.',
@@ -2142,8 +2204,8 @@ I18N.es = {
   'tour.next': 'Siguiente', 'tour.done': '¡Vamos!', 'tour.skip': 'Saltar',
   'tour.1': 'Esta es la posición. Viene de una partida real entre maestros, y ninguna otra partida de la base llega a ella.',
   'tour.2': '¿Quién llevaba blancas y quién negras? Escribe al menos 2 letras: la lista te ayuda a escribir bien el nombre. 1.500 puntos por jugador, 1.000 si inviertes los colores, 800 por su rival, 500 o 250 por un jugador de la misma generación.',
-  'tour.3': '¿En qué año? Escríbelo o desliza por la línea del tiempo. 1.200 puntos por el año exacto, cada vez menos después.',
-  'tour.4': 'Adivina el ganador (400) y sitúa la ciudad en el mapa (hasta 400). Bonus: juega en el tablero la jugada que se hizo de verdad (+300).',
+  'tour.3': '¿En qué año? Escríbelo o desliza por la línea del tiempo. 1.400 puntos por el año exacto, cada vez menos después.',
+  'tour.4': 'Adivina el ganador (600). Bonus: juega en el tablero la jugada que se hizo de verdad (+300).',
   'tour.5h': '¿Atascado? Las pistas ayudan, pero cuestan puntos.', 'tour.5': 'Las flechas bajo el tablero permiten ver hasta 5 jugadas atrás. Mirar la continuación hace perder el bonus de la jugada.',
   'tour.6': 'Valida cuando estés listo. ¡Buena partida!',
   'footer.data': 'Chessguessr · partidas de 1834 a 2026 de colecciones PGN públicas. Mapa: Natural Earth. Ciudades: GeoNames (CC BY 4.0).', 'footer.pieces': 'Piezas Cburnett',
@@ -2218,8 +2280,8 @@ I18N.es = {
     ['Modos de 5 rondas (Clásico, Épocas, Temas, Países, Grandes momentos, Temporada, Partida del día)', [
       ['Jugador acertado', 'por jugador, con el color correcto', '1.500'], ['Colores invertidos', 'el jugador correcto, pero con el otro color', '1.000'],
       ['Jugador cercano', 'rival habitual (6 partidas o más juntos): 800 · misma generación: 500 (5 años) o 250 (12 años)', '800 · 500 · 250'],
-      ['Año', 'año exacto, después −40 por año hasta 5 años, −60 hasta 15, −25 hasta 30', 'hasta 1.200 (1.400 sin el lugar)'],
-      ['Resultado', 'quién ganó', '400 (600 sin el lugar)'], ['Lugar', 'solo partidas legendarias: según la distancia en el mapa', 'hasta 400'],
+      ['Año', 'año exacto, después cada vez menos hasta 5 años de diferencia', 'hasta 1.400'],
+      ['Resultado', 'quién ganó', '600'],
       ['Jugada', 'jugar en el tablero la jugada de la partida', '+300'], ['Pista', 'país de los jugadores o torneo: −400 · resultado o lugar: −200', '−400 · −200'],
       ['Opciones', 'Posición fija ×1,15 · Espejo ×1,25 · una ronda tiene un máximo de 5.000 (sin contar jugada y rapidez) · Contrarreloj: hasta +500 por rapidez', '×1,15 · ×1,25 · +500']]],
     ['Desafíos sin fin', [
@@ -2246,8 +2308,8 @@ I18N.it = {
   'set.diff': 'Difficoltà', 'set.options': 'Opzioni', 'set.purist': 'Posizione bloccata', 'set.puristNote': 'niente aiuti né ritorni indietro, punti ×1,15', 'set.mirror': 'Specchio', 'set.mirrorNote': 'colori dei pezzi invertiti, punti ×1,25 (massimo 5.000)', 'set.timed': 'A cronometro', 'set.timedNote': 'tempo limitato per turno, bonus velocità', 'set.timedSec': 'Tempo per turno',
   'home.choose': 'Scegli una modalità', 'home.tutorial': 'Come si gioca? Avvia il tutorial',
   'how1.h': 'Nomina i giocatori', 'how1.p': '1.500 punti per ogni giocatore trovato, 1.000 se inverti i colori, 800 per un rivale abituale, 500 o 250 per un giocatore della stessa generazione.',
-  'how2.h': 'Data la partita', 'how2.p': 'Fino a 1.200 punti per l\'anno esatto, poi sempre meno: niente oltre 30 anni di scarto.',
-  'how3.h': 'I bonus', 'how3.p': '400 per il vincitore, fino a 400 per il luogo sulla mappa nelle partite leggendarie (altrimenti quei punti vanno all\'anno e al vincitore) e +300 se giochi sulla scacchiera la mossa della partita.',
+  'how2.h': 'Data la partita', 'how2.p': 'Fino a 1.400 punti per l\'anno esatto, poi sempre meno: niente oltre 5 anni di scarto.',
+  'how3.h': 'I bonus', 'how3.p': '600 per il vincitore e +300 se giochi sulla scacchiera la mossa della partita.',
   positions: '{n} posizioni', inDiff: 'in {d}', record: 'Record: {s}', recordSurv: 'Record: {n} turni', country: 'Paese', ncountry: 'Campionato nazionale',
   'challenge.text': '<strong>{n}</strong> ti sfida: <strong>{s} punti</strong> in modalità {m}{p}. Le stesse 5 posizioni per te.', 'challenge.go': 'Accetta la sfida', friend: 'Un amico', puristSuffix: ' (posizione bloccata)',
   notEnough: 'Non ci sono abbastanza posizioni per questa modalità.', 'srv.server': 'Il server del gioco non risponde. Controlla la connessione e riprova.', 'srv.slow_down': 'Piano! Riprova tra qualche minuto.', 'srv.finished': 'Questa partita è finita.', 'srv.not_now': 'Aspetta il turno successivo.', 'srv.round_closed': 'Questo turno è già finito.', 'srv.no_game': 'Partita scaduta: ricominciala dalla pagina iniziale.', dailyLabel: 'Partita del giorno n. {n}', tagPurist: ' · posizione bloccata', tagMirror: ' · specchio', tagTimed: ' · crono', tagTimedLong: ' · a cronometro',
@@ -2277,7 +2339,7 @@ I18N.it = {
   'res.share': 'Condividi il tuo punteggio', 'res.copy': 'Copia il risultato', 'res.challenge': 'Sfida un amico sulle stesse posizioni', 'res.name': 'Il tuo nome', 'res.make': 'Crea il link', 'res.link': 'Link della sfida', copyBtn: 'Copia', copied: 'Copiato!', copyFail: 'Copia impossibile: seleziona il testo a mano.',
   again: 'Rigioca questa modalità', againDaily: 'Gioca in modalità Classica', changeMode: 'Cambia modalità', 'th.game': 'Partita', 'th.year': 'Anno', 'th.pts': 'Punti', you: 'tu: {y}', perfectSmall: 'en plein',
   'v.5': 'Grande maestro della storia!', 'v.4': 'Maestro internazionale', 'v.3': 'Temibile giocatore di circolo', 'v.2': 'Bei progressi', 'v.1': 'Principiante curioso',
-  'best.daily': 'Serie in corso: {n} {days}. Torna domani per la prossima!', 'best.new': 'Nuovo record! Quello precedente era {s}.', 'best.mode': 'Il tuo record in questa modalità: {s}.', 'best.none': 'Su 21.000 punti possibili, bonus esclusi (4.200 per turno).',
+  'best.daily': 'Serie in corso: {n} {days}. Torna domani per la prossima!', 'best.new': 'Nuovo record! Quello precedente era {s}.', 'best.mode': 'Il tuo record in questa modalità: {s}.', 'best.none': 'Su {max} punti possibili (5.000 per turno, bonus esclusi).',
   'surv.total': '{n} turni superati', 'surv.best': 'Il tuo record: {n} turni.', 'surv.new': 'Nuovo record di sopravvivenza!', 'surv.share': 'Sopravvivenza: {n} turni',
   'streak.total': 'Serie di {n}', 'streak.best': 'La tua serie migliore: {n}.', 'streak.new': 'Nuovo record di serie!', 'streak.share': 'Serie: {n}', recordStreak: 'Record: serie di {n}',
   'rv.streakOk': 'La serie continua: {n}!', 'rv.shieldWon': 'Scudo guadagnato: 5 turni di fila con meno di 2 anni di scarto. Assorbirà il tuo prossimo errore.', 'rv.shieldUsed': 'Lo scudo ha assorbito l\'errore: la serie continua!', 'hud.shield': 'Scudo', 'rv.streakEnd': 'Fine della serie: bisognava trovare almeno un giocatore, con il colore giusto.',
@@ -2291,8 +2353,8 @@ I18N.it = {
   'tour.next': 'Avanti', 'tour.done': 'Si comincia!', 'tour.skip': 'Salta',
   'tour.1': 'Ecco la posizione. Viene da una vera partita tra maestri, e nessun\'altra partita del database la raggiunge.',
   'tour.2': 'Chi aveva il Bianco, chi il Nero? Scrivi almeno 2 lettere: la lista ti aiuta a scrivere il nome correttamente. 1.500 punti per giocatore, 1.000 se inverti i colori, 800 per il suo rivale, 500 o 250 per un giocatore della stessa generazione.',
-  'tour.3': 'In che anno? Scrivilo o scorri sulla linea del tempo. 1.200 punti per l\'anno esatto, poi sempre meno.',
-  'tour.4': 'Indovina il vincitore (400) e metti la città sulla mappa (fino a 400). Bonus: gioca sulla scacchiera la mossa giocata davvero (+300).',
+  'tour.3': 'In che anno? Scrivilo o scorri sulla linea del tempo. 1.400 punti per l\'anno esatto, poi sempre meno.',
+  'tour.4': 'Indovina il vincitore (600). Bonus: gioca sulla scacchiera la mossa giocata davvero (+300).',
   'tour.5h': 'Bloccato? Gli aiuti servono, ma costano punti.', 'tour.5': 'Le frecce sotto la scacchiera fanno tornare indietro fino a 5 mosse. Guardare il seguito fa perdere il bonus della mossa.',
   'tour.6': 'Conferma quando sei pronto. Buona partita!',
   'footer.data': 'Chessguessr · partite dal 1834 al 2026 da raccolte PGN pubbliche. Mappa: Natural Earth. Città: GeoNames (CC BY 4.0).', 'footer.pieces': 'Pezzi Cburnett',
@@ -2367,8 +2429,8 @@ I18N.it = {
     ['Modalità a 5 turni (Classica, Epoche, Temi, Paesi, Grandi momenti, Stagione, Partita del giorno)', [
       ['Giocatore trovato', 'per giocatore, con il colore giusto', '1.500'], ['Colori invertiti', 'il giocatore giusto, ma con l\'altro colore', '1.000'],
       ['Giocatore vicino', 'rivale abituale (6 partite o più insieme): 800 · stessa generazione: 500 (5 anni) o 250 (12 anni)', '800 · 500 · 250'],
-      ['Anno', 'anno esatto, poi −40 all\'anno fino a 5 anni, −60 fino a 15, −25 fino a 30', 'fino a 1.200 (1.400 senza il luogo)'],
-      ['Risultato', 'chi ha vinto', '400 (600 senza il luogo)'], ['Luogo', 'solo partite leggendarie: secondo la distanza sulla mappa', 'fino a 400'],
+      ['Anno', 'anno esatto, poi sempre meno fino a 5 anni di scarto', 'fino a 1.400'],
+      ['Risultato', 'chi ha vinto', '600'],
       ['Mossa giocata', 'giocare sulla scacchiera la mossa della partita', '+300'], ['Aiuto', 'paese dei giocatori o torneo: −400 · risultato o luogo: −200', '−400 · −200'],
       ['Opzioni', 'Posizione bloccata ×1,15 · Specchio ×1,25 · un turno ha un massimo di 5.000 (mossa e velocità escluse) · A cronometro: fino a +500 per la velocità', '×1,15 · ×1,25 · +500']]],
     ['Sfide senza fine', [
@@ -2395,8 +2457,8 @@ I18N.pt = {
   'set.diff': 'Dificuldade', 'set.options': 'Opções', 'set.purist': 'Posição fixa', 'set.puristNote': 'sem dicas nem voltar atrás, pontos ×1,15', 'set.mirror': 'Espelho', 'set.mirrorNote': 'cores das peças invertidas, pontos ×1,25 (máximo de 5.000)', 'set.timed': 'Contra o relógio', 'set.timedNote': 'tempo limitado por rodada, bônus de rapidez', 'set.timedSec': 'Tempo por rodada',
   'home.choose': 'Escolha um modo', 'home.tutorial': 'Como jogar? Iniciar o tutorial',
   'how1.h': 'Nomeie os jogadores', 'how1.p': '1.500 pontos por jogador encontrado, 1.000 se inverter as cores, 800 por um rival frequente, 500 ou 250 por um jogador da mesma geração.',
-  'how2.h': 'Date a partida', 'how2.p': 'Até 1.200 pontos pelo ano exato, e cada vez menos: nada a partir de 30 anos de diferença.',
-  'how3.h': 'Os bônus', 'how3.p': '400 pelo vencedor, até 400 pelo local no mapa nas partidas lendárias (senão esses pontos vão para o ano e o vencedor) e +300 se você jogar no tabuleiro o lance da partida.',
+  'how2.h': 'Date a partida', 'how2.p': 'Até 1.400 pontos pelo ano exato, e cada vez menos: nada a partir de 6 anos de diferença.',
+  'how3.h': 'Os bônus', 'how3.p': '600 pelo vencedor e +300 se você jogar no tabuleiro o lance da partida.',
   positions: '{n} posições', inDiff: 'no {d}', record: 'Recorde: {s}', recordSurv: 'Recorde: {n} rodadas', country: 'País', ncountry: 'Campeonato nacional',
   'challenge.text': '<strong>{n}</strong> desafia você: <strong>{s} pontos</strong> no modo {m}{p}. As mesmas 5 posições para você.', 'challenge.go': 'Aceitar o desafio', friend: 'Um amigo', puristSuffix: ' (posição fixa)',
   notEnough: 'Não há posições suficientes para este modo.', 'srv.server': 'O servidor do jogo não responde. Verifique a conexão e tente de novo.', 'srv.slow_down': 'Calma! Tente novamente em alguns minutos.', 'srv.finished': 'Esta partida terminou.', 'srv.not_now': 'Espere a próxima rodada.', 'srv.round_closed': 'Esta rodada já terminou.', 'srv.no_game': 'Partida expirada: comece de novo pela página inicial.', dailyLabel: 'Partida do dia nº {n}', tagPurist: ' · posição fixa', tagMirror: ' · espelho', tagTimed: ' · relógio', tagTimedLong: ' · contra o relógio',
@@ -2426,7 +2488,7 @@ I18N.pt = {
   'res.share': 'Compartilhe sua pontuação', 'res.copy': 'Copiar o resultado', 'res.challenge': 'Desafie um amigo nas mesmas posições', 'res.name': 'Seu nome', 'res.make': 'Criar o link', 'res.link': 'Link do desafio', copyBtn: 'Copiar', copied: 'Copiado!', copyFail: 'Não foi possível copiar: selecione o texto manualmente.',
   again: 'Jogar este modo de novo', againDaily: 'Jogar no modo Clássico', changeMode: 'Mudar de modo', 'th.game': 'Partida', 'th.year': 'Ano', 'th.pts': 'Pontos', you: 'você: {y}', perfectSmall: 'gabarito',
   'v.5': 'Grande mestre da história!', 'v.4': 'Mestre internacional', 'v.3': 'Temível jogador de clube', 'v.2': 'Bom progresso', 'v.1': 'Iniciante curioso',
-  'best.daily': 'Sequência atual: {n} {days}. Volte amanhã para a próxima!', 'best.new': 'Novo recorde! O anterior era {s}.', 'best.mode': 'Seu recorde neste modo: {s}.', 'best.none': 'De 21.000 pontos possíveis, sem bônus (4.200 por rodada).',
+  'best.daily': 'Sequência atual: {n} {days}. Volte amanhã para a próxima!', 'best.new': 'Novo recorde! O anterior era {s}.', 'best.mode': 'Seu recorde neste modo: {s}.', 'best.none': 'De {max} pontos possíveis (5.000 por rodada, sem bônus).',
   'surv.total': '{n} rodadas vencidas', 'surv.best': 'Seu recorde: {n} rodadas.', 'surv.new': 'Novo recorde de sobrevivência!', 'surv.share': 'Sobrevivência: {n} rodadas',
   'streak.total': 'Sequência de {n}', 'streak.best': 'Sua melhor sequência: {n}.', 'streak.new': 'Novo recorde de sequência!', 'streak.share': 'Sequência: {n}', recordStreak: 'Recorde: sequência de {n}',
   'rv.streakOk': 'A sequência continua: {n}!', 'rv.shieldWon': 'Escudo conquistado: 5 rodadas seguidas com menos de 2 anos de erro. Ele vai absorver seu próximo erro.', 'rv.shieldUsed': 'O escudo absorveu o erro: a sequência continua!', 'hud.shield': 'Escudo', 'rv.streakEnd': 'Fim da sequência: era preciso achar pelo menos um jogador, com a cor certa.',
@@ -2440,8 +2502,8 @@ I18N.pt = {
   'tour.next': 'Próximo', 'tour.done': 'Vamos lá!', 'tour.skip': 'Pular',
   'tour.1': 'Esta é a posição. Ela vem de uma partida real entre mestres, e nenhuma outra partida da base chega a ela.',
   'tour.2': 'Quem jogava de brancas, quem de pretas? Digite pelo menos 2 letras: a lista ajuda a escrever o nome certo. 1.500 pontos por jogador, 1.000 com as cores invertidas, 800 pelo rival, 500 ou 250 por um jogador da mesma geração.',
-  'tour.3': 'Em que ano? Digite ou deslize na linha do tempo. 1.200 pontos pelo ano exato, cada vez menos depois.',
-  'tour.4': 'Adivinhe o vencedor (400) e situe a cidade no mapa (até 400). Bônus: jogue no tabuleiro o lance que foi realmente jogado (+300).',
+  'tour.3': 'Em que ano? Digite ou deslize na linha do tempo. 1.400 pontos pelo ano exato, cada vez menos depois.',
+  'tour.4': 'Adivinhe o vencedor (600). Bônus: jogue no tabuleiro o lance que foi realmente jogado (+300).',
   'tour.5h': 'Travou? As dicas ajudam, mas custam pontos.', 'tour.5': 'As setas sob o tabuleiro mostram até 5 lances para trás. Olhar a continuação faz perder o bônus do lance.',
   'tour.6': 'Confirme quando estiver pronto. Boa partida!',
   'footer.data': 'Chessguessr · partidas de 1834 a 2026 de coleções PGN públicas. Mapa: Natural Earth. Cidades: GeoNames (CC BY 4.0).', 'footer.pieces': 'Peças Cburnett',
@@ -2516,8 +2578,8 @@ I18N.pt = {
     ['Modos de 5 rodadas (Clássico, Épocas, Temas, Países, Grandes momentos, Temporada, Partida do dia)', [
       ['Jogador encontrado', 'por jogador, com a cor certa', '1.500'], ['Cores invertidas', 'o jogador certo, mas com a outra cor', '1.000'],
       ['Jogador próximo', 'rival frequente (6 partidas ou mais juntos): 800 · mesma geração: 500 (5 anos) ou 250 (12 anos)', '800 · 500 · 250'],
-      ['Ano', 'ano exato, depois −40 por ano até 5 anos, −60 até 15, −25 até 30', 'até 1.200 (1.400 sem o local)'],
-      ['Resultado', 'quem ganhou', '400 (600 sem o local)'], ['Local', 'só partidas lendárias: segundo a distância no mapa', 'até 400'],
+      ['Ano', 'ano exato, depois cada vez menos até 5 anos de diferença', 'até 1.400'],
+      ['Resultado', 'quem ganhou', '600'],
       ['Lance jogado', 'jogar no tabuleiro o lance da partida', '+300'], ['Dica', 'país dos jogadores ou torneio: −400 · resultado ou local: −200', '−400 · −200'],
       ['Opções', 'Posição fixa ×1,15 · Espelho ×1,25 · uma rodada tem máximo de 5.000 (sem contar lance e rapidez) · Contra o relógio: até +500 de rapidez', '×1,15 · ×1,25 · +500']]],
     ['Desafios sem fim', [
@@ -2544,8 +2606,8 @@ I18N.ru = {
   'set.diff': 'Сложность', 'set.options': 'Опции', 'set.purist': 'Застывшая позиция', 'set.puristNote': 'без подсказок и возврата назад, очки ×1,15', 'set.mirror': 'Зеркало', 'set.mirrorNote': 'цвета фигур поменяны, очки ×1,25 (максимум 5000)', 'set.timed': 'На время', 'set.timedNote': 'лимит времени на раунд, бонус за скорость', 'set.timedSec': 'Время на раунд',
   'home.choose': 'Выберите режим', 'home.tutorial': 'Как играть? Запустить обучение',
   'how1.h': 'Назовите игроков', 'how1.p': '1500 очков за каждого угаданного игрока, 1000, если перепутаны цвета, 800 за постоянного соперника, 500 или 250 за игрока того же поколения.',
-  'how2.h': 'Датируйте партию', 'how2.p': 'До 1200 очков за точный год, дальше всё меньше: ничего при ошибке больше 30 лет.',
-  'how3.h': 'Бонусы', 'how3.p': '400 за победителя, до 400 за место на карте в легендарных партиях (иначе эти очки идут к году и победителю) и +300, если сыграете на доске ход из партии.',
+  'how2.h': 'Датируйте партию', 'how2.p': 'До 1400 очков за точный год, дальше всё меньше: ничего при ошибке больше 5 лет.',
+  'how3.h': 'Бонусы', 'how3.p': '600 за победителя и +300, если сыграете на доске ход из партии.',
   positions: '{n} позиций', inDiff: 'на уровне «{d}»', record: 'Рекорд: {s}', recordSurv: 'Рекорд: {n} {n:раунд|раунда|раундов}', country: 'Страна', ncountry: 'Национальный чемпионат',
   'challenge.text': '<strong>{n}</strong> бросает вам вызов: <strong>{s} очков</strong> в режиме «{m}»{p}. Те же 5 позиций для вас.', 'challenge.go': 'Принять вызов', friend: 'Друг', puristSuffix: ' (застывшая позиция)',
   notEnough: 'Недостаточно позиций для этого режима.', 'srv.server': 'Сервер игры не отвечает. Проверьте подключение и попробуйте снова.', 'srv.slow_down': 'Не так быстро! Попробуйте через несколько минут.', 'srv.finished': 'Эта партия окончена.', 'srv.not_now': 'Дождитесь следующего раунда.', 'srv.round_closed': 'Этот раунд уже закончился.', 'srv.no_game': 'Партия устарела: начните её заново с главной страницы.', dailyLabel: 'Партия дня № {n}', tagPurist: ' · застывшая позиция', tagMirror: ' · зеркало', tagTimed: ' · на время', tagTimedLong: ' · на время',
@@ -2575,7 +2637,7 @@ I18N.ru = {
   'res.share': 'Поделитесь результатом', 'res.copy': 'Скопировать результат', 'res.challenge': 'Бросьте вызов другу на тех же позициях', 'res.name': 'Ваше имя', 'res.make': 'Создать ссылку', 'res.link': 'Ссылка на вызов', copyBtn: 'Копировать', copied: 'Скопировано!', copyFail: 'Не удалось скопировать: выделите текст вручную.',
   again: 'Сыграть этот режим ещё раз', againDaily: 'Играть в классическом режиме', changeMode: 'Сменить режим', 'th.game': 'Партия', 'th.year': 'Год', 'th.pts': 'Очки', you: 'вы: {y}', perfectSmall: 'идеально',
   'v.5': 'Гроссмейстер истории!', 'v.4': 'Международный мастер', 'v.3': 'Грозный клубный игрок', 'v.2': 'Хороший прогресс', 'v.1': 'Любопытный новичок',
-  'best.daily': 'Текущая серия: {n} {n:день|дня|дней}. Возвращайтесь завтра за следующей!', 'best.new': 'Новый рекорд! Прежний был {s}.', 'best.mode': 'Ваш рекорд в этом режиме: {s}.', 'best.none': 'Из 21 000 возможных очков, без бонусов (4200 за раунд).',
+  'best.daily': 'Текущая серия: {n} {n:день|дня|дней}. Возвращайтесь завтра за следующей!', 'best.new': 'Новый рекорд! Прежний был {s}.', 'best.mode': 'Ваш рекорд в этом режиме: {s}.', 'best.none': 'Из {max} возможных очков (5000 за раунд, без бонусов).',
   'surv.total': '{n} {n:раунд пройден|раунда пройдено|раундов пройдено}', 'surv.best': 'Ваш рекорд: {n} {n:раунд|раунда|раундов}.', 'surv.new': 'Новый рекорд выживания!', 'surv.share': 'Выживание: {n} {n:раунд|раунда|раундов}',
   'streak.total': 'Серия: {n}', 'streak.best': 'Ваша лучшая серия: {n}.', 'streak.new': 'Новый рекорд серии!', 'streak.share': 'Серия: {n}', recordStreak: 'Рекорд: серия {n}',
   'rv.streakOk': 'Серия продолжается: {n}!', 'rv.shieldWon': 'Щит получен: 5 раундов подряд с точностью до 2 лет. Он поглотит вашу следующую ошибку.', 'rv.shieldUsed': 'Щит поглотил ошибку: серия продолжается!', 'hud.shield': 'Щит', 'rv.streakEnd': 'Серия окончена: нужно было угадать хотя бы одного игрока правильным цветом.',
@@ -2589,8 +2651,8 @@ I18N.ru = {
   'tour.next': 'Далее', 'tour.done': 'Поехали!', 'tour.skip': 'Пропустить',
   'tour.1': 'Вот позиция. Она взята из настоящей партии мастеров, и ни одна другая партия базы к ней не приходит.',
   'tour.2': 'Кто играл белыми, а кто чёрными? Введите хотя бы 2 буквы: список поможет написать имя без ошибок. 1500 очков за игрока, 1000, если перепутаны цвета, 800 за его соперника, 500 или 250 за игрока того же поколения.',
-  'tour.3': 'В каком году? Введите его или сдвиньте на ленте. 1200 очков за точный год, дальше всё меньше.',
-  'tour.4': 'Угадайте победителя (400) и отметьте город на карте (до 400). Бонус: сыграйте на доске ход, который был сделан на самом деле (+300).',
+  'tour.3': 'В каком году? Введите его или сдвиньте на ленте. 1400 очков за точный год, дальше всё меньше.',
+  'tour.4': 'Угадайте победителя (600). Бонус: сыграйте на доске ход, который был сделан на самом деле (+300).',
   'tour.5h': 'Застряли? Подсказки помогают, но стоят очков.', 'tour.5': 'Стрелки под доской позволяют вернуться на 5 ходов назад. Если посмотреть продолжение, бонус за ход пропадёт.',
   'tour.6': 'Подтвердите, когда будете готовы. Удачи!',
   'footer.data': 'Chessguessr · партии с 1834 по 2026 год из открытых PGN-коллекций. Карта: Natural Earth. Города: GeoNames (CC BY 4.0).', 'footer.pieces': 'Фигуры Cburnett',
@@ -2665,8 +2727,8 @@ I18N.ru = {
     ['Режимы из 5 раундов (Классика, Эпохи, Темы, Страны, Великие моменты, Сезон, Партия дня)', [
       ['Игрок угадан', 'за каждого игрока, правильным цветом', '1500'], ['Цвета перепутаны', 'верный игрок, но другим цветом', '1000'],
       ['Близкий игрок', 'постоянный соперник (6 партий и больше вместе): 800 · то же поколение: 500 (5 лет) или 250 (12 лет)', '800 · 500 · 250'],
-      ['Год', 'точный год, затем −40 за год до 5 лет, −60 до 15, −25 до 30', 'до 1200 (1400 без места)'],
-      ['Результат', 'кто выиграл', '400 (600 без места)'], ['Место', 'только легендарные партии: по расстоянию на карте', 'до 400'],
+      ['Год', 'точный год, затем всё меньше, до 5 лет разницы', 'до 1400'],
+      ['Результат', 'кто выиграл', '600'],
       ['Сыгранный ход', 'сыграть на доске ход из партии', '+300'], ['Подсказка', 'страна игроков или турнир: −400 · результат или место: −200', '−400 · −200'],
       ['Опции', 'Застывшая позиция ×1,15 · Зеркало ×1,25 · раунд ограничен 5000 очков (без учёта хода и скорости) · На время: до +500 за скорость', '×1,15 · ×1,25 · +500']]],
     ['Бесконечные испытания', [
@@ -2770,8 +2832,8 @@ const ROUND_SECS = [30, 60, 120];
 const LATE_GRACE = 10;   // seconds after the clock: a later guess is scored as no answer
 // hints that reveal a bonus answer (result, place) cost less: they only help indirectly
 const hintCost = k => k === 'result' || k === 'site' ? 200 : HINT_COST;
-// year: -40/yr from 1 to 5 years off, -60/yr from 6 to 15, -25/yr from 16 to 30, nothing beyond
-const yearPts = d => d <= 0 ? PTS_YEAR : d <= 5 ? PTS_YEAR - 40 * d : d <= 15 ? 1000 - 60 * (d - 5) : d <= 30 ? 400 - 25 * (d - 15) : 0;
+// year (Mathilde 2026-11-23: 5 years at most): full points for the exact year, one sixth less per year off, nothing beyond 5 years
+const yearPts = d => d <= 0 ? PTS_YEAR : d <= 5 ? Math.round(PTS_YEAR * (6 - d) / 6) : 0;
 // place: 400 x e^(-km/1500), asked only for the legendary games; elsewhere its points go to the year and the result
 const placePts = km => Math.round(PTS_PLACE * Math.exp(-km / 1500));
 function km([la1, lo1], [la2, lo2]) {
@@ -2994,7 +3056,7 @@ R.sessionInfo = st => ({ mode: st.mode, diff: st.diff, daily: st.daily, endless:
 async function full(data, id) {
   const g = await data.getGame(id);
   g.next = (g.m || '').trim().split(' ')[g.p] || null;
-  g.askPlace = g.d === 0 && data.famous.has(id) && !!g.ll;   // legendary games only
+  g.askPlace = false;   // place question removed (Mathilde 2026-11-23): year counts 1 400 and result 600 in every game
   return g;
 }
 // what the player sees while guessing: the position, the last plies before it, and which questions exist
@@ -3747,6 +3809,7 @@ function renderBet() {
 function renderSmallBonus(g) {
   const rb = $('#result-box'), eb = $('#event-box');
   rb.hidden = !g.hasRes || S.guess.hints.has('result');
+  rb.querySelector('.bonus-q em').textContent = '+' + fmt(g.askPlace ? R.PTS_RES : R.NOPLACE_RES);   // 600 when the place is not asked
   $('#result-choices').innerHTML = RESULTS.map(r => `<button type="button" class="choice${S.guess.res === r ? ' on' : ''}" data-res="${r}" aria-pressed="${S.guess.res === r}">${resLabel(r)}</button>`).join('');
   if (!g.evc) g.evc = shuffle(EV_TYPES.slice()).slice(0, 4);   // competition question: retired (2026-11-20), kept hidden
   eb.hidden = true;
@@ -3755,7 +3818,7 @@ function renderSmallBonus(g) {
 /* move bonus: click a piece of the side to move, then a square */
 function moveText(g, u) {
   const p = g.board[sq(u.slice(0, 2))];
-  return `${p ? FIG[p[0]][p[1]] : ''} ${u.slice(0, 2)}–${u.slice(2, 4)}`.trim();
+  return `${p && FIG[p[0]][p[1]] ? FIG[p[0]][p[1]] + '\uFE0E' : ''} ${u.slice(0, 2)}–${u.slice(2, 4)}`.trim();
 }
 function renderMoveStatus() {
   const g = S.rounds[S.cur], el = $('#move-status');
@@ -3969,12 +4032,14 @@ async function validate() {
   $('#rv-stamp').hidden = !sc.perfect;
   $('#rv-life').hidden = !endless;
   if (endless) { $('#rv-life').textContent = shieldMsg ? shieldMsg : strict ? (ok ? t('rv.streakOk', { n: S.cur + 1 }) : t('rv.streakEnd')) : ok ? t('rv.lifeOk') : t('rv.life'); $('#rv-life').classList.toggle('bad', !ok && !shieldMsg); renderLives(); }
+  // year labels sit left or right of their marker, but never past the ends of the track (2024 was cut off)
+  const mkSide = (y, left) => { const x = pct(y); return (x > 90 ? true : x < 10 ? false : left) ? 'transform:translateX(-100%)' : 'transform:none'; };
   const tr = $('#track-reveal');
   tr.querySelectorAll('.mk,.gap').forEach(e => e.remove());
   const a = Math.min(guess.y, g.y), b = Math.max(guess.y, g.y);
   tr.insertAdjacentHTML('beforeend', `<div class="gap" style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></div>
-    <div class="mk you" style="left:${pct(guess.y)}%"><b style="${guess.y < g.y ? 'transform:translateX(-100%)' : 'transform:none'}">${guess.y}</b></div>
-    <div class="mk real" style="left:${pct(g.y)}%"><b style="${guess.y < g.y ? 'transform:none' : 'transform:translateX(-100%)'}">${g.y}</b></div>`);
+    <div class="mk you" style="left:${pct(guess.y)}%"><b style="${mkSide(guess.y, guess.y < g.y)}">${guess.y}</b></div>
+    <div class="mk real" style="left:${pct(g.y)}%"><b style="${mkSide(g.y, guess.y >= g.y)}">${g.y}</b></div>`);
   const line = (what, sub, pts, cls) => `<div class="line"><div class="what">${what}${sub ? `<small>${esc(sub)}</small>` : ''}</div><div class="pts ${cls || (pts ? 'pos' : 'zero')}">${typeof pts === 'string' ? pts : '+' + fmt(pts)}</div></div>`;
   const sideLine = (label, pid, right, pts) => {
     const nw = nearWhy(pid, right);
@@ -3988,7 +4053,7 @@ async function validate() {
     html += line(esc(t('rv.opening', { o: openingName(g.o) + full })), !guess.op ? t('rv.openingSkip') : sc.opening ? t('rv.openingOk') : t('rv.openingNo', { o: openingName(guess.op) }), sc.opening);
   }
   if (g.hasNext && g.next) {
-    const san = g.n.split(' ')[g.p] || g.next;
+    const san = g.n.split(' ')[g.p] ? figSan(g.n.split(' ')[g.p], g.p) : g.next;
     html += line(esc(t('rv.move', { m: san })), S.guess.fwd ? t('peek.lost') : !guess.mv ? t('rv.moveSkip') : sc.move ? t('rv.moveOk') : t('rv.moveNo', { m: moveText(g, guess.mv) }), sc.move);
   }
   if (!$('#result-box').hidden) html += line(esc(t('rv.result', { r: resLabel(g.r) })), !guess.res ? t('rv.openingSkip') : sc.result ? t('rv.openingOk') : t('rv.openingNo', { o: resLabel(guess.res) }), sc.result);
@@ -4005,7 +4070,7 @@ async function validate() {
   $('#rv-lines').innerHTML = html;
   const resTxt = { '1-0': '1–0', '0-1': '0–1', '1/2-1/2': '½–½' }[g.r] || '';
   const note = noteFor(g);
-  $('#rv-game').innerHTML = `<h3>${esc(P(g.w))} – ${esc(P(g.b))}</h3><p>${esc([prettyEvent(g.e), g.s].filter(Boolean).filter((v, i, arr) => arr.indexOf(v) === i).join(', '))} · ${g.y} · ${resTxt}</p>${note ? `<p class="note">${esc(note)}</p>` : ''}`;
+  $('#rv-game').innerHTML = `<h3>${esc(P(g.w))} – ${esc(P(g.b))}</h3><p>${esc([prettyEvent(g.e), g.s].filter(Boolean).filter((v, i, arr) => arr.indexOf(v) === i).join(', '))} · ${g.y} · <span class="nw">${resTxt}</span></p>${note ? `<p class="note">${esc(note)}</p>` : ''}`;
   renderRevealMap(g, guess);
   $('#rv-players').innerHTML = playerCard(g.w, g.y, 'w', g.we) + playerCard(g.b, g.y, 'b', g.be);
   const last = res.last;
@@ -4080,6 +4145,15 @@ function renderStats() {
   show('stats');
 }
 
+/* moves in figurine notation: Nf3 -> ♘f3 (white pieces outlined, black ones filled); \uFE0E keeps phones from drawing emoji */
+const figSan = (san, ply) => String(san || '').replace(/^([KQRBN])|=([QRBN])/g, (m, a, b) => (b ? '=' : '') + FIG[ply % 2 ? 'b' : 'w'][(a || b).toLowerCase()] + '\uFE0E');
+/* arrow over a board, from one square to another (uci like e2e4), in board squares as units */
+function drawArrow(el, u) {
+  const flip = el.classList.contains('flip'), xy = a => { const i = sq(a), r = i >> 3, c = i & 7; return flip ? [7 - c + .5, 7 - r + .5] : [c + .5, r + .5]; };
+  const [x1, y1] = xy(u.slice(0, 2)), [x2, y2] = xy(u.slice(2, 4)), d = Math.hypot(x2 - x1, y2 - y1) || 1;
+  const ex = x2 - (x2 - x1) / d * .42, ey = y2 - (y2 - y1) / d * .42;   // the line stops under the arrow head
+  el.insertAdjacentHTML('beforeend', `<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><defs><marker id="ah" markerWidth="3.2" markerHeight="3.2" refX="1.1" refY="1.6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L3.2,1.6 L0,3.2 z"/></marker></defs><line x1="${x1}" y1="${y1}" x2="${ex}" y2="${ey}" marker-end="url(#ah)"/></svg>`);
+}
 /* ---------- replay ---------- */
 const RP = { pos: [], uci: [], san: [], i: 0, puz: 0, auto: null };
 function setupReplay(g) {
@@ -4087,7 +4161,7 @@ function setupReplay(g) {
   RP.pos = [parseFen(START)];
   for (const u of RP.uci) RP.pos.push(applyUci(RP.pos[RP.pos.length - 1], u));
   let h = '';
-  RP.san.forEach((mv, i) => { if (i % 2 === 0) h += `<span class="n">${i / 2 + 1}.</span>`; h += `<button type="button" data-ply="${i + 1}" class="${i + 1 === g.p ? 'puz' : ''}">${mv}</button> `; });
+  RP.san.forEach((mv, i) => { if (i % 2 === 0) h += `<span class="n">${i / 2 + 1}.</span>`; h += `<button type="button" data-ply="${i + 1}" class="${i + 1 === g.p ? 'puz' : ''}">${esc(figSan(mv, i))}</button> `; });
   $('#moves').innerHTML = h;
   $('#replay-box').hidden = false;
   RP.i = g.p; goPly(g.p, true);
@@ -4102,6 +4176,8 @@ function goPly(i, silent) {
   if (RP.i === prev + 1) { const u = RP.uci[prev]; slide(el, sq(u.slice(0, 2)), sq(u.slice(2, 4))); }
   else if (RP.i === prev - 1) { const u = RP.uci[RP.i]; slide(el, sq(u.slice(2, 4)), sq(u.slice(0, 2))); }
   if (!silent && RP.i !== prev) FX.play('move');
+  // at the position of the round, an arrow shows the move that was really played next
+  if (RP.i === RP.puz && RP.uci[RP.puz]) drawArrow(el, RP.uci[RP.puz]);
   const moves = $('#moves');
   moves.querySelectorAll('button.cur').forEach(b => b.classList.remove('cur'));
   const cur = moves.querySelector(`button[data-ply="${RP.i}"]`);
@@ -4124,7 +4200,7 @@ function stopAuto() { if (RP.auto) clearInterval(RP.auto); RP.auto = null; const
 const sqHtml = list => list.map(g => `<span>${[...g].map(c => `<i class="${c === '🟩' ? 'g' : c === '🟨' ? 'y' : 'r'}"></i>`).join('')}</span>`).join('');
 function squares() {
   const p = v => (v === PTS_PLAYER ? '🟩' : v > 0 ? '🟨' : '🟥');
-  return S.results.map(r => p(r.white) + p(r.black) + (r.d <= 2 ? '🟩' : r.d <= 10 ? '🟨' : '🟥'));
+  return S.results.map(r => p(r.white) + p(r.black) + (r.d <= 2 ? '🟩' : r.d <= 5 ? '🟨' : '🟥'));
 }
 // Série: rounds before the fatal one · Survie: rounds where at least one player was found
 const endlessCount = () => MODES[S.mode].strict ? S.results.filter(r => r.white === PTS_PLAYER || r.black === PTS_PLAYER).length : S.results.filter(r => r.found).length;
@@ -4149,7 +4225,7 @@ function showResults() {
   const st = dailyStreak();
   $('#res-best').textContent = S.daily ? t('best.daily', { n: st, days: daysWord(st) })
     : endless ? (score > prev && prev ? t(strict ? 'streak.new' : 'surv.new') + ' ' : '') + t(strict ? 'streak.best' : 'surv.best', { n: Math.max(prev, score) })
-    : score > prev && prev ? t('best.new', { s: fmt(prev) }) : prev ? t('best.mode', { s: fmt(Math.max(prev, score)) }) : t('best.none');
+    : score > prev && prev ? t('best.new', { s: fmt(prev) }) : prev ? t('best.mode', { s: fmt(Math.max(prev, score)) }) : t('best.none', { max: fmt(n * ROUND_MAX) });
   const e = getElo(), de = e.r - S.eloStart;
   $('#res-elo').innerHTML = `${esc(t('elo.change', { r: e.r, d: (de >= 0 ? '+' : '−') + Math.abs(de) }))} · <strong>${esc(levelName(levelOf(e.r)))}</strong>`;
   $('#res-emoji').innerHTML = sqHtml(squares());
@@ -4224,9 +4300,18 @@ function makePicker(root, side) {
       : `<li class="none">${t('pk.none')}</li>`;
     list.hidden = false; list.scrollTop = 0;
   };
-  const choose = i => { const p = items[i]; if (!p) return; input.value = P(p.id); list.hidden = true; set(p.id); };
+  const choose = i => {
+    const p = items[i]; if (!p) return; input.value = P(p.id); list.hidden = true; set(p.id);
+    // White chosen: go straight on to Black if it is still empty
+    const pks = [...root.parentElement.querySelectorAll('.picker')], next = pks[pks.indexOf(root) + 1], ni = next && $('input', next);
+    if (ni && !ni.value) ni.focus();
+  };
   input.addEventListener('input', () => { set(null); render(); });
-  input.addEventListener('focus', render);
+  input.addEventListener('focus', () => {
+    render();
+    // phone: once the keyboard is up, bring the field to the top so the name list is not hidden under the keyboard
+    if (window.matchMedia('(max-width: 820px) and (pointer: coarse)').matches) setTimeout(() => { if (document.activeElement === input) root.scrollIntoView({ block: 'start', behavior: reduceMotion() ? 'auto' : 'smooth' }); }, 350);
+  });
   input.addEventListener('blur', () => setTimeout(() => { list.hidden = true; }, 150));
   input.addEventListener('keydown', e => {
     if (list.hidden || !items.length) return;
@@ -4314,7 +4399,7 @@ async function apValidate() {
   $('#ap-score').innerHTML = `${fmt(sc)} <small>${t('points')}</small>`;
   const resTxt = resLabel(g.r);
   const det = t('ap.detail', { p: fmt(pts), m: decSep(res.mult) }) + (res.sc.pen ? ' · ' + t('ap.pen', { p: fmt(res.sc.pen) }) : '');
-  $('#ap-game').innerHTML = `<h3>${esc(P(g.w))} – ${esc(P(g.b))}</h3><p>${esc([prettyEvent(g.e), g.s].filter(Boolean).join(', '))} · ${g.y} · ${resTxt}</p><p class="note">${esc(det)}</p>`;
+  $('#ap-game').innerHTML = `<h3>${esc(P(g.w))} – ${esc(P(g.b))}</h3><p>${esc([prettyEvent(g.e), g.s].filter(Boolean).join(', '))} · ${g.y} · <span class="nw">${resTxt}</span></p><p class="note">${esc(det)}</p>`;
   $('#ap-next').textContent = AP.cur + 1 >= ROUNDS ? t('seeScore') : t('next');
   // show the whole game from the start, so the player sees what they recognised
   AP.ply = 0; apDraw();
@@ -4428,7 +4513,7 @@ function startTour() {
   if ($('#round').hidden || $('#guess-sheet').hidden) return;
   TR.steps = TOUR.filter(([sel]) => { const el = $(sel); return el && !el.hidden && el.offsetParent !== null; });
   TR.i = 0;
-  if (!TR.hole) { TR.hole = document.createElement('div'); TR.hole.className = 'tour-hole'; document.body.appendChild(TR.hole); }
+  if (!TR.hole) { TR.hole = document.createElement('div'); TR.hole.className = 'tour-hole'; $('#tour').appendChild(TR.hole); }   // inside the tour layer: in <body> its dark veil covered the bubble too
   $('#tour').hidden = false; TR.hole.hidden = false;
   if (S.timer) stopTimer();
   tourStep();
@@ -4645,7 +4730,32 @@ async function boot() {
   $('#tour-next').addEventListener('click', () => { TR.i++; TR.i < TR.steps.length ? tourStep() : endTour(); });
   $('#tour-skip').addEventListener('click', endTour);
   addEventListener('resize', placeTour); addEventListener('scroll', placeTour, { passive: true });
+  setupMiniBoard();
   renderHome();
+}
+/* phone: while the player scrolls down to type names, a small copy of the position stays in the corner
+   (tap it to go back to the big board) */
+function setupMiniBoard() {
+  if (!('IntersectionObserver' in window)) return;
+  const board = $('#board'), dock = document.createElement('button');
+  dock.type = 'button'; dock.id = 'mini-dock'; dock.className = 'mini-dock'; dock.hidden = true;
+  dock.setAttribute('aria-label', t('round.aria'));
+  dock.innerHTML = '<div class="board mini"></div>';
+  document.body.appendChild(dock);
+  const mini = dock.firstChild, phone = window.matchMedia('(max-width: 820px)');
+  let away = false, raf = 0;
+  const upd = () => {
+    raf = 0;
+    const typing = document.querySelector('#guess-sheet .picker ul:not([hidden])');   // the name list needs the room
+    const on = away && !typing && phone.matches && !$('#round').hidden && !$('#guess-sheet').hidden && $('#tour').hidden;
+    if (on) { mini.className = 'board mini' + (board.classList.contains('flip') ? ' flip' : ''); mini.innerHTML = board.innerHTML; }
+    dock.hidden = !on;
+  };
+  const later = () => { if (!raf) raf = requestAnimationFrame(upd); };
+  new IntersectionObserver(es => { away = !es[es.length - 1].isIntersecting; later(); }, { threshold: 0.25 }).observe(board);
+  new MutationObserver(later).observe(board, { childList: true, attributes: true, attributeFilter: ['class'] });
+  ['#round', '#guess-sheet', '#tour', '#pk-white ul', '#pk-black ul'].forEach(sel => new MutationObserver(later).observe($(sel), { attributes: true, attributeFilter: ['hidden'] }));
+  dock.addEventListener('click', () => board.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'center' }));
 }
 // read/call API for site/src/online.js (live rooms, groups, tournaments); see also the cg:* events
 window.CG = { S, MODES, ROUNDS, show, startGame, startRound, validate, nextRound, showResults, modeLabel, getElo, setElo, store, renderBoard, parseFen, t, P, fmt, esc, lang: () => LANG };
