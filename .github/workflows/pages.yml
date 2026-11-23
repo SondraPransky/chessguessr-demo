@@ -1,0 +1,28 @@
+# Publishes the Chessguessr demo (index.html: ~600 positions, answers scrambled, no server) on GitHub Pages.
+# Built from the private chessguessr repo (scripts/build_site.py demo page). Nothing else is published here.
+name: GitHub Pages (démo)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
