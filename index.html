@@ -712,7 +712,7 @@ footer { margin-top: 64px; border-top: 3px double var(--rule); font-family: var(
    ========================================================================== */
 :root, :root[data-theme="dark"], :root[data-theme="light"] {
   --bg: #061d2c; --surface: #02263d; --surface-2: #192d3b; --surface-3: #0b3350;
-  --ink: #f7f7f7; --ink-2: #dee2e6; --muted: #a6b3bd; --line: #1d3a4e; --rule: #2a4b61;
+  --ink: #f7f7f7; --ink-2: #dee2e6; --muted: #a3bdd0; --line: #1d3a4e; --rule: #2a4b61;
   --accent: #ffd30e; --accent-ink: #040f16; --accent-soft: rgba(255, 211, 14, .12);
   --gold: #ffd30e; --gold-soft: rgba(255, 211, 14, .12);
   --good: #4fd18b; --bad: #ff5a5f; --live: #e8344a;
@@ -1222,7 +1222,7 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
   .hud > span > span[data-i] { display: none; }
   .hud #hud-mode { display: none; }
   .hud strong { font-size: 16px; }
-  .hud #hud-score::before { content: "★ "; color: var(--accent); font-size: 13px; }
+  .hud #hud-score::after { content: " pts"; color: var(--muted); font-size: 13px; font-weight: 500; }
 }
 /* game settings, shown when a mode is launched (no longer on the home page) */
 .prestart { width: min(520px, calc(100% - 24px)); }
@@ -1327,7 +1327,7 @@ header.top > .rubrics { display: none; }
 .doors { display: grid; gap: 12px; }
 @media (min-width: 900px) { .doors { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .door { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 16px; text-align: left; border: 0; background: var(--surface); color: var(--ink); border-radius: var(--r-card); padding: 22px 20px; min-height: 104px; transition: transform 160ms var(--ease-out), background-color 150ms ease; }
-.door .d-ico { font-size: 34px; line-height: 1; }
+.door .d-ico { width: 44px; height: 44px; }
 .door b { display: block; font: 700 21px/1.2 var(--f-display); }
 .door small { display: block; color: var(--ink-2); font-size: 15px; margin-top: 3px; }
 .door .d-n { background: var(--surface-2); color: var(--ink-2); border-radius: 999px; padding: 4px 11px; font: 700 14px var(--f-ui); }
@@ -1341,19 +1341,53 @@ header.top > .rubrics { display: none; }
 .grp-h { font: 800 30px/1.15 var(--f-display); margin: 18px 0 4px; color: var(--ink); }
 .grp-sub { color: var(--ink-2); margin: 0 0 18px; }
 .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-.tile { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; border: 0; background: var(--surface); color: var(--ink); border-radius: 20px; padding: 18px; min-height: 132px; transition: transform 160ms var(--ease-out), background-color 150ms ease; }
-.tile .t-ico { font-size: 28px; line-height: 1; margin-bottom: 8px; }
+.tile { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; border: 0; background: var(--surface); color: var(--ink); border-radius: 20px; padding: 18px; min-height: 104px; transition: transform 160ms var(--ease-out), background-color 150ms ease; }
 .tile b { font: 700 18px/1.2 var(--f-display); }
 .tile small { color: var(--ink-2); font-size: 14.5px; line-height: 1.35; }
 .tile:active { transform: scale(0.97); }
 @media (hover: hover) and (pointer: fine) { .tile:hover { background: var(--surface-3); } }
-@media (max-width: 520px) { .tiles { grid-template-columns: 1fr 1fr; gap: 10px; } .tile { padding: 14px; min-height: 120px; } .tile b { font-size: 16.5px; } .tile small { font-size: 13.5px; } .door { padding: 18px 16px; gap: 12px; } .door b { font-size: 19px; } }
+@media (max-width: 520px) { .tiles { grid-template-columns: 1fr 1fr; gap: 10px; } .tile { padding: 14px; min-height: 96px; } .tile b { font-size: 16.5px; } .tile small { font-size: 13.5px; } .door { padding: 18px 16px; gap: 12px; } .door b { font-size: 19px; } }
 .door:focus-visible, .tile:focus-visible, .grp-back:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 /* the start dialog explains the mode and holds the country picker */
 .prestart .ps-desc { margin: -8px 0 0; color: var(--ink-2); font-size: 15.5px; line-height: 1.45; }
 .prestart .ps-desc:empty, .prestart .ps-extra:empty { display: none; }
 .prestart .ps-extra { display: flex; flex-direction: column; gap: 8px; }
 .prestart .ps-extra select { width: 100%; padding: 12px 14px; font-size: 16px; border-radius: 14px; }
+
+/* ===== 2026-11-24 "Je ne sais pas" (Mathilde): skip the players or the year, 0 point for that question ===== */
+.skip-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 44px; margin-top: 12px; padding: 8px 16px;
+  border: 2px dashed var(--line); border-radius: 999px; background: transparent; color: var(--ink-2); font: 600 15px/1.2 var(--f-ui); cursor: pointer;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out, transform 160ms cubic-bezier(.23, 1, .32, 1); }
+.skip-btn:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .skip-btn:hover { border-color: var(--muted); color: var(--ink); } }
+.skip-btn.on { border-style: solid; border-color: var(--good); color: var(--good); background: color-mix(in srgb, var(--good) 10%, transparent); }
+.skip-btn.on::before { content: "✓"; }
+#guess-sheet > #skip-names { width: auto; margin: 0 22px 16px; }
+#guess-sheet > #names-field { border-bottom: 0; padding-bottom: 4px; }
+#guess-sheet > #skip-names { position: relative; }
+#guess-sheet > #skip-names::after { content: ""; position: absolute; left: -22px; right: -22px; bottom: -16px; border-bottom: 1px solid var(--line); }
+.field.skipped .picker, .field.skipped > label, .field.skipped .year-row, .field.skipped .track { opacity: .35; transition: opacity 150ms ease-out; }
+@media (max-width: 820px) {
+  #guess-sheet > #skip-names { margin-inline: 16px; }
+  #guess-sheet > #skip-names::after { left: -16px; right: -16px; }
+}
+
+/* 2026-11-24: no decorative emoji anywhere (Mathilde: "pas d'IA slop"); badges use the pawn, greyed until earned */
+.medal svg { width: 22px; height: 22px; display: block; }
+.badge:not(.on) .medal { color: var(--muted); opacity: .45; }
+
+/* ===== 2026-11-24 impeccable pass: drawn icons instead of text glyphs, 44px targets, no eyebrow labels ===== */
+.step, .modal .x, .picker .clear, .grp-back { display: inline-flex; align-items: center; justify-content: center; }
+.grp-back { gap: 6px; padding-left: 14px; }
+.modal .x { width: 44px; height: 44px; padding: 0; border-radius: 50%; margin: -8px -10px 0 0; }
+@media (hover: hover) and (pointer: fine) { .modal .x:hover { background: var(--surface-2); color: var(--ink); } }
+.ff-ey { display: none; }
+dialog.prestart #ps-go { justify-content: center; align-items: center; text-align: center; }
+.peek button { width: 44px; height: 44px; }
+.choice { min-height: 44px; }
+.topnav .btn, .elo-chip { min-height: 40px; }
+.topnav #settings-btn { width: 40px; padding: 0; justify-content: center; }
+@media (max-width: 820px) and (pointer: coarse) { .topnav .btn, .elo-chip { min-height: 44px; } .topnav #settings-btn { width: 44px; } }
 
 /* Chessguessr online screens (online.js). "Bulletin de tournoi" look: hairline rules, no shadows on content,
    radius var(--r) at most, Archivo (--f-ui) for labels and figures. Only design tokens from style.css. */
@@ -1770,20 +1804,21 @@ tr.me .hpbar i { background: var(--accent); }
           <h2 data-i="sheet.title"></h2>
           <div class="field" id="names-field">
             <label for="in-white"><i class="w"></i><span data-i="white"></span></label>
-            <div class="picker" id="pk-white"><input id="in-white" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden>×</button><ul hidden></ul></div>
+            <div class="picker" id="pk-white"><input id="in-white" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><ul hidden></ul></div>
             <label for="in-black" class="gap-top"><i class="b"></i><span data-i="black"></span></label>
-            <div class="picker" id="pk-black"><input id="in-black" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden>×</button><ul hidden></ul></div>
+            <div class="picker" id="pk-black"><input id="in-black" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><ul hidden></ul></div>
             <div class="bet" id="bet" hidden><span data-i="bet.label"></span>
               <div class="bet-chips"><button type="button" class="chip on" data-bet="0" data-i="bet.0"></button><button type="button" class="chip" data-bet="0.5" data-i="bet.1"></button><button type="button" class="chip" data-bet="1" data-i="bet.2"></button></div>
               <small id="bet-help"></small>
             </div>
           </div>
+          <button class="skip-btn" id="skip-names" type="button" aria-pressed="false" data-i="skip.label"></button>
           <div class="field timeline" id="year-field">
             <label for="year-big" data-i="year.label"></label>
             <div class="year-row">
-              <button class="step" type="button" id="y-minus" data-ia="year.minus">−</button>
+              <button class="step" type="button" id="y-minus" data-ia="year.minus"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
               <input class="year-big" id="year-big" value="1925" inputmode="numeric" maxlength="4" data-ia="year.aria">
-              <button class="step" type="button" id="y-plus" data-ia="year.plus">+</button>
+              <button class="step" type="button" id="y-plus" data-ia="year.plus"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M12 5v14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
               <span class="era-name" id="era-name"></span>
             </div>
             <div class="track" id="track-guess">
@@ -1791,6 +1826,7 @@ tr.me .hpbar i { background: var(--accent); }
               <input type="range" id="year" min="1830" max="2026" value="1925" step="1" data-ia="year.track">
               <div class="ticks"></div>
             </div>
+            <button class="skip-btn" id="skip-year" type="button" aria-pressed="false" data-i="skip.label"></button>
           </div>
           <details class="extras" id="extras">
             <summary data-i="extras.label"></summary>
@@ -1872,9 +1908,9 @@ tr.me .hpbar i { background: var(--accent); }
           <div id="ap-answer" hidden>
             <div class="field">
               <label for="ap-in-white"><i class="w"></i><span data-i="white"></span></label>
-              <div class="picker" id="ap-pk-white"><input id="ap-in-white" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden>×</button><ul hidden></ul></div>
+              <div class="picker" id="ap-pk-white"><input id="ap-in-white" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><ul hidden></ul></div>
               <label for="ap-in-black" class="gap-top"><i class="b"></i><span data-i="black"></span></label>
-              <div class="picker" id="ap-pk-black"><input id="ap-in-black" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden>×</button><ul hidden></ul></div>
+              <div class="picker" id="ap-pk-black"><input id="ap-in-black" autocomplete="off" data-ip="sheet.ph"><button type="button" class="clear" data-ia="clear" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><ul hidden></ul></div>
             </div>
             <button class="btn wide" id="ap-validate" type="button" data-i="validate"></button>
           </div>
@@ -1993,7 +2029,7 @@ tr.me .hpbar i { background: var(--accent); }
 
   <dialog class="modal prestart" id="prestart" aria-labelledby="ps-title">
     <form method="dialog">
-      <div class="modal-head"><div><span class="kicker" data-i="home.setup"></span><h2 id="ps-title"></h2></div><button class="x" value="close" data-ia="close">×</button></div>
+      <div class="modal-head"><h2 id="ps-title"></h2><button class="x" value="close" data-ia="close"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
       <p class="ps-desc" id="ps-desc"></p>
       <div class="ps-extra" id="ps-extra"></div>
       <div class="setup">
@@ -2024,7 +2060,7 @@ tr.me .hpbar i { background: var(--accent); }
 
   <dialog class="modal" id="settings">
     <form method="dialog">
-      <div class="modal-head"><h2 data-i="set.title"></h2><button class="x" value="close" data-ia="close">×</button></div>
+      <div class="modal-head"><h2 data-i="set.title"></h2><button class="x" value="close" data-ia="close"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
       <div class="setting-row"><span data-i="set.lang"></span>
         <select id="lang-sel" data-ia="set.lang"></select></div>
       <div class="setting-row"><label class="switch"><input type="checkbox" id="opt-sound"> <span data-i="set.sound"></span></label></div>
@@ -2118,7 +2154,7 @@ fr: {
   'lvl.0': 'Débutant', 'lvl.1': 'Amateur', 'lvl.2': 'Joueur de club', 'lvl.3': 'Joueur confirmé', 'lvl.4': 'Expert', 'lvl.5': 'Candidat maître', 'lvl.6': 'Maître FIDE', 'lvl.7': 'Maître international', 'lvl.8': 'Grand maître', 'lvl.9': 'Grand Maître de l\'Histoire', 'lvl.10': 'Champion du monde',
   'pk.count': '{n} {n:joueur|joueurs}', 'pk.more': 'Plus de 60 joueurs', 'pk.type': 'Tape au moins 2 lettres du nom', 'pk.none': 'Aucun joueur de la base ne correspond',
   'daily.noOpts': 'Partie du jour : les options sont désactivées, pour que tout le monde joue à armes égales.',
-  'grp.back': 'Retour', 'grp.themes': 'Thèmes', 'grp.themesSub': 'Une époque, un titre, une joueuse…', 'grp.challenges': 'Défis', 'grp.challengesSub': 'Survie, série et jeux à part.', 'grp.experts': 'Pour les connaisseurs', 'grp.expertsSub': 'Un pays, les championnats, les maîtres.', 'extras.label': 'Bonus (facultatif)', 'ps.go': 'Lancer la partie', 'bareme.show': 'Voir le barème complet', 'bareme.sub': 'Ce que rapporte chaque réponse, mode par mode.', 'live': 'vies', 'challenge.textEndless': '<strong>{n}</strong> te défie : <strong>{s}</strong> en mode {m}. À toi de faire mieux.', 'challenge.textAp': '<strong>{n}</strong> te défie : <strong>{s} points</strong> en mode {m}. Mêmes parties pour toi.',
+  'grp.back': 'Retour', 'grp.themes': 'Thèmes', 'grp.themesSub': 'Une époque, un titre, une joueuse…', 'grp.challenges': 'Défis', 'grp.challengesSub': 'Survie, série et jeux à part.', 'grp.experts': 'Pour les connaisseurs', 'grp.expertsSub': 'Un pays, les championnats, les maîtres.', 'skip.label': 'Je ne sais pas', 'skip.done': 'Passé (appuie pour annuler)', 'extras.label': 'Bonus (facultatif)', 'ps.go': 'Lancer la partie', 'bareme.show': 'Voir le barème complet', 'bareme.sub': 'Ce que rapporte chaque réponse, mode par mode.', 'live': 'vies', 'challenge.textEndless': '<strong>{n}</strong> te défie : <strong>{s}</strong> en mode {m}. À toi de faire mieux.', 'challenge.textAp': '<strong>{n}</strong> te défie : <strong>{s} points</strong> en mode {m}. Mêmes parties pour toi.',
   'duel.rounds': '{n} manches', 'duel.rematch': 'Revanche contre {n}', 'duel.rematchH': 'Envoie ta revanche à {n}', 'duel.round': 'Manche', 'duel.winR': 'Tu gagnes : {a} contre {b} !', 'duel.loseR': '{n} gagne : {b} contre {a}.', 'res.challengeEndless': 'Défie un ami de faire mieux', 'res.recapAp': 'Partie', 'ix.recap': 'Joueur', 'ix.okShort': 'trouvé', 'ix.noShort': 'raté',
   'home.play': 'Jouer maintenant', 'home.playSub': 'mode Classique · 5 manches', 'home.setup': 'Réglages de partie', 'home.setupSub': 'S\'appliquent à tous les modes à 5 manches.',
   'home.modesH': 'Autres façons de <span>jouer</span>', 'home.modesSub': 'Choisis une famille, puis un mode.', 'mode.more': 'Règles', 'mode.less': 'Masquer', 'season.eyebrow': 'Saison du mois :', 'season.play': 'Jouer la saison', 'home.howH': 'Le <span>barème</span>', 'rub.aria': 'Rubriques', 'rub.play': 'Jouer', 'rub.daily': 'Défi du jour', 'rub.season': 'Saison', 'rub.modes': 'Tous les modes', 'rub.bareme': 'Barème', 'rub.date': '{d} · défi n° {n}', 'kick.une': 'Le jeu d\'histoire des échecs', 'kick.daily': 'Chaque jour', 'kick.season': 'Ce mois-ci',
@@ -2189,7 +2225,7 @@ en: {
   'lvl.0': 'Beginner', 'lvl.1': 'Amateur', 'lvl.2': 'Club player', 'lvl.3': 'Strong club player', 'lvl.4': 'Expert', 'lvl.5': 'Candidate Master', 'lvl.6': 'FIDE Master', 'lvl.7': 'International Master', 'lvl.8': 'Grandmaster', 'lvl.9': 'Grandmaster of History', 'lvl.10': 'World Champion',
   'pk.count': '{n} {n:player|players}', 'pk.more': 'More than 60 players', 'pk.type': 'Type at least 2 letters of the name', 'pk.none': 'No player in the database matches',
   'daily.noOpts': 'Daily game: options are switched off so everyone plays on equal terms.',
-  'grp.back': 'Back', 'grp.themes': 'Themes', 'grp.themesSub': 'An era, a title, a woman player…', 'grp.challenges': 'Challenges', 'grp.challengesSub': 'Survival, streak and special games.', 'grp.experts': 'For connoisseurs', 'grp.expertsSub': 'A country, championships, masters.', 'extras.label': 'Bonus (optional)', 'ps.go': 'Start the game', 'bareme.show': 'Show the full points table', 'bareme.sub': 'What each answer is worth, mode by mode.', 'live': 'lives', 'challenge.textEndless': '<strong>{n}</strong> challenges you: <strong>{s}</strong> in {m} mode. Can you beat it?', 'challenge.textAp': '<strong>{n}</strong> challenges you: <strong>{s} points</strong> in {m} mode. Same games for you.',
+  'grp.back': 'Back', 'grp.themes': 'Themes', 'grp.themesSub': 'An era, a title, a woman player…', 'grp.challenges': 'Challenges', 'grp.challengesSub': 'Survival, streak and special games.', 'grp.experts': 'For connoisseurs', 'grp.expertsSub': 'A country, championships, masters.', 'skip.label': "I don't know", 'skip.done': 'Skipped (tap to undo)', 'extras.label': 'Bonus (optional)', 'ps.go': 'Start the game', 'bareme.show': 'Show the full points table', 'bareme.sub': 'What each answer is worth, mode by mode.', 'live': 'lives', 'challenge.textEndless': '<strong>{n}</strong> challenges you: <strong>{s}</strong> in {m} mode. Can you beat it?', 'challenge.textAp': '<strong>{n}</strong> challenges you: <strong>{s} points</strong> in {m} mode. Same games for you.',
   'duel.rounds': '{n} rounds', 'duel.rematch': 'Rematch {n}', 'duel.rematchH': 'Send your rematch to {n}', 'duel.round': 'Round', 'duel.winR': 'You win: {a} to {b}!', 'duel.loseR': '{n} wins: {b} to {a}.', 'res.challengeEndless': 'Challenge a friend to beat it', 'res.recapAp': 'Game', 'ix.recap': 'Player', 'ix.okShort': 'found', 'ix.noShort': 'missed',
   'home.play': 'Play now', 'home.playSub': 'Classic mode · 5 rounds', 'home.setup': 'Game settings', 'home.setupSub': 'Apply to every 5-round mode.',
   'home.modesH': 'More ways to <span>play</span>', 'home.modesSub': 'Pick a family, then a mode.', 'mode.more': 'Rules', 'mode.less': 'Hide', 'season.eyebrow': 'Season of the month:', 'season.play': 'Play the season', 'home.howH': 'How it <span>scores</span>', 'rub.aria': 'Sections', 'rub.play': 'Play', 'rub.daily': 'Daily game', 'rub.season': 'Season', 'rub.modes': 'All modes', 'rub.bareme': 'Scoring', 'rub.date': '{d} · daily #{n}', 'kick.une': 'The chess history game', 'kick.daily': 'Every day', 'kick.season': 'This month',
@@ -2414,7 +2450,7 @@ I18N.de = {
   'lvl.0': 'Anfänger', 'lvl.1': 'Amateur', 'lvl.2': 'Vereinsspieler', 'lvl.3': 'Erfahrener Spieler', 'lvl.4': 'Experte', 'lvl.5': 'Meisterkandidat', 'lvl.6': 'FIDE-Meister', 'lvl.7': 'Internationaler Meister', 'lvl.8': 'Großmeister', 'lvl.9': 'Großmeister der Geschichte', 'lvl.10': 'Weltmeister',
   'pk.count': '{n} {n:Spieler|Spieler}', 'pk.more': 'Mehr als 60 Spieler', 'pk.type': 'Tippe mindestens 2 Buchstaben des Namens', 'pk.none': 'Kein Spieler der Datenbank passt',
   'daily.noOpts': 'Partie des Tages: Die Optionen sind abgeschaltet, damit alle unter gleichen Bedingungen spielen.',
-  'grp.back': 'Zurück', 'grp.themes': 'Themen', 'grp.themesSub': 'Eine Epoche, ein Titel, eine Spielerin…', 'grp.challenges': 'Herausforderungen', 'grp.challengesSub': 'Überleben, Serie und besondere Spiele.', 'grp.experts': 'Für Kenner', 'grp.expertsSub': 'Ein Land, Meisterschaften, Meister.', 'extras.label': 'Bonus (freiwillig)', 'ps.go': 'Spiel starten', 'bareme.show': 'Vollständige Punktetabelle anzeigen', 'bareme.sub': 'Was jede Antwort wert ist, Modus für Modus.', 'live': 'Leben', 'challenge.textEndless': '<strong>{n}</strong> fordert dich heraus: <strong>{s}</strong> im Modus {m}. Schaffst du mehr?', 'challenge.textAp': '<strong>{n}</strong> fordert dich heraus: <strong>{s} Punkte</strong> im Modus {m}. Dieselben Partien für dich.',
+  'grp.back': 'Zurück', 'grp.themes': 'Themen', 'grp.themesSub': 'Eine Epoche, ein Titel, eine Spielerin…', 'grp.challenges': 'Herausforderungen', 'grp.challengesSub': 'Überleben, Serie und besondere Spiele.', 'grp.experts': 'Für Kenner', 'grp.expertsSub': 'Ein Land, Meisterschaften, Meister.', 'skip.label': 'Weiß ich nicht', 'skip.done': 'Übersprungen (tippen zum Ändern)', 'extras.label': 'Bonus (freiwillig)', 'ps.go': 'Spiel starten', 'bareme.show': 'Vollständige Punktetabelle anzeigen', 'bareme.sub': 'Was jede Antwort wert ist, Modus für Modus.', 'live': 'Leben', 'challenge.textEndless': '<strong>{n}</strong> fordert dich heraus: <strong>{s}</strong> im Modus {m}. Schaffst du mehr?', 'challenge.textAp': '<strong>{n}</strong> fordert dich heraus: <strong>{s} Punkte</strong> im Modus {m}. Dieselben Partien für dich.',
   'duel.rounds': '{n} Runden', 'duel.rematch': 'Revanche gegen {n}', 'duel.rematchH': 'Schicke {n} deine Revanche', 'duel.round': 'Runde', 'duel.winR': 'Du gewinnst: {a} zu {b}!', 'duel.loseR': '{n} gewinnt: {b} zu {a}.', 'res.challengeEndless': 'Fordere einen Freund heraus, es besser zu machen', 'res.recapAp': 'Partie', 'ix.recap': 'Spieler', 'ix.okShort': 'gefunden', 'ix.noShort': 'verpasst',
   'home.play': 'Jetzt spielen', 'home.playSub': 'Klassischer Modus · 5 Runden', 'home.setup': 'Spieleinstellungen', 'home.setupSub': 'Gelten für alle Modi mit 5 Runden.',
   'home.modesH': 'Weitere <span>Spielarten</span>', 'home.modesSub': 'Wähle eine Familie, dann einen Modus.', 'mode.more': 'Regeln', 'mode.less': 'Ausblenden', 'season.eyebrow': 'Saison des Monats:', 'season.play': 'Saison spielen', 'home.howH': 'Die <span>Wertung</span>', 'rub.aria': 'Rubriken', 'rub.play': 'Spielen', 'rub.daily': 'Tagesrätsel', 'rub.season': 'Saison', 'rub.modes': 'Alle Modi', 'rub.bareme': 'Wertung', 'rub.date': '{d} · Rätsel Nr. {n}', 'kick.une': 'Das Spiel der Schachgeschichte', 'kick.daily': 'Jeden Tag', 'kick.season': 'Diesen Monat',
@@ -2563,7 +2599,7 @@ I18N.es = {
   'lvl.0': 'Principiante', 'lvl.1': 'Aficionado', 'lvl.2': 'Jugador de club', 'lvl.3': 'Jugador experimentado', 'lvl.4': 'Experto', 'lvl.5': 'Candidato a maestro', 'lvl.6': 'Maestro FIDE', 'lvl.7': 'Maestro internacional', 'lvl.8': 'Gran maestro', 'lvl.9': 'Gran Maestro de la Historia', 'lvl.10': 'Campeón del mundo',
   'pk.count': '{n} {n:jugador|jugadores}', 'pk.more': 'Más de 60 jugadores', 'pk.type': 'Escribe al menos 2 letras del nombre', 'pk.none': 'Ningún jugador de la base coincide',
   'daily.noOpts': 'Partida del día: las opciones están desactivadas para que todos jueguen en igualdad.',
-  'grp.back': 'Volver', 'grp.themes': 'Temas', 'grp.themesSub': 'Una época, un título, una jugadora…', 'grp.challenges': 'Desafíos', 'grp.challengesSub': 'Supervivencia, racha y juegos aparte.', 'grp.experts': 'Para entendidos', 'grp.expertsSub': 'Un país, campeonatos, maestros.', 'extras.label': 'Bonus (opcional)', 'ps.go': 'Empezar la partida', 'bareme.show': 'Ver la tabla de puntos completa', 'bareme.sub': 'Lo que vale cada respuesta, modo por modo.', 'live': 'vidas', 'challenge.textEndless': '<strong>{n}</strong> te desafía: <strong>{s}</strong> en modo {m}. ¿Puedes superarlo?', 'challenge.textAp': '<strong>{n}</strong> te desafía: <strong>{s} puntos</strong> en modo {m}. Las mismas partidas para ti.',
+  'grp.back': 'Volver', 'grp.themes': 'Temas', 'grp.themesSub': 'Una época, un título, una jugadora…', 'grp.challenges': 'Desafíos', 'grp.challengesSub': 'Supervivencia, racha y juegos aparte.', 'grp.experts': 'Para entendidos', 'grp.expertsSub': 'Un país, campeonatos, maestros.', 'skip.label': 'No lo sé', 'skip.done': 'Saltado (toca para deshacer)', 'extras.label': 'Bonus (opcional)', 'ps.go': 'Empezar la partida', 'bareme.show': 'Ver la tabla de puntos completa', 'bareme.sub': 'Lo que vale cada respuesta, modo por modo.', 'live': 'vidas', 'challenge.textEndless': '<strong>{n}</strong> te desafía: <strong>{s}</strong> en modo {m}. ¿Puedes superarlo?', 'challenge.textAp': '<strong>{n}</strong> te desafía: <strong>{s} puntos</strong> en modo {m}. Las mismas partidas para ti.',
   'duel.rounds': '{n} rondas', 'duel.rematch': 'Revancha contra {n}', 'duel.rematchH': 'Envía tu revancha a {n}', 'duel.round': 'Ronda', 'duel.winR': '¡Ganas: {a} a {b}!', 'duel.loseR': '{n} gana: {b} a {a}.', 'res.challengeEndless': 'Desafía a un amigo a superarlo', 'res.recapAp': 'Partida', 'ix.recap': 'Jugador', 'ix.okShort': 'acertada', 'ix.noShort': 'fallada',
   'home.play': 'Jugar ahora', 'home.playSub': 'modo Clásico · 5 rondas', 'home.setup': 'Ajustes de partida', 'home.setupSub': 'Se aplican a todos los modos de 5 rondas.',
   'home.modesH': 'Otras formas de <span>jugar</span>', 'home.modesSub': 'Elige una familia y luego un modo.', 'mode.more': 'Reglas', 'mode.less': 'Ocultar', 'season.eyebrow': 'Temporada del mes:', 'season.play': 'Jugar la temporada', 'home.howH': 'La <span>puntuación</span>', 'rub.aria': 'Secciones', 'rub.play': 'Jugar', 'rub.daily': 'Reto del día', 'rub.season': 'Temporada', 'rub.modes': 'Todos los modos', 'rub.bareme': 'Puntuación', 'rub.date': '{d} · reto n.º {n}', 'kick.une': 'El juego de la historia del ajedrez', 'kick.daily': 'Cada día', 'kick.season': 'Este mes',
@@ -2712,7 +2748,7 @@ I18N.it = {
   'lvl.0': 'Principiante', 'lvl.1': 'Dilettante', 'lvl.2': 'Giocatore di circolo', 'lvl.3': 'Giocatore esperto', 'lvl.4': 'Esperto', 'lvl.5': 'Candidato maestro', 'lvl.6': 'Maestro FIDE', 'lvl.7': 'Maestro internazionale', 'lvl.8': 'Grande maestro', 'lvl.9': 'Grande Maestro della Storia', 'lvl.10': 'Campione del mondo',
   'pk.count': '{n} {n:giocatore|giocatori}', 'pk.more': 'Più di 60 giocatori', 'pk.type': 'Scrivi almeno 2 lettere del nome', 'pk.none': 'Nessun giocatore del database corrisponde',
   'daily.noOpts': 'Partita del giorno: le opzioni sono disattivate perché tutti giochino ad armi pari.',
-  'grp.back': 'Indietro', 'grp.themes': 'Temi', 'grp.themesSub': 'Un\'epoca, un titolo, una giocatrice…', 'grp.challenges': 'Sfide', 'grp.challengesSub': 'Sopravvivenza, serie e giochi speciali.', 'grp.experts': 'Per intenditori', 'grp.expertsSub': 'Un paese, i campionati, i maestri.', 'extras.label': 'Bonus (facoltativo)', 'ps.go': 'Inizia la partita', 'bareme.show': 'Vedi la tabella completa dei punti', 'bareme.sub': 'Quanto vale ogni risposta, modalità per modalità.', 'live': 'vite', 'challenge.textEndless': '<strong>{n}</strong> ti sfida: <strong>{s}</strong> in modalità {m}. Riesci a fare meglio?', 'challenge.textAp': '<strong>{n}</strong> ti sfida: <strong>{s} punti</strong> in modalità {m}. Le stesse partite per te.',
+  'grp.back': 'Indietro', 'grp.themes': 'Temi', 'grp.themesSub': 'Un\'epoca, un titolo, una giocatrice…', 'grp.challenges': 'Sfide', 'grp.challengesSub': 'Sopravvivenza, serie e giochi speciali.', 'grp.experts': 'Per intenditori', 'grp.expertsSub': 'Un paese, i campionati, i maestri.', 'skip.label': 'Non lo so', 'skip.done': 'Saltato (tocca per annullare)', 'extras.label': 'Bonus (facoltativo)', 'ps.go': 'Inizia la partita', 'bareme.show': 'Vedi la tabella completa dei punti', 'bareme.sub': 'Quanto vale ogni risposta, modalità per modalità.', 'live': 'vite', 'challenge.textEndless': '<strong>{n}</strong> ti sfida: <strong>{s}</strong> in modalità {m}. Riesci a fare meglio?', 'challenge.textAp': '<strong>{n}</strong> ti sfida: <strong>{s} punti</strong> in modalità {m}. Le stesse partite per te.',
   'duel.rounds': '{n} turni', 'duel.rematch': 'Rivincita contro {n}', 'duel.rematchH': 'Manda la tua rivincita a {n}', 'duel.round': 'Turno', 'duel.winR': 'Vinci: {a} a {b}!', 'duel.loseR': '{n} vince: {b} a {a}.', 'res.challengeEndless': 'Sfida un amico a fare meglio', 'res.recapAp': 'Partita', 'ix.recap': 'Giocatore', 'ix.okShort': 'trovata', 'ix.noShort': 'mancata',
   'home.play': 'Gioca ora', 'home.playSub': 'modalità Classica · 5 turni', 'home.setup': 'Impostazioni di gioco', 'home.setupSub': 'Valgono per tutte le modalità a 5 turni.',
   'home.modesH': 'Altri modi di <span>giocare</span>', 'home.modesSub': 'Scegli una famiglia, poi una modalità.', 'mode.more': 'Regole', 'mode.less': 'Nascondi', 'season.eyebrow': 'Stagione del mese:', 'season.play': 'Gioca la stagione', 'home.howH': 'Il <span>punteggio</span>', 'rub.aria': 'Rubriche', 'rub.play': 'Gioca', 'rub.daily': 'Sfida del giorno', 'rub.season': 'Stagione', 'rub.modes': 'Tutte le modalità', 'rub.bareme': 'Punteggio', 'rub.date': '{d} · sfida n. {n}', 'kick.une': 'Il gioco della storia degli scacchi', 'kick.daily': 'Ogni giorno', 'kick.season': 'Questo mese',
@@ -2861,7 +2897,7 @@ I18N.pt = {
   'lvl.0': 'Iniciante', 'lvl.1': 'Amador', 'lvl.2': 'Jogador de clube', 'lvl.3': 'Jogador experiente', 'lvl.4': 'Especialista', 'lvl.5': 'Candidato a mestre', 'lvl.6': 'Mestre FIDE', 'lvl.7': 'Mestre internacional', 'lvl.8': 'Grande mestre', 'lvl.9': 'Grande Mestre da História', 'lvl.10': 'Campeão mundial',
   'pk.count': '{n} {n:jogador|jogadores}', 'pk.more': 'Mais de 60 jogadores', 'pk.type': 'Digite pelo menos 2 letras do nome', 'pk.none': 'Nenhum jogador da base corresponde',
   'daily.noOpts': 'Partida do dia: as opções estão desativadas para que todos joguem em igualdade.',
-  'grp.back': 'Voltar', 'grp.themes': 'Temas', 'grp.themesSub': 'Uma época, um título, uma jogadora…', 'grp.challenges': 'Desafios', 'grp.challengesSub': 'Sobrevivência, sequência e jogos especiais.', 'grp.experts': 'Para conhecedores', 'grp.expertsSub': 'Um país, campeonatos, mestres.', 'extras.label': 'Bônus (opcional)', 'ps.go': 'Começar a partida', 'bareme.show': 'Ver a tabela completa de pontos', 'bareme.sub': 'Quanto vale cada resposta, modo por modo.', 'live': 'vidas', 'challenge.textEndless': '<strong>{n}</strong> desafia você: <strong>{s}</strong> no modo {m}. Consegue fazer melhor?', 'challenge.textAp': '<strong>{n}</strong> desafia você: <strong>{s} pontos</strong> no modo {m}. As mesmas partidas para você.',
+  'grp.back': 'Voltar', 'grp.themes': 'Temas', 'grp.themesSub': 'Uma época, um título, uma jogadora…', 'grp.challenges': 'Desafios', 'grp.challengesSub': 'Sobrevivência, sequência e jogos especiais.', 'grp.experts': 'Para conhecedores', 'grp.expertsSub': 'Um país, campeonatos, mestres.', 'skip.label': 'Não sei', 'skip.done': 'Pulado (toque para desfazer)', 'extras.label': 'Bônus (opcional)', 'ps.go': 'Começar a partida', 'bareme.show': 'Ver a tabela completa de pontos', 'bareme.sub': 'Quanto vale cada resposta, modo por modo.', 'live': 'vidas', 'challenge.textEndless': '<strong>{n}</strong> desafia você: <strong>{s}</strong> no modo {m}. Consegue fazer melhor?', 'challenge.textAp': '<strong>{n}</strong> desafia você: <strong>{s} pontos</strong> no modo {m}. As mesmas partidas para você.',
   'duel.rounds': '{n} rodadas', 'duel.rematch': 'Revanche contra {n}', 'duel.rematchH': 'Envie sua revanche para {n}', 'duel.round': 'Rodada', 'duel.winR': 'Você vence: {a} a {b}!', 'duel.loseR': '{n} vence: {b} a {a}.', 'res.challengeEndless': 'Desafie um amigo a fazer melhor', 'res.recapAp': 'Partida', 'ix.recap': 'Jogador', 'ix.okShort': 'achou', 'ix.noShort': 'errou',
   'home.play': 'Jogar agora', 'home.playSub': 'modo Clássico · 5 rodadas', 'home.setup': 'Configurações da partida', 'home.setupSub': 'Valem para todos os modos de 5 rodadas.',
   'home.modesH': 'Outras formas de <span>jogar</span>', 'home.modesSub': 'Escolha uma família e depois um modo.', 'mode.more': 'Regras', 'mode.less': 'Ocultar', 'season.eyebrow': 'Temporada do mês:', 'season.play': 'Jogar a temporada', 'home.howH': 'A <span>pontuação</span>', 'rub.aria': 'Seções', 'rub.play': 'Jogar', 'rub.daily': 'Desafio do dia', 'rub.season': 'Temporada', 'rub.modes': 'Todos os modos', 'rub.bareme': 'Pontuação', 'rub.date': '{d} · desafio nº {n}', 'kick.une': 'O jogo da história do xadrez', 'kick.daily': 'Todo dia', 'kick.season': 'Este mês',
@@ -3010,7 +3046,7 @@ I18N.ru = {
   'lvl.0': 'Новичок', 'lvl.1': 'Любитель', 'lvl.2': 'Клубный игрок', 'lvl.3': 'Опытный игрок', 'lvl.4': 'Эксперт', 'lvl.5': 'Кандидат в мастера', 'lvl.6': 'Мастер ФИДЕ', 'lvl.7': 'Международный мастер', 'lvl.8': 'Гроссмейстер', 'lvl.9': 'Гроссмейстер истории', 'lvl.10': 'Чемпион мира',
   'pk.count': '{n} {n:игрок|игрока|игроков}', 'pk.more': 'Больше 60 игроков', 'pk.type': 'Введите хотя бы 2 буквы имени', 'pk.none': 'В базе нет подходящего игрока',
   'daily.noOpts': 'Партия дня: опции отключены, чтобы все играли в равных условиях.',
-  'grp.back': 'Назад', 'grp.themes': 'Темы', 'grp.themesSub': 'Эпоха, титул, шахматистка…', 'grp.challenges': 'Испытания', 'grp.challengesSub': 'Выживание, серия и особые игры.', 'grp.experts': 'Для знатоков', 'grp.expertsSub': 'Страна, чемпионаты, мастера.', 'extras.label': 'Бонусы (по желанию)', 'ps.go': 'Начать партию', 'bareme.show': 'Показать полную таблицу очков', 'bareme.sub': 'Сколько стоит каждый ответ, режим за режимом.', 'live': 'жизни', 'challenge.textEndless': '<strong>{n}</strong> бросает вам вызов: <strong>{s}</strong> в режиме «{m}». Сможете лучше?', 'challenge.textAp': '<strong>{n}</strong> бросает вам вызов: <strong>{s} очков</strong> в режиме «{m}». Те же партии для вас.',
+  'grp.back': 'Назад', 'grp.themes': 'Темы', 'grp.themesSub': 'Эпоха, титул, шахматистка…', 'grp.challenges': 'Испытания', 'grp.challengesSub': 'Выживание, серия и особые игры.', 'grp.experts': 'Для знатоков', 'grp.expertsSub': 'Страна, чемпионаты, мастера.', 'skip.label': 'Не знаю', 'skip.done': 'Пропущено (нажмите для отмены)', 'extras.label': 'Бонусы (по желанию)', 'ps.go': 'Начать партию', 'bareme.show': 'Показать полную таблицу очков', 'bareme.sub': 'Сколько стоит каждый ответ, режим за режимом.', 'live': 'жизни', 'challenge.textEndless': '<strong>{n}</strong> бросает вам вызов: <strong>{s}</strong> в режиме «{m}». Сможете лучше?', 'challenge.textAp': '<strong>{n}</strong> бросает вам вызов: <strong>{s} очков</strong> в режиме «{m}». Те же партии для вас.',
   'duel.rounds': '{n} {n:раунд|раунда|раундов}', 'duel.rematch': 'Реванш против {n}', 'duel.rematchH': 'Отправьте реванш игроку {n}', 'duel.round': 'Раунд', 'duel.winR': 'Вы выиграли: {a} против {b}!', 'duel.loseR': '{n} выигрывает: {b} против {a}.', 'res.challengeEndless': 'Бросьте другу вызов превзойти вас', 'res.recapAp': 'Партия', 'ix.recap': 'Игрок', 'ix.okShort': 'найдена', 'ix.noShort': 'мимо',
   'home.play': 'Играть', 'home.playSub': 'классический режим · 5 раундов', 'home.setup': 'Настройки игры', 'home.setupSub': 'Действуют во всех режимах из 5 раундов.',
   'home.modesH': 'Другие способы <span>играть</span>', 'home.modesSub': 'Выбери семейство, затем режим.', 'mode.more': 'Правила', 'mode.less': 'Скрыть', 'season.eyebrow': 'Сезон месяца:', 'season.play': 'Играть сезон', 'home.howH': 'Подсчёт <span>очков</span>', 'rub.aria': 'Разделы', 'rub.play': 'Играть', 'rub.daily': 'Задание дня', 'rub.season': 'Сезон', 'rub.modes': 'Все режимы', 'rub.bareme': 'Очки', 'rub.date': '{d} · задание № {n}', 'kick.une': 'Игра об истории шахмат', 'kick.daily': 'Каждый день', 'kick.season': 'В этом месяце',
@@ -3215,8 +3251,10 @@ const NEAR_PTS = { r: PTS_RIVAL, g5: PTS_GEN5, g12: PTS_GEN12 };
 R.nearWhy = nearWhy;
 // g: the full game (server side), guess: { w, b, y, res, ll, mv, fwd, hints:[], bet, left }, o: { purist, mirror, timed, sec, bet }
 R.scoreRound = function (players, g, guess, o) {
-  const y = Number.isFinite(+guess.y) ? Math.max(MIN_Y, Math.min(MAX_Y, Math.round(+guess.y))) : 1925;
-  const d = Math.abs(y - g.y);
+  // 2026-11-24: "Je ne sais pas" sends no year (null): 0 point for the year, d stays a big number so every "d <= x" test fails
+  const skipY = guess.y == null || guess.y === '';
+  const y = skipY ? null : Number.isFinite(+guess.y) ? Math.max(MIN_Y, Math.min(MAX_Y, Math.round(+guess.y))) : 1925;
+  const d = skipY ? 999 : Math.abs(y - g.y);
   const side = (id, right, other) => id == null ? 0 : id === right ? PTS_PLAYER : id === other ? PTS_SWAP : 0;   // 2026-11-24: no more "close player" points (Mathilde: too complicated)
   let white = side(guess.w, g.w, g.b), black = side(guess.b, g.b, g.w);
   // one name scores once: the same player typed for White and Black only keeps his best side (2026-11-20 test)
@@ -3664,11 +3702,10 @@ const MODE_FAMILIES = [
 ];
 // home page (2026-11-24, "méga simple"): the modes are shown in 3 big groups, each behind one big card
 const HOME_GROUPS = [
-  { id: 'themes', ico: '📚', modes: ['famous', 'champions', 'title', 'women', 'romantic', 'modern', 'prodigies', 'blunders'] },
-  { id: 'challenges', ico: '⚡', modes: ['survival', 'streak', 'autopsy', 'intruder'] },
-  { id: 'experts', ico: '🎓', modes: ['country', 'national', 'titled'] },
+  { id: 'themes', ico: 'wq', modes: ['famous', 'champions', 'title', 'women', 'romantic', 'modern', 'prodigies', 'blunders'] },
+  { id: 'challenges', ico: 'wn', modes: ['survival', 'streak', 'autopsy', 'intruder'] },
+  { id: 'experts', ico: 'wk', modes: ['country', 'national', 'titled'] },
 ];
-const MODE_ICO = { famous: '⭐', champions: '👑', title: '🏆', women: '👸', romantic: '🎩', modern: '💻', prodigies: '🌟', blunders: '💥', survival: '❤️', streak: '🔥', autopsy: '⏪', intruder: '🔍', country: '🌍', national: '🏁', titled: '🎓', classic: '♞' };
 const PAWN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5a3.2 3.2 0 0 0-2 5.7c-1.5.8-2.4 2.1-2.4 3.6h2.5L8.8 17.5h6.4l-1.3-5.7h2.5c0-1.5-.9-2.8-2.4-3.6a3.2 3.2 0 0 0-2-5.7zM6 19h12v2.5H6z"/></svg>';
 const SHIELD = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></svg>';
 const emit = (name, detail, cancelable = false) => { const e = new CustomEvent(name, { detail, cancelable }); document.dispatchEvent(e); return !e.defaultPrevented; };
@@ -3987,11 +4024,11 @@ function renderHome() {
   const M = S.meta;
   const countries = Object.entries(M.country).filter(([c]) => I18N_COUNTRIES[c]).map(([c, n]) => [c, countryName(c), n.expert]).sort((a, b) => b[2] - a[2]);
   const ncountries = Object.entries(M.national).map(([c, n]) => [c, countryName(c), n]).sort((a, b) => b[2] - a[2]);
-  const tile = k => `<button type="button" class="tile" data-mode="${k}"><span class="t-ico" aria-hidden="true">${MODE_ICO[k] || '♟'}</span><b>${modeInfo(k)[0]}</b><small>${XT('short', k, (I18N_MODE_SHORT[k] || {})[LB()]) || ''}</small></button>`;
+  const tile = k => `<button type="button" class="tile" data-mode="${k}"><b>${modeInfo(k)[0]}</b><small>${XT('short', k, (I18N_MODE_SHORT[k] || {})[LB()]) || ''}</small></button>`;
   const g = HOME_GROUPS.find(x => x.id === S.modeGroup);
   $('#modes').innerHTML = g
-    ? `<div class="grp-open"><button type="button" class="grp-back" data-grp-back>← ${t('grp.back')}</button><h3 class="grp-h"><span aria-hidden="true">${g.ico}</span> ${t('grp.' + g.id)}</h3><p class="grp-sub">${t('grp.' + g.id + 'Sub')}</p><div class="tiles">${g.modes.map(tile).join('')}</div></div>`
-    : `<div class="doors">${HOME_GROUPS.map(x => `<button type="button" class="door" data-grp="${x.id}"><span class="d-ico" aria-hidden="true">${x.ico}</span><span class="d-txt"><b>${t('grp.' + x.id)}</b><small>${t('grp.' + x.id + 'Sub')}</small></span><span class="d-n">${x.modes.length}</span><svg class="d-go" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 6l6 6-6 6-1.4-1.4L12.2 12 7.6 7.4z"/></svg></button>`).join('')}</div>`;
+    ? `<div class="grp-open"><button type="button" class="grp-back" data-grp-back><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>${t('grp.back')}</button><h3 class="grp-h">${t('grp.' + g.id)}</h3><p class="grp-sub">${t('grp.' + g.id + 'Sub')}</p><div class="tiles">${g.modes.map(tile).join('')}</div></div>`
+    : `<div class="doors">${HOME_GROUPS.map(x => `<button type="button" class="door" data-grp="${x.id}"><svg class="d-ico" viewBox="2 2 36 36" aria-hidden="true"><use href="#${x.ico}"></use></svg><span class="d-txt"><b>${t('grp.' + x.id)}</b><small>${t('grp.' + x.id + 'Sub')}</small></span><span class="d-n">${x.modes.length}</span><svg class="d-go" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 6l6 6-6 6-1.4-1.4L12.2 12 7.6 7.4z"/></svg></button>`).join('')}</div>`;
   // the country pickers now live in the start dialog
   S.countrySel = `<select id="country-sel" aria-label="${t('country')}">${countries.map(([c, nm]) => `<option value="${c}"${c === S.country ? ' selected' : ''}>${esc(nm)}</option>`).join('')}</select>`;
   S.ncountrySel = `<select id="ncountry-sel" aria-label="${t('ncountry')}">${ncountries.map(([c, nm, n]) => `<option value="${c}"${c === S.ncountry ? ' selected' : ''}>${esc(nm)} (${n})</option>`).join('')}</select>`;
@@ -4073,6 +4110,7 @@ async function startRound() {
   renderLives();
   pickers.white.reset(); pickers.black.reset();
   setYear(1925);
+  setSkip('names', false); setSkip('year', false);
   renderHints();
   renderOpenings(g);
   renderSmallBonus(g);
@@ -4273,7 +4311,17 @@ function startTimer() {
 }
 function stopTimer() { if (S.timer) clearInterval(S.timer); S.timer = null; if (!S.timed) $('#timer').hidden = true; }
 
+// "Je ne sais pas" (2026-11-24, Mathilde): skip the players or the year, 0 point for that question; tap again (or answer) to undo
+function setSkip(which, on) {
+  const btn = $('#skip-' + which); if (!btn) return;
+  btn.classList.toggle('on', on); btn.setAttribute('aria-pressed', on);
+  btn.dataset.i = on ? 'skip.done' : 'skip.label'; btn.textContent = t(btn.dataset.i);
+  $(which === 'names' ? '#names-field' : '#year-field').classList.toggle('skipped', on);
+  if (which === 'names' && on) { pickers.white.reset(); pickers.black.reset(); }
+  if (which === 'year') S.guess.ySkip = on;
+}
 function setYear(y) {
+  if (S.guess.ySkip) setSkip('year', false);
   y = Math.max(MIN_Y, Math.min(MAX_Y, y));
   S.guess.y = y; $('#year').value = y;
   if (document.activeElement !== $('#year-big')) $('#year-big').value = y;
@@ -4354,6 +4402,7 @@ async function validate() {
   if (S.phase !== 'guess') return;
   S.phase = 'sending'; stopTimer(); endTour();
   const pub = S.rounds[S.cur], guess = S.guess;
+  if (guess.ySkip) guess.y = null;   // "Je ne sais pas": no year sent, 0 point for it
   // the server scores the guess and only then sends who played and when
   let res;
   try { res = await API.act('guess', { r: pub.r, guess: { w: guess.w, b: guess.b, y: guess.y, res: guess.res, ll: guess.ll, mv: guess.mv, bet: guess.bet } }); }
@@ -4400,14 +4449,15 @@ async function validate() {
   $('#rv-duel').innerHTML = side(t('white'), 'w', guess.w, g.w, sc.white, g.we) + side(t('black'), 'b', guess.b, g.b, sc.black, g.be);
   // year tile: the timeline with your pin and the real one
   $('#rv-year').textContent = g.y;
-  $('#rv-year-you').innerHTML = `<span>${sc.d === 0 ? '✓ ' + esc(t('rv.exact')) : esc(t('rv.openingNo', { o: guess.y }))}</span>${ptsTxt(sc.year, sc.d === 0 ? 'pos' : sc.year ? 'part' : 'zero')}`;
+  $('#rv-year-you').innerHTML = `<span>${guess.y == null ? esc(t('rv.openingSkip')) : sc.d === 0 ? '✓ ' + esc(t('rv.exact')) : esc(t('rv.openingNo', { o: guess.y }))}</span>${ptsTxt(sc.year, sc.d === 0 ? 'pos' : sc.year ? 'part' : 'zero')}`;
   const mkSide = (y, left) => { const x = pct(y); return (x > 90 ? true : x < 10 ? false : left) ? 'transform:translateX(-100%)' : 'transform:none'; };
   const tr = $('#track-reveal');
   tr.querySelectorAll('.mk,.gap').forEach(e => e.remove());
-  const a = Math.min(guess.y, g.y), b = Math.max(guess.y, g.y);
+  if (guess.y == null) tr.insertAdjacentHTML('beforeend', `<div class="mk real" style="left:${pct(g.y)}%"><b style="${mkSide(g.y, false)}">${g.y}</b></div>`);
+  else { const a = Math.min(guess.y, g.y), b = Math.max(guess.y, g.y);
   tr.insertAdjacentHTML('beforeend', `<div class="gap" style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></div>
     <div class="mk you" style="left:${pct(guess.y)}%"><b style="${mkSide(guess.y, guess.y < g.y)}">${guess.y}</b></div>
-    <div class="mk real" style="left:${pct(g.y)}%"><b style="${mkSide(g.y, guess.y >= g.y)}">${g.y}</b></div>`);
+    <div class="mk real" style="left:${pct(g.y)}%"><b style="${mkSide(g.y, guess.y >= g.y)}">${g.y}</b></div>`); }
   const tiles = $('#rv-tiles');
   tiles.querySelectorAll('.dyn').forEach(e => e.remove());
   const tile = (label, big, you, pts, okCls) => tiles.insertAdjacentHTML('beforeend', `<div class="ff-tile dyn"><small>${esc(label)}</small><div class="big">${big}</div><div class="ff-you"><span>${you}</span>${ptsTxt(pts, okCls)}</div></div>`);
@@ -4506,7 +4556,7 @@ function renderStats() {
   $('#profile').innerHTML = pe || pv ? [pe && t('st.profileEra', { a: esc(pe[0]), b: esc(pe[1]) }), pv && t('st.profileEv', { a: esc(pv[0]), b: esc(pv[1]) })].filter(Boolean).map(x => `<p>${x}</p>`).join('') : `<p class="muted">${t('st.profileNone')}</p>`;
   renderAlbum();
   const got = store.get('badges', {});
-  $('#badges').innerHTML = BADGES.map(b => { const [n, d] = badgeInfo(b.id); return `<div class="badge ${got[b.id] ? 'on' : ''}"><span class="medal">${got[b.id] ? '★' : '☆'}</span><div><strong>${esc(n)}</strong><small>${esc(d)}</small></div></div>`; }).join('');
+  $('#badges').innerHTML = BADGES.map(b => { const [n, d] = badgeInfo(b.id); return `<div class="badge ${got[b.id] ? 'on' : ''}"><span class="medal">${PAWN}</span><div><strong>${esc(n)}</strong><small>${esc(d)}</small></div></div>`; }).join('');
   show('stats');
 }
 
@@ -4571,7 +4621,7 @@ function squares() {
 const endlessCount = () => MODES[S.mode].strict ? S.results.filter(r => r.white === PTS_PLAYER || r.black === PTS_PLAYER).length : S.results.filter(r => r.found).length;
 function shareText(tot) {
   const endless = roundsCount() === Infinity;
-  const head = S.daily ? `Chessguessr ♞ ${t('dailyLabel', { n: dayNumber(S.daily) })}` : `Chessguessr ♞ ${S.label}${S.purist ? t('tagPurist') : ''}${S.timed ? t('tagTimed') : ''}`;
+  const head = S.daily ? `Chessguessr ♞\uFE0E ${t('dailyLabel', { n: dayNumber(S.daily) })}` : `Chessguessr ♞\uFE0E ${S.label}${S.purist ? t('tagPurist') : ''}${S.timed ? t('tagTimed') : ''}`;
   const sqs = squares(), rows = [];
   for (let i = 0; i < sqs.length; i += 5) rows.push(sqs.slice(i, i + 5).join(' '));
   return `${head}\n${endless ? t(MODES[S.mode].strict ? 'streak.share' : 'surv.share', { n: endlessCount() }) + ' · ' : ''}${fmt(tot)} ${t('points')}\n${rows.join('\n')}\n${location.origin + location.pathname}`;
@@ -4599,12 +4649,12 @@ function showResults() {
   const ctx = { mode: S.mode, base: endless ? 0 : base, purist: S.purist, timed: S.timed, diff: S.diff, endless, rounds: n };
   const got = store.get('badges', {}), fresh = BADGES.filter(b => !got[b.id] && b.ok(s, ctx));
   fresh.forEach(b => { got[b.id] = todayKey(); }); store.set('badges', got);
-  $('#res-badges').innerHTML = fresh.map(b => { const [nm, d] = badgeInfo(b.id); return `<div class="badge on"><span class="medal">★</span><div><strong>${esc(t('newBadge', { b: nm }))}</strong><small>${esc(d)}</small></div></div>`; }).join('');
+  $('#res-badges').innerHTML = fresh.map(b => { const [nm, d] = badgeInfo(b.id); return `<div class="badge on"><span class="medal">${PAWN}</span><div><strong>${esc(t('newBadge', { b: nm }))}</strong><small>${esc(d)}</small></div></div>`; }).join('');
   $('#res-badges').hidden = !fresh.length;
   if (fresh.length) setTimeout(() => FX.play('level'), 600);
   $('#recap-head').innerHTML = `<th>#</th><th>${t('th.game')}</th><th>${t('th.year')}</th><th>${t('th.pts')}</th>`;
   $('#recap').innerHTML = S.results.map((r, i) => `<tr><td>${i + 1}</td><td>${esc(P(r.g.w))} – ${esc(P(r.g.b))}<small>${esc(stripYears(prettyEvent(r.g.e)) || '')}</small></td>
-    <td class="num">${r.g.y}<small>${t('you', { y: r.guess.y })}</small></td><td class="num">${fmt(r.total)}${r.perfect ? `<small>${t('perfectSmall')}</small>` : ''}</td></tr>`).join('');
+    <td class="num">${r.g.y}<small>${r.guess.y == null ? t('rv.openingSkip') : t('you', { y: r.guess.y })}</small></td><td class="num">${fmt(r.total)}${r.perfect ? `<small>${t('perfectSmall')}</small>` : ''}</td></tr>`).join('');
   S.end = { mode: S.daily ? 'classic' : S.mode, score: endless ? n : tot, ids: endless ? null : S.results.map(r => r.g.id), rounds: endless ? null : S.results.map(r => r.total), daily: S.daily };
   endCommon(tot, S.end.rounds, endless ? n : null);
   $('#again').textContent = S.daily ? t('againDaily') : t('again');
@@ -4832,7 +4882,7 @@ function showSpecialEnd(mode, tot, rows, extra) {
   $('#res-elo').innerHTML = ''; $('#res-badges').hidden = true;
   const sq = rows.map(r => r.sq);
   $('#res-emoji').innerHTML = sqHtml(sq);
-  $('#share-preview').textContent = `Chessguessr ♞ ${S.label}\n${fmt(tot)} ${t('points')}\n${sq.join(' ')}\n${location.origin + location.pathname}`;
+  $('#share-preview').textContent = `Chessguessr ♞\uFE0E ${S.label}\n${fmt(tot)} ${t('points')}\n${sq.join(' ')}\n${location.origin + location.pathname}`;
   $('#recap-head').innerHTML = `<th>#</th><th>${esc(extra.head)}</th><th></th><th data-i="th.pts">${t('th.pts')}</th>`;
   $('#recap').innerHTML = rows.map((r, i) => `<tr><td>${i + 1}</td><td>${r.cells[0]}</td><td></td><td class="num">${fmt(r.pts)}</td></tr>`).join('');
   S.end = { mode, score: tot, ids: extra.ids, rounds: rows.map(r => r.pts), h: extra.h, o: extra.o };
@@ -5080,6 +5130,9 @@ async function boot() {
     S.guess.mv = null; S.sel = null; renderBoard($('#board'), S.rounds[S.cur].board); renderMoveStatus();
   });
   $('#validate').addEventListener('click', validate);
+  $('#skip-names').addEventListener('click', () => setSkip('names', !$('#skip-names').classList.contains('on')));
+  $('#skip-year').addEventListener('click', () => setSkip('year', !S.guess.ySkip));
+  $('#names-field').addEventListener('input', () => { if ($('#skip-names').classList.contains('on')) setSkip('names', false); });
   $('#next').addEventListener('click', nextRound);
   $('#rp-first').addEventListener('click', () => { stopAuto(); goPly(0); });
   $('#rp-prev').addEventListener('click', () => { stopAuto(); goPly(RP.i - 1); });
@@ -5186,7 +5239,7 @@ const TX = {
     'grp.kind.friends': 'Groupe d\'amis (privé, sur invitation)', 'grp.kind.club': 'Club', 'grp.public': 'Club public (visible dans la recherche)',
     'grp.joinTitle': 'Rejoindre avec un code d\'invitation', 'grp.invite': 'Code d\'invitation', 'grp.search': 'Chercher un club public', 'grp.members': '{n} membres',
     'grp.invLink': 'Lien d\'invitation', 'grp.copy': 'Copier le lien', copied: 'Copié !', 'grp.leave': 'Quitter le groupe', 'grp.tour': 'Lancer un tournoi du groupe',
-    'grp.history': 'Tournois du groupe', 'grp.noHistory': 'Aucun tournoi joué pour l\'instant.', 'grp.back': '← Mes groupes', 'grp.joinBtn': 'Rejoindre ce club',
+    'grp.history': 'Tournois du groupe', 'grp.noHistory': 'Aucun tournoi joué pour l\'instant.', 'grp.back': 'Mes groupes', 'grp.joinBtn': 'Rejoindre ce club',
     'grp.owner': 'créateur', 'grp.ranking': 'Classement du groupe', 'grp.leaveConfirm': 'Clique encore pour confirmer',
     'm.week': 'Points de la semaine', 'm.elo': 'Elo', 'm.best': 'Meilleure partie', 'm.daily': 'Partie du jour', 'm.wins': 'Victoires en direct',
     'rk.empty': 'Personne pour l\'instant. À toi de jouer !', 'rk.you': 'toi',
@@ -5227,7 +5280,7 @@ const TX = {
     'grp.kind.friends': 'Friends group (private, invite only)', 'grp.kind.club': 'Club', 'grp.public': 'Public club (shown in search)',
     'grp.joinTitle': 'Join with an invite code', 'grp.invite': 'Invite code', 'grp.search': 'Find a public club', 'grp.members': '{n} members',
     'grp.invLink': 'Invite link', 'grp.copy': 'Copy link', copied: 'Copied!', 'grp.leave': 'Leave group', 'grp.tour': 'Start a group tournament',
-    'grp.history': 'Group tournaments', 'grp.noHistory': 'No tournament played yet.', 'grp.back': '← My groups', 'grp.joinBtn': 'Join this club',
+    'grp.history': 'Group tournaments', 'grp.noHistory': 'No tournament played yet.', 'grp.back': 'My groups', 'grp.joinBtn': 'Join this club',
     'grp.owner': 'owner', 'grp.ranking': 'Group leaderboard', 'grp.leaveConfirm': 'Click again to confirm',
     'm.week': 'Points this week', 'm.elo': 'Elo', 'm.best': 'Best game', 'm.daily': 'Daily game', 'm.wins': 'Live wins',
     'rk.empty': 'Nobody yet. Your move!', 'rk.you': 'you',
@@ -5271,7 +5324,7 @@ Object.assign(TX, {
     'grp.kind.friends': 'Grupo de amigos (privado, por invitación)', 'grp.kind.club': 'Club', 'grp.public': 'Club público (visible en la búsqueda)',
     'grp.joinTitle': 'Unirse con un código de invitación', 'grp.invite': 'Código de invitación', 'grp.search': 'Buscar un club público', 'grp.members': '{n} miembros',
     'grp.invLink': 'Enlace de invitación', 'grp.copy': 'Copiar el enlace', copied: '¡Copiado!', 'grp.leave': 'Salir del grupo', 'grp.tour': 'Lanzar un torneo del grupo',
-    'grp.history': 'Torneos del grupo', 'grp.noHistory': 'Todavía no se ha jugado ningún torneo.', 'grp.back': '← Mis grupos', 'grp.joinBtn': 'Unirse a este club',
+    'grp.history': 'Torneos del grupo', 'grp.noHistory': 'Todavía no se ha jugado ningún torneo.', 'grp.back': 'Mis grupos', 'grp.joinBtn': 'Unirse a este club',
     'grp.owner': 'creador', 'grp.ranking': 'Clasificación del grupo', 'grp.leaveConfirm': 'Haz clic otra vez para confirmar',
     'm.week': 'Puntos de la semana', 'm.elo': 'Elo', 'm.best': 'Mejor partida', 'm.daily': 'Partida del día', 'm.wins': 'Victorias en directo',
     'rk.empty': 'Nadie todavía. ¡Te toca!', 'rk.you': 'tú',
@@ -5312,7 +5365,7 @@ Object.assign(TX, {
     'grp.kind.friends': 'Freundesgruppe (privat, nur mit Einladung)', 'grp.kind.club': 'Verein', 'grp.public': 'Öffentlicher Verein (in der Suche sichtbar)',
     'grp.joinTitle': 'Mit Einladungscode beitreten', 'grp.invite': 'Einladungscode', 'grp.search': 'Öffentlichen Verein suchen', 'grp.members': '{n} Mitglieder',
     'grp.invLink': 'Einladungslink', 'grp.copy': 'Link kopieren', copied: 'Kopiert!', 'grp.leave': 'Gruppe verlassen', 'grp.tour': 'Gruppenturnier starten',
-    'grp.history': 'Turniere der Gruppe', 'grp.noHistory': 'Noch kein Turnier gespielt.', 'grp.back': '← Meine Gruppen', 'grp.joinBtn': 'Diesem Verein beitreten',
+    'grp.history': 'Turniere der Gruppe', 'grp.noHistory': 'Noch kein Turnier gespielt.', 'grp.back': 'Meine Gruppen', 'grp.joinBtn': 'Diesem Verein beitreten',
     'grp.owner': 'Gründer', 'grp.ranking': 'Rangliste der Gruppe', 'grp.leaveConfirm': 'Zum Bestätigen noch einmal klicken',
     'm.week': 'Punkte der Woche', 'm.elo': 'Elo', 'm.best': 'Beste Partie', 'm.daily': 'Partie des Tages', 'm.wins': 'Live-Siege',
     'rk.empty': 'Noch niemand. Du bist am Zug!', 'rk.you': 'du',
@@ -5353,7 +5406,7 @@ Object.assign(TX, {
     'grp.kind.friends': 'Gruppo di amici (privato, su invito)', 'grp.kind.club': 'Circolo', 'grp.public': 'Circolo pubblico (visibile nella ricerca)',
     'grp.joinTitle': 'Entra con un codice di invito', 'grp.invite': 'Codice di invito', 'grp.search': 'Cerca un circolo pubblico', 'grp.members': '{n} membri',
     'grp.invLink': 'Link di invito', 'grp.copy': 'Copia il link', copied: 'Copiato!', 'grp.leave': 'Lascia il gruppo', 'grp.tour': 'Avvia un torneo del gruppo',
-    'grp.history': 'Tornei del gruppo', 'grp.noHistory': 'Nessun torneo giocato finora.', 'grp.back': '← I miei gruppi', 'grp.joinBtn': 'Unisciti a questo circolo',
+    'grp.history': 'Tornei del gruppo', 'grp.noHistory': 'Nessun torneo giocato finora.', 'grp.back': 'I miei gruppi', 'grp.joinBtn': 'Unisciti a questo circolo',
     'grp.owner': 'creatore', 'grp.ranking': 'Classifica del gruppo', 'grp.leaveConfirm': 'Clicca di nuovo per confermare',
     'm.week': 'Punti della settimana', 'm.elo': 'Elo', 'm.best': 'Miglior partita', 'm.daily': 'Partita del giorno', 'm.wins': 'Vittorie in diretta',
     'rk.empty': 'Ancora nessuno. Tocca a te!', 'rk.you': 'tu',
@@ -5394,7 +5447,7 @@ Object.assign(TX, {
     'grp.kind.friends': 'Grupo de amigos (privado, por convite)', 'grp.kind.club': 'Clube', 'grp.public': 'Clube público (visível na busca)',
     'grp.joinTitle': 'Entrar com um código de convite', 'grp.invite': 'Código de convite', 'grp.search': 'Procurar um clube público', 'grp.members': '{n} membros',
     'grp.invLink': 'Link de convite', 'grp.copy': 'Copiar o link', copied: 'Copiado!', 'grp.leave': 'Sair do grupo', 'grp.tour': 'Iniciar um torneio do grupo',
-    'grp.history': 'Torneios do grupo', 'grp.noHistory': 'Nenhum torneio jogado ainda.', 'grp.back': '← Meus grupos', 'grp.joinBtn': 'Entrar neste clube',
+    'grp.history': 'Torneios do grupo', 'grp.noHistory': 'Nenhum torneio jogado ainda.', 'grp.back': 'Meus grupos', 'grp.joinBtn': 'Entrar neste clube',
     'grp.owner': 'criador', 'grp.ranking': 'Classificação do grupo', 'grp.leaveConfirm': 'Clique de novo para confirmar',
     'm.week': 'Pontos da semana', 'm.elo': 'Elo', 'm.best': 'Melhor partida', 'm.daily': 'Partida do dia', 'm.wins': 'Vitórias ao vivo',
     'rk.empty': 'Ninguém ainda. É a sua vez!', 'rk.you': 'você',
@@ -5435,7 +5488,7 @@ Object.assign(TX, {
     'grp.kind.friends': 'Группа друзей (закрытая, по приглашению)', 'grp.kind.club': 'Клуб', 'grp.public': 'Открытый клуб (виден в поиске)',
     'grp.joinTitle': 'Вступить по коду приглашения', 'grp.invite': 'Код приглашения', 'grp.search': 'Найти открытый клуб', 'grp.members': 'Участников: {n}',
     'grp.invLink': 'Ссылка-приглашение', 'grp.copy': 'Копировать ссылку', copied: 'Скопировано!', 'grp.leave': 'Покинуть группу', 'grp.tour': 'Начать турнир группы',
-    'grp.history': 'Турниры группы', 'grp.noHistory': 'Турниров пока не было.', 'grp.back': '← Мои группы', 'grp.joinBtn': 'Вступить в клуб',
+    'grp.history': 'Турниры группы', 'grp.noHistory': 'Турниров пока не было.', 'grp.back': 'Мои группы', 'grp.joinBtn': 'Вступить в клуб',
     'grp.owner': 'создатель', 'grp.ranking': 'Рейтинг группы', 'grp.leaveConfirm': 'Нажми ещё раз для подтверждения',
     'm.week': 'Очки за неделю', 'm.elo': 'Эло', 'm.best': 'Лучшая партия', 'm.daily': 'Партия дня', 'm.wins': 'Победы вживую',
     'rk.empty': 'Пока никого. Твой ход!', 'rk.you': 'ты',
