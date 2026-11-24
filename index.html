@@ -1589,6 +1589,53 @@ svg.li { display: block; width: 26px; height: 26px; fill: none; stroke: currentC
 #stats .st-empty .btn { margin-top: 6px; min-height: 52px; padding-inline: 26px; }
 #stats .st-badges .badges { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 
+/* ===== 2026-11-24 frontend-design pass: one clear path on the results screen and the home hero ===== */
+/* results: score, its context in one quiet block, the squares with their share button, then the main actions */
+.res-main > .verdict { margin-top: -6px; }
+.res-main > .meta, .res-main > #res-best, .res-main > .elo-line { margin-top: -8px; color: var(--muted); font-size: 14.5px; line-height: 1.45; }
+.res-main > .elo-line strong { color: var(--ink); }
+.res-main > .emoji-row { margin-top: 6px; }
+.res-main > .share-score { order: 5; margin-top: -2px; }
+.share-score .btn { padding: 10px 18px; font-size: 15px; }
+.share-score #share-emoji::before { content: ""; width: 18px; height: 18px; margin-right: 8px; flex: none; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7'/%3E%3C/svg%3E") center / contain no-repeat; }
+.share-score .btn { display: inline-flex; align-items: center; }
+.res-main > .row.actions { margin-top: 2px; }
+.res-main > .row.actions .btn { flex: 1 1 180px; }
+/* one card to challenge a friend: a title, one sentence, a name and one button */
+.share { padding: 22px 24px 24px; margin-top: 8px; }
+#challenge-make { border-top: 0; padding-top: 0; margin-top: 0; gap: 12px; }
+#challenge-make h3 { margin: 0; font: 700 21px/1.2 var(--f-display); }
+#challenge-make > p { margin: -6px 0 2px; font-size: 14.5px; line-height: 1.45; }
+#challenge-make .row .btn { flex: none; }
+#results-extra .on-results.solo { margin: -4px 0 0; padding: 0 4px; display: block; color: var(--muted); font-size: 14.5px; }
+#results-extra .on-results.solo .on-link { font-size: 14.5px; }
+@media (max-width: 420px) {
+  #challenge-make .row { flex-direction: column; }
+  #challenge-make .row .btn, #challenge-make .row input { width: 100%; }
+}
+
+/* home: Jouer en ligne is the third choice of the hero, drawn like Défi du jour; the tutorial link closes the stack */
+#home #home-online, #home #home-online:not(:empty) { width: 100%; margin: 0; }
+#home .hero-cta .btn.big.on-home-btn { width: 100%; border: 0; background: transparent; color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .4); font-size: 19px; min-height: 58px; padding: 12px 24px; }
+#home .hero-cta .btn.big.on-home-btn small { color: rgba(255, 255, 255, .72); font-size: 13.5px; font-weight: 500; }
+@media (hover: hover) and (pointer: fine) { #home .hero-cta .on-home-btn:hover { box-shadow: inset 0 0 0 2px #fff; background: rgba(255, 255, 255, .06); } }
+#home .hero-cta #tour-btn { margin-top: 2px; }
+/* doors: the name, one line and the arrow; the count added reading without helping the choice */
+.door .d-n { display: none; }
+/* frontend-design guidance: no one-word colour accent in headlines, no tracked capitals on labels.
+   The yellow is kept for the actions (Jouer, Rejouer, Envoyer) so it always means "press here". */
+.hero h1 em, #home .hero h1 em { color: inherit; }
+.sec-head h2 { text-transform: none; font-weight: 700; letter-spacing: -.015em; color: var(--ink); }
+.sec-head h2 span { color: inherit; }
+.recap th { text-transform: none; letter-spacing: 0; font-size: 13px; }
+.on-results .eyebrow { text-transform: none; letter-spacing: 0; font-size: 14px; }
+/* share: the phone's own menu; on a computer, WhatsApp and Facebook next to it */
+.share-score { display: flex; flex-wrap: wrap; gap: 8px; }
+.share-score .sh-ext { display: none; padding: 10px 16px; font-size: 15px; text-decoration: none; }
+@media (hover: hover) and (pointer: fine) { .share-score .sh-ext { display: inline-flex; align-items: center; } }
+
 /* Chessguessr online screens (online.js). "Bulletin de tournoi" look: hairline rules, no shadows on content,
    radius var(--r) at most, Archivo (--f-ui) for labels and figures. Only design tokens from style.css. */
 :where(section).on { max-width: 980px; margin: 0 auto; padding: 28px 16px 120px; }
@@ -1998,9 +2045,9 @@ tr.me .hpbar i { background: var(--accent); }
           <div class="hero-cta">
             <button class="btn big" type="button" data-mode="classic"><span data-i="home.play"></span><small data-i="home.playSub"></small></button>
             <button class="btn ghost big" id="hero-daily" type="button" data-i="rub.daily"></button>
+            <div id="home-online"></div>
             <button class="link-btn" id="tour-btn" type="button" data-i="home.tutorial"></button>
           </div>
-          <div id="home-online"></div>
         </div>
         <figure class="hero-fig">
           <div class="hero-board board" id="hero-board"></div>
@@ -2214,19 +2261,17 @@ tr.me .hpbar i { background: var(--accent); }
           <p id="res-best" class="purist-note"></p>
           <p id="res-elo" class="elo-line"></p>
           <div class="emoji-row" id="res-emoji"></div>
+          <div class="share-score"><button class="btn ghost" id="share-emoji" type="button" data-i="res.shareBtn"></button><a class="btn ghost sh-ext" id="share-wa" target="_blank" rel="noopener">WhatsApp</a><a class="btn ghost sh-ext" id="share-fb" target="_blank" rel="noopener">Facebook</a></div>
           <div class="new-badges" id="res-badges" hidden></div>
           <div class="duel" id="duel" hidden></div>
           <div class="share">
-            <h3 data-i="res.share"></h3>
-            <div class="row">
-              <button class="btn gold" id="share-emoji" type="button" data-i="res.copy"></button>
-            </div>
-            <pre class="share-preview" id="share-preview"></pre>
+            <pre class="share-preview" id="share-preview" hidden></pre>
             <div id="challenge-make">
               <h3 id="challenge-title" data-i="res.challenge"></h3>
+              <p class="muted" data-i="res.challengeSub"></p>
               <div class="row">
                 <input id="share-name" maxlength="24" data-ip="res.name" data-ia="res.name">
-                <button class="btn ghost" id="share-make" type="button" data-i="res.make"></button>
+                <button class="btn" id="share-make" type="button" data-i="res.send"></button>
               </div>
               <div class="row" id="share-out" hidden>
                 <input id="share-link" readonly data-ia="res.link">
@@ -2646,6 +2691,12 @@ Object.assign(I18N.fr, { 'st.toNext': 'Encore {n} points pour devenir {t}.', 'st
 
 Object.assign(I18N.en, { 'st.toNext': '{n} more points to become {t}.', 'st.emptyH': 'You haven\'t played yet', 'st.emptyP': 'Play a game: your level, your best players and your badges will show up here.', 'st.emptyGo': 'Play my first game' });
 
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.fr, { 'res.shareBtn': 'Partager mon score', 'res.challenge': 'Défie un ami', 'res.challengeSub': 'Il joue les mêmes positions et tente de battre ton score.', 'res.send': 'Envoyer le défi', 'res.sendText': 'J\'ai fait {n} points sur Chessguessr. Tu fais mieux ?', 'best.none': 'Sur {max} points possibles.' });
+
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.en, { 'res.shareBtn': 'Share my score', 'res.challenge': 'Challenge a friend', 'res.challengeSub': 'They play the same positions and try to beat your score.', 'res.send': 'Send the challenge', 'res.sendText': 'I scored {n} points on Chessguessr. Can you beat it?', 'best.none': 'Out of {max} possible points.' });
+
 // Deutsch. Missing keys fall back to English (see t() in app.js).
 I18N.de = {
   locale: 'de-DE',
@@ -2796,6 +2847,9 @@ I18N.de = {
 Object.assign(I18N.de, { 'rv.tYear': 'Jahr', 'rv.tResult': 'Ergebnis', 'rv.tMove': 'Gespielter Zug', 'rv.whyR': 'Ein häufiger Gegner', 'rv.whyG': 'Gleiche Generation' });
 
 Object.assign(I18N.de, { 'st.toNext': 'Noch {n} Punkte bis {t}.', 'st.emptyH': 'Du hast noch nicht gespielt', 'st.emptyP': 'Spiel eine Partie: Dein Niveau, deine besten Spieler und deine Abzeichen erscheinen dann hier.', 'st.emptyGo': 'Meine erste Partie spielen' });
+
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.de, { 'res.shareBtn': 'Mein Ergebnis teilen', 'res.challenge': 'Fordere einen Freund heraus', 'res.challengeSub': 'Er spielt dieselben Stellungen und versucht, dein Ergebnis zu schlagen.', 'res.send': 'Herausforderung senden', 'res.sendText': 'Ich habe {n} Punkte bei Chessguessr. Schaffst du mehr?', 'best.none': 'Von {max} möglichen Punkten.' });
 
 // Español. Missing keys fall back to English (see t() in app.js).
 I18N.es = {
@@ -2948,6 +3002,9 @@ Object.assign(I18N.es, { 'rv.tYear': 'Año', 'rv.tResult': 'Resultado', 'rv.tMov
 
 Object.assign(I18N.es, { 'st.toNext': 'Te faltan {n} puntos para ser {t}.', 'st.emptyH': 'Todavía no has jugado', 'st.emptyP': 'Juega una partida: tu nivel, tus mejores jugadores y tus insignias aparecerán aquí.', 'st.emptyGo': 'Jugar mi primera partida' });
 
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.es, { 'res.shareBtn': 'Compartir mi puntuación', 'res.challenge': 'Reta a un amigo', 'res.challengeSub': 'Juega las mismas posiciones e intenta superar tu puntuación.', 'res.send': 'Enviar el reto', 'res.sendText': 'He hecho {n} puntos en Chessguessr. ¿Lo superas?', 'best.none': 'De {max} puntos posibles.' });
+
 // Italiano. Missing keys fall back to English (see t() in app.js).
 I18N.it = {
   locale: 'it-IT',
@@ -3098,6 +3155,9 @@ I18N.it = {
 Object.assign(I18N.it, { 'rv.tYear': 'Anno', 'rv.tResult': 'Risultato', 'rv.tMove': 'Mossa giocata', 'rv.whyR': 'Un rivale abituale', 'rv.whyG': 'Stessa generazione' });
 
 Object.assign(I18N.it, { 'st.toNext': 'Ancora {n} punti per diventare {t}.', 'st.emptyH': 'Non hai ancora giocato', 'st.emptyP': 'Gioca una partita: il tuo livello, i tuoi giocatori migliori e i tuoi badge appariranno qui.', 'st.emptyGo': 'Gioca la mia prima partita' });
+
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.it, { 'res.shareBtn': 'Condividi il mio punteggio', 'res.challenge': 'Sfida un amico', 'res.challengeSub': 'Gioca le stesse posizioni e prova a battere il tuo punteggio.', 'res.send': 'Invia la sfida', 'res.sendText': 'Ho fatto {n} punti su Chessguessr. Riesci a fare meglio?', 'best.none': 'Su {max} punti possibili.' });
 
 // Português (Brasil). Missing keys fall back to English (see t() in app.js).
 I18N.pt = {
@@ -3250,6 +3310,9 @@ Object.assign(I18N.pt, { 'rv.tYear': 'Ano', 'rv.tResult': 'Resultado', 'rv.tMove
 
 Object.assign(I18N.pt, { 'st.toNext': 'Faltam {n} pontos para virar {t}.', 'st.emptyH': 'Você ainda não jogou', 'st.emptyP': 'Jogue uma partida: seu nível, seus melhores jogadores e suas medalhas vão aparecer aqui.', 'st.emptyGo': 'Jogar minha primeira partida' });
 
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.pt, { 'res.shareBtn': 'Compartilhar minha pontuação', 'res.challenge': 'Desafie um amigo', 'res.challengeSub': 'Ele joga as mesmas posições e tenta bater a sua pontuação.', 'res.send': 'Enviar o desafio', 'res.sendText': 'Fiz {n} pontos no Chessguessr. Consegue fazer melhor?', 'best.none': 'De {max} pontos possíveis.' });
+
 // Русский. Missing keys fall back to English (see t() in app.js). Plurals: {n:один|два|пять}.
 I18N.ru = {
   locale: 'ru-RU',
@@ -3400,6 +3463,9 @@ I18N.ru = {
 Object.assign(I18N.ru, { 'rv.tYear': 'Год', 'rv.tResult': 'Результат', 'rv.tMove': 'Сделанный ход', 'rv.whyR': 'Постоянный соперник', 'rv.whyG': 'То же поколение' });
 
 Object.assign(I18N.ru, { 'st.toNext': 'Ещё {n} очков до звания «{t}».', 'st.emptyH': 'Ты ещё не играл', 'st.emptyP': 'Сыграй партию: здесь появятся твой уровень, лучшие игроки и значки.', 'st.emptyGo': 'Сыграть первую партию' });
+
+// 2026-11-24 design pass: results screen
+Object.assign(I18N.ru, { 'res.shareBtn': 'Поделиться результатом', 'res.challenge': 'Брось вызов другу', 'res.challengeSub': 'Он сыграет те же позиции и попробует побить твой результат.', 'res.send': 'Отправить вызов', 'res.sendText': 'Я набрал {n} очков в Chessguessr. Сможешь лучше?', 'best.none': 'Из {max} возможных очков.' });
 
 // Extra spellings accepted when typing a name (never shown): Russian Cyrillic and a few German/Spanish/Italian forms.
 // Keyed by the displayed international name. Common transliteration differences (Kortschnoi, Smyslow, Tchigorine...)
@@ -4974,6 +5040,7 @@ function showResults() {
   $('#res-elo').innerHTML = `${esc(t('elo.change', { r: e.r, d: (de >= 0 ? '+' : '−') + Math.abs(de) }))} · <strong>${esc(levelName(levelOf(e.r)))}</strong>`;
   $('#res-emoji').innerHTML = sqHtml(squares());
   $('#share-preview').textContent = shareText(tot);
+  prepareCard(endless ? n : tot);
   const s = getStats(); s.games++; s.best = Math.max(s.best, tot); store.set('stats', s);
   const ctx = { mode: S.mode, base: endless ? 0 : base, purist: S.purist, timed: S.timed, diff: S.diff, endless, rounds: n };
   const got = store.get('badges', {}), fresh = BADGES.filter(b => !got[b.id] && b.ok(s, ctx));
@@ -4994,6 +5061,67 @@ const sameIds = (a, b) => a.length === b.length && a.every((x, i) => x === b[i])
 function copy(text, btn, label) {
   const done = () => { btn.textContent = t('copied'); setTimeout(() => { btn.textContent = t(label); }, 1800); };
   try { navigator.clipboard.writeText(text).then(done, () => toast(t('copyFail'))); } catch { toast(t('copyFail')); }
+}
+/* ---------- score card: a picture of the result, so Instagram (stories) and TikTok can take it ---------- */
+// drawn when the results show, so the tap on "Partager" can open the share sheet at once (iPhones refuse it after a delay)
+function scoreCard(score, label, verdict) {
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d'), F = getComputedStyle(document.documentElement).getPropertyValue('--f-display') || 'system-ui, sans-serif';
+  const rr = (l, t2, w, h, r) => { x.beginPath(); x.roundRect ? x.roundRect(l, t2, w, h, r) : x.rect(l, t2, w, h); };
+  x.fillStyle = '#061d2c'; x.fillRect(0, 0, W, H);
+  x.fillStyle = '#02263d'; rr(60, 60, W - 120, H - 120, 56); x.fill();
+  x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  // name of the game, as in the header
+  x.font = `800 64px ${F}`;
+  const a = 'Chess', b = 'guessr', wa = x.measureText(a).width, wb = x.measureText(b).width, lx = W / 2 - (wa + wb) / 2;
+  x.textAlign = 'left'; x.fillStyle = '#f7f7f7'; x.fillText(a, lx, 210); x.fillStyle = '#ffd30e'; x.fillText(b, lx + wa, 210);
+  x.textAlign = 'center';
+  x.fillStyle = '#a3bdd0'; x.font = `500 40px ${F}`; x.fillText(label, W / 2, 290, W - 220);
+  // the score, the one big thing
+  x.fillStyle = '#ffd30e'; x.font = `800 220px ${F}`; x.fillText(score, W / 2, 560, W - 200);
+  x.fillStyle = '#a3bdd0'; x.font = `600 44px ${F}`; x.fillText(t('points'), W / 2, 630);
+  x.fillStyle = '#f7f7f7'; x.font = `700 58px ${F}`; x.fillText(verdict, W / 2, 740, W - 200);
+  // the coloured squares, three per round, five rounds per line
+  const groups = [...document.querySelectorAll('#res-emoji > span')].slice(0, 20).map(s => [...s.children].map(i => i.className));
+  const sz = 44, gap = 7, gg = 28, per = 5;
+  const col = { g: '#3ecf72', y: '#ffd30e', r: '#ef5350' };
+  groups.forEach((g, k) => {
+    const row = Math.floor(k / per), inRow = Math.min(per, groups.length - row * per), pos = k % per;
+    const gw = g.length * sz + (g.length - 1) * gap, rowW = inRow * gw + (inRow - 1) * gg;
+    const gx = W / 2 - rowW / 2 + pos * (gw + gg), gy = 860 + row * (sz + 24);
+    g.forEach((cl, j) => { x.fillStyle = col[cl] || col.r; rr(gx + j * (sz + gap), gy, sz, sz, 12); x.fill(); });
+  });
+  const host = /^https?:/.test(location.protocol) ? location.host + location.pathname.replace(/index\.html$/, '').replace(/\/$/, '') : 'Chessguessr';
+  x.fillStyle = '#a3bdd0'; x.font = `600 38px ${F}`; x.fillText(host, W / 2, H - 130, W - 200);
+  return new Promise(res => c.toBlob(res, 'image/png'));
+}
+function prepareCard(score) {
+  S.card = null;
+  // on a computer: WhatsApp (text + squares) and Facebook (the link; Facebook takes no text) open in a new tab
+  const txt = $('#share-preview').textContent, url = location.origin + location.pathname;
+  $('#share-wa').href = 'https://wa.me/?text=' + encodeURIComponent(txt);
+  $('#share-fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+  const label = $('#res-mode').textContent.split(' · ')[0], verdict = $('#res-verdict').textContent;
+  const go = () => scoreCard(fmt(score), label, verdict).then(bl => { if (bl) S.card = new File([bl], 'chessguessr.png', { type: 'image/png' }); }).catch(() => {});
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(go);
+}
+function shareScore(btn) {
+  const text = $('#share-preview').textContent, f = S.card;
+  if (f && navigator.canShare && navigator.canShare({ files: [f] })) {
+    navigator.share({ files: [f], text }).catch(err => { if (!err || err.name !== 'AbortError') shareOut(text, '', btn, 'res.shareBtn'); });
+    return;
+  }
+  shareOut(text, '', btn, 'res.shareBtn');
+}
+// the phone's own share sheet (WhatsApp, Instagram, Facebook...); a copy where there is none
+function shareOut(text, url, btn, label) {
+  if (navigator.share) { navigator.share(url ? { title: 'Chessguessr', text, url } : { title: 'Chessguessr', text }).catch(() => {}); return; }
+  copy(url ? text + '\n' + url : text, btn, label);
+}
+function sendChallenge(e) {
+  makeLink();
+  const name = $('#share-name').value.trim();
+  shareOut(t('res.sendText', { n: fmt(S.end.score) }) + (name ? ' (' + name + ')' : ''), $('#share-link').value, e.currentTarget, 'res.send');
 }
 function makeLink() {
   const name = $('#share-name').value.trim(); store.set('name', name);
@@ -5212,6 +5340,7 @@ function showSpecialEnd(mode, tot, rows, extra) {
   const sq = rows.map(r => r.sq);
   $('#res-emoji').innerHTML = sqHtml(sq);
   $('#share-preview').textContent = `Chessguessr ♞\uFE0E ${S.label}\n${fmt(tot)} ${t('points')}\n${sq.join(' ')}\n${location.origin + location.pathname}`;
+  setTimeout(() => prepareCard(tot), 0);
   $('#recap-head').innerHTML = `<th>#</th><th>${esc(extra.head)}</th><th></th><th data-i="th.pts">${t('th.pts')}</th>`;
   $('#recap').innerHTML = rows.map((r, i) => `<tr><td>${i + 1}</td><td>${r.cells[0]}</td><td></td><td class="num">${fmt(r.pts)}</td></tr>`).join('');
   S.end = { mode, score: tot, ids: extra.ids, rounds: rows.map(r => r.pts), h: extra.h, o: extra.o };
@@ -5482,9 +5611,9 @@ async function boot() {
   $('#elo-chip').addEventListener('click', renderStats);
   $('#st-empty-go').addEventListener('click', () => startGame('classic', null, { tour: !store.get('tour', false) }));
   $('#stats-back').addEventListener('click', renderHome);
-  $('#share-make').addEventListener('click', makeLink);
+  $('#share-make').addEventListener('click', sendChallenge);
   $('#share-copy').addEventListener('click', e => copy($('#share-link').value, e.currentTarget, 'copyBtn'));
-  $('#share-emoji').addEventListener('click', e => copy($('#share-preview').textContent, e.currentTarget, 'res.copy'));
+  $('#share-emoji').addEventListener('click', e => shareScore(e.currentTarget));
   $('#settings-btn').addEventListener('click', () => { renderSettings(); $('#settings').showModal(); });
   $('#settings').addEventListener('click', e => { if (e.target === $('#settings')) $('#settings').close(); });
   const lsel = $('#lang-sel');
@@ -5858,7 +5987,7 @@ const TX_NEW = {
     'lb.sendOne': 'Envoie ce lien à ton ami', 'lb.sendMany': 'Envoie ce lien aux joueurs', 'lb.send': 'Envoyer le lien', 'lb.copyLink': 'Copier le lien',
     'lb.waitFriend': 'En attente de ton ami…', 'lb.waitMore': 'En attente des autres joueurs…', 'lb.startNote': 'Le bouton s\'allume dès qu\'un autre joueur arrive.',
     'lb.rulesLine': '{r} manches · {s} par manche · {d}', 'lb.rulesLineR': '{s} par manche · {d}', 'lb.hp': 'Points de vie : 6 000 chacun, le moins bon perd l\'écart à chaque manche',
-    'lb.shareText': 'Viens jouer à Chessguessr avec moi ! Code : {c}', guest: 'Joueur', 'lb.code': 'Code de la partie', 'join.code': 'Code de la partie', 'join.title': 'Rejoindre une partie', create: 'Créer une partie', 'lb.leave': 'Quitter la partie', 'res.live': 'Classement de la partie', 'err.no_room': 'Cette partie n\'existe pas ou a expiré.', 'err.room_full': 'Cette partie est complète.', 'err.kicked': 'L\'hôte t\'a retiré de la partie.', 'lb.copy': 'Copier le lien d\'invitation', 'm.week': 'Cette semaine', 'home.sub': 'Défie un ami ou joue à plusieurs, sur les mêmes positions.' },
+    'lb.shareText': 'Viens jouer à Chessguessr avec moi ! Code : {c}', guest: 'Joueur', 'lb.code': 'Code de la partie', 'join.code': 'Code de la partie', 'join.title': 'Rejoindre une partie', create: 'Créer une partie', 'lb.leave': 'Quitter la partie', 'res.live': 'Classement de la partie', 'err.no_room': 'Cette partie n\'existe pas ou a expiré.', 'err.room_full': 'Cette partie est complète.', 'err.kicked': 'L\'hôte t\'a retiré de la partie.', 'lb.copy': 'Copier le lien d\'invitation', 'm.week': 'Cette semaine', 'home.sub': 'Défie un ami ou joue à plusieurs, sur les mêmes positions.', 'home.sub2': 'Avec un ami ou à plusieurs', 'res.duelOr': 'Tu préfères jouer en même temps ?' },
   en: { title: 'Play with others', lead: 'Same positions for everyone, at the same time.', 'p.friend': 'Challenge a friend', 'p.friendD': 'One on one. You get a link to send them.',
     'p.group': 'Play as a group', 'p.groupD': 'From 3 to 50 players: family, friends, club.', 'p.code': 'Got a code?', 'p.name': 'Your name: {n}', 'p.change': 'Change',
     'p.which': 'Which game?', 'p.create': 'Create the game', 'p.createNote': 'You then get a code and a link to invite everyone.', back: 'Back',
@@ -5868,7 +5997,7 @@ const TX_NEW = {
     'lb.sendOne': 'Send this link to your friend', 'lb.sendMany': 'Send this link to the players', 'lb.send': 'Send the link', 'lb.copyLink': 'Copy the link',
     'lb.waitFriend': 'Waiting for your friend…', 'lb.waitMore': 'Waiting for the other players…', 'lb.startNote': 'The button lights up as soon as another player arrives.',
     'lb.rulesLine': '{r} rounds · {s} per round · {d}', 'lb.rulesLineR': '{s} per round · {d}', 'lb.hp': 'Health points: 6,000 each, the weaker guess loses the gap every round',
-    'lb.shareText': 'Come and play Chessguessr with me! Code: {c}', guest: 'Player', 'm.week': 'This week', 'home.sub': 'Challenge a friend or play as a group, on the same positions.' },
+    'lb.shareText': 'Come and play Chessguessr with me! Code: {c}', guest: 'Player', 'm.week': 'This week', 'home.sub': 'Challenge a friend or play as a group, on the same positions.', 'home.sub2': 'With a friend or a group', 'res.duelOr': 'Rather play at the same time?' },
   es: { title: 'Jugar con otros', lead: 'Las mismas posiciones para todos, al mismo tiempo.', 'p.friend': 'Retar a un amigo', 'p.friendD': 'Uno contra uno. Recibes un enlace para enviárselo.',
     'p.group': 'Jugar en grupo', 'p.groupD': 'De 3 a 50 jugadores: familia, amigos, club.', 'p.code': '¿Te han dado un código?', 'p.name': 'Tu nombre: {n}', 'p.change': 'Cambiar',
     'p.which': '¿Qué partida?', 'p.create': 'Crear la partida', 'p.createNote': 'Después recibes un código y un enlace para invitar a todos.', back: 'Volver',
@@ -5878,7 +6007,7 @@ const TX_NEW = {
     'lb.sendOne': 'Envía este enlace a tu amigo', 'lb.sendMany': 'Envía este enlace a los jugadores', 'lb.send': 'Enviar el enlace', 'lb.copyLink': 'Copiar el enlace',
     'lb.waitFriend': 'Esperando a tu amigo…', 'lb.waitMore': 'Esperando a los demás jugadores…', 'lb.startNote': 'El botón se activa en cuanto llega otro jugador.',
     'lb.rulesLine': '{r} rondas · {s} por ronda · {d}', 'lb.rulesLineR': '{s} por ronda · {d}', 'lb.hp': 'Puntos de vida: 6000 cada uno, el peor pierde la diferencia en cada ronda',
-    'lb.shareText': '¡Ven a jugar a Chessguessr conmigo! Código: {c}', guest: 'Jugador', 'm.week': 'Esta semana', 'home.sub': 'Reta a un amigo o juega en grupo, con las mismas posiciones.' },
+    'lb.shareText': '¡Ven a jugar a Chessguessr conmigo! Código: {c}', guest: 'Jugador', 'm.week': 'Esta semana', 'home.sub': 'Reta a un amigo o juega en grupo, con las mismas posiciones.', 'home.sub2': 'Con un amigo o en grupo', 'res.duelOr': '¿Prefieres jugar a la vez?' },
   de: { title: 'Mit anderen spielen', lead: 'Dieselben Stellungen für alle, zur selben Zeit.', 'p.friend': 'Einen Freund herausfordern', 'p.friendD': 'Eins gegen eins. Du bekommst einen Link zum Verschicken.',
     'p.group': 'Zu mehreren spielen', 'p.groupD': '3 bis 50 Spieler: Familie, Freunde, Verein.', 'p.code': 'Hast du einen Code bekommen?', 'p.name': 'Dein Name: {n}', 'p.change': 'Ändern',
     'p.which': 'Welche Partie?', 'p.create': 'Partie erstellen', 'p.createNote': 'Danach bekommst du einen Code und einen Link, um alle einzuladen.', back: 'Zurück',
@@ -5888,7 +6017,7 @@ const TX_NEW = {
     'lb.sendOne': 'Schick diesen Link deinem Freund', 'lb.sendMany': 'Schick diesen Link den Spielern', 'lb.send': 'Link senden', 'lb.copyLink': 'Link kopieren',
     'lb.waitFriend': 'Warten auf deinen Freund…', 'lb.waitMore': 'Warten auf die anderen Spieler…', 'lb.startNote': 'Der Knopf wird aktiv, sobald ein weiterer Spieler da ist.',
     'lb.rulesLine': '{r} Runden · {s} pro Runde · {d}', 'lb.rulesLineR': '{s} pro Runde · {d}', 'lb.hp': 'Lebenspunkte: je 6.000, der Schwächere verliert in jeder Runde die Differenz',
-    'lb.shareText': 'Spiel mit mir Chessguessr! Code: {c}', guest: 'Spieler', 'm.week': 'Diese Woche', 'home.sub': 'Fordere einen Freund heraus oder spiel zu mehreren, mit denselben Stellungen.' },
+    'lb.shareText': 'Spiel mit mir Chessguessr! Code: {c}', guest: 'Spieler', 'm.week': 'Diese Woche', 'home.sub': 'Fordere einen Freund heraus oder spiel zu mehreren, mit denselben Stellungen.', 'home.sub2': 'Mit einem Freund oder zu mehreren', 'res.duelOr': 'Lieber gleichzeitig spielen?' },
   it: { title: 'Gioca con altri', lead: 'Le stesse posizioni per tutti, nello stesso momento.', 'p.friend': 'Sfida un amico', 'p.friendD': 'Uno contro uno. Ricevi un link da mandargli.',
     'p.group': 'Gioca in gruppo', 'p.groupD': 'Da 3 a 50 giocatori: famiglia, amici, circolo.', 'p.code': 'Ti hanno dato un codice?', 'p.name': 'Il tuo nome: {n}', 'p.change': 'Cambia',
     'p.which': 'Quale partita?', 'p.create': 'Crea la partita', 'p.createNote': 'Poi ricevi un codice e un link per invitare tutti.', back: 'Indietro',
@@ -5898,7 +6027,7 @@ const TX_NEW = {
     'lb.sendOne': 'Manda questo link al tuo amico', 'lb.sendMany': 'Manda questo link ai giocatori', 'lb.send': 'Invia il link', 'lb.copyLink': 'Copia il link',
     'lb.waitFriend': 'In attesa del tuo amico…', 'lb.waitMore': 'In attesa degli altri giocatori…', 'lb.startNote': 'Il pulsante si attiva appena arriva un altro giocatore.',
     'lb.rulesLine': '{r} turni · {s} per turno · {d}', 'lb.rulesLineR': '{s} per turno · {d}', 'lb.hp': 'Punti vita: 6000 ciascuno, il peggiore perde lo scarto a ogni turno',
-    'lb.shareText': 'Vieni a giocare a Chessguessr con me! Codice: {c}', guest: 'Giocatore', 'm.week': 'Questa settimana', 'home.sub': 'Sfida un amico o gioca in gruppo, sulle stesse posizioni.' },
+    'lb.shareText': 'Vieni a giocare a Chessguessr con me! Codice: {c}', guest: 'Giocatore', 'm.week': 'Questa settimana', 'home.sub': 'Sfida un amico o gioca in gruppo, sulle stesse posizioni.', 'home.sub2': 'Con un amico o in gruppo', 'res.duelOr': 'Preferisci giocare nello stesso momento?' },
   pt: { title: 'Jogar com outros', lead: 'As mesmas posições para todos, ao mesmo tempo.', 'p.friend': 'Desafiar um amigo', 'p.friendD': 'Um contra um. Você recebe um link para enviar a ele.',
     'p.group': 'Jogar em grupo', 'p.groupD': 'De 3 a 50 jogadores: família, amigos, clube.', 'p.code': 'Recebeu um código?', 'p.name': 'Seu nome: {n}', 'p.change': 'Mudar',
     'p.which': 'Qual partida?', 'p.create': 'Criar a partida', 'p.createNote': 'Depois você recebe um código e um link para convidar todos.', back: 'Voltar',
@@ -5908,7 +6037,7 @@ const TX_NEW = {
     'lb.sendOne': 'Envie este link ao seu amigo', 'lb.sendMany': 'Envie este link aos jogadores', 'lb.send': 'Enviar o link', 'lb.copyLink': 'Copiar o link',
     'lb.waitFriend': 'Esperando seu amigo…', 'lb.waitMore': 'Esperando os outros jogadores…', 'lb.startNote': 'O botão acende assim que outro jogador chegar.',
     'lb.rulesLine': '{r} rodadas · {s} por rodada · {d}', 'lb.rulesLineR': '{s} por rodada · {d}', 'lb.hp': 'Pontos de vida: 6000 cada, o pior perde a diferença a cada rodada',
-    'lb.shareText': 'Venha jogar Chessguessr comigo! Código: {c}', guest: 'Jogador', 'm.week': 'Esta semana', 'home.sub': 'Desafie um amigo ou jogue em grupo, nas mesmas posições.' },
+    'lb.shareText': 'Venha jogar Chessguessr comigo! Código: {c}', guest: 'Jogador', 'm.week': 'Esta semana', 'home.sub': 'Desafie um amigo ou jogue em grupo, nas mesmas posições.', 'home.sub2': 'Com um amigo ou em grupo', 'res.duelOr': 'Prefere jogar ao mesmo tempo?' },
   ru: { title: 'Играть с другими', lead: 'Одни и те же позиции для всех, в одно и то же время.', 'p.friend': 'Вызвать друга', 'p.friendD': 'Один на один. Ты получишь ссылку, чтобы отправить ему.',
     'p.group': 'Играть компанией', 'p.groupD': 'От 3 до 50 игроков: семья, друзья, клуб.', 'p.code': 'Тебе дали код?', 'p.name': 'Твоё имя: {n}', 'p.change': 'Изменить',
     'p.which': 'Какая партия?', 'p.create': 'Создать партию', 'p.createNote': 'Потом ты получишь код и ссылку, чтобы пригласить всех.', back: 'Назад',
@@ -5918,7 +6047,7 @@ const TX_NEW = {
     'lb.sendOne': 'Отправь эту ссылку другу', 'lb.sendMany': 'Отправь эту ссылку игрокам', 'lb.send': 'Отправить ссылку', 'lb.copyLink': 'Скопировать ссылку',
     'lb.waitFriend': 'Ждём твоего друга…', 'lb.waitMore': 'Ждём остальных игроков…', 'lb.startNote': 'Кнопка загорится, как только придёт ещё один игрок.',
     'lb.rulesLine': 'Раундов: {r} · {s} на раунд · {d}', 'lb.rulesLineR': '{s} на раунд · {d}', 'lb.hp': 'Очки здоровья: по 6000, слабейший теряет разницу в каждом раунде',
-    'lb.shareText': 'Сыграй со мной в Chessguessr! Код: {c}', guest: 'Игрок', 'm.week': 'На этой неделе', 'home.sub': 'Вызови друга или играй компанией, на одних и тех же позициях.' },
+    'lb.shareText': 'Сыграй со мной в Chessguessr! Код: {c}', guest: 'Игрок', 'm.week': 'На этой неделе', 'home.sub': 'Вызови друга или играй компанией, на одних и тех же позициях.', 'home.sub2': 'С другом или компанией', 'res.duelOr': 'Хочешь играть одновременно?' },
 };
 for (const l of Object.keys(TX_NEW)) Object.assign(TX[l], TX_NEW[l]);
 
@@ -5993,7 +6122,7 @@ function addEntryPoints() {
   const slot = $('#home-online');
   if (slot && !slot.dataset.on) {
     slot.dataset.on = '1';
-    slot.innerHTML = `<button type="button" class="on-home-card" id="on-home-card"><span><strong>${esc(t('home.title'))}</strong><small>${esc(t('home.sub'))}</small></span><span class="on-home-go">${esc(t('home.go'))}</span></button>`;
+    slot.innerHTML = `<button type="button" class="btn ghost big on-home-btn" id="on-home-card"><span>${esc(t('home.title'))}</span><small>${esc(t('home.sub2'))}</small></button>`;
     $('#on-home-card').addEventListener('click', () => openOnline());
   }
 }
@@ -6472,8 +6601,7 @@ function injectResults() {
 }
 function soloExtra() {
   const box = $('#results-extra'); if (!box || live()) return;
-  box.innerHTML = `<div class="panel on-results solo"><div><strong>${esc(t('res.duel'))}</strong><small class="muted">${esc(t('res.duelSub'))}</small></div>
-    <button type="button" class="btn" data-on="duel">${esc(t('res.duel'))}</button></div>`;
+  box.innerHTML = `<p class="on-results solo"><span>${esc(t('res.duelOr'))}</span> <button type="button" class="on-link" data-on="duel">${esc(t('res.duel'))}</button></p>`;
   box.hidden = false;
 }
 document.addEventListener('click', e => {
